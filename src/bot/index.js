@@ -12,20 +12,19 @@ export const client = new Client({
 });
 
 import "dotenv/config";
-import type { Command } from '../lib/structures/Command';
+import { Command } from '../lib/structures/Command';
 
 if(process.env.CLIENT_ID === '994973502975262980') {
-    const poster = AutoPoster(process.env.TOPGG_TOKEN!, client);
+    const poster = AutoPoster(process.env.TOPGG_TOKEN, client);
     poster.on('posted', (stats) => {
         console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
     });
 }
 
 const eventFiles = readdirSync(`${__dirname}/events`).filter((x) => x.endsWith('.js'));
-const commandFiles = readdirSync(`${__dirname}/commands`).filter((x) => x.endsWith('js'));
-
+export const commandFiles = readdirSync(`${__dirname}/commands`).filter((x) => x.endsWith('.js'));
 export const events = new Collection();
-export const commands = new Collection<Command.Name, Command>();
+export const commands = new Collection();
 
 (async () => {
     for (const file of commandFiles) {

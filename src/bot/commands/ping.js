@@ -2,14 +2,13 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 
 export default {
-    devCmd: false,
-    permLevel: 0,
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Checks bot ping.')
+        .setDMPermission(false)
         .toJSON(),
-    async execute(interaction: ChatInputCommandInteraction) {
-        const action = await interaction.reply({
+    async execute(interaction) {
+        const action = await interaction.editReply({
             content: `Pinging...`,
             fetchReply: true,
         });

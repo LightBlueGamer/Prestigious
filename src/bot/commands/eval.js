@@ -1,32 +1,31 @@
-import { Client, codeBlock, ContextMenuCommandInteraction } from 'discord.js';
+import { codeBlock } from 'discord.js';
 
 export default {
-    devCmd: false,
-    permLevel: 9,
     data: {
         name: 'eval',
         type: 3,
     },
-    async execute(interaction: ContextMenuCommandInteraction) {
-        async function clean(client: Client<boolean>, text: string) {
+    async execute(interaction) {
+        if(interaction.user.id !== '232466273479426049') return interaction.reply('You do not have permission to use this command.');
+        async function clean(client, text) {
             if (text && text.constructor.name === 'Promise') text = await text;
             if (typeof text !== 'string') text = (await import('util')).inspect(text, { depth: 1 });
 
             text = text
                 .replace(/`/g, `\`${String.fromCharCode(8203)}`)
                 .replace(/@/g, `@${String.fromCharCode(8203)}`)
-                .replaceAll(client.token!, '||[REDACTED]||');
+                .replace(client.token, '||[REDACTED]||');
 
             return text;
         }
 
-        function cleanInput(ctn: string) {
-            let content: string = ctn;
+        function cleanInput(ctn) {
+            let content = ctn;
             const regex = /^```(?:js|javascript)\n([\s\S]*?)```$/;
             const input = regex.test(content);
-            if (input) content = content.match(regex)![1];
+            if (input) content = content.match(regex)[1];
             else if (content.startsWith('```') && content.endsWith('```')) {
-                let ctnArr: string[] = content.split('```');
+                let ctnArr = content.split('```');
                 ctnArr.shift();
                 ctnArr.pop();
                 content = ctnArr.join(' ');
@@ -35,9 +34,8 @@ export default {
             return content;
         }
 
-        await interaction.deferReply({ ephemeral: true });
-        const message = interaction.channel!.messages.resolve(interaction.targetId);
-        const code = cleanInput(message!.content);
+        const message = interaction.channel.messages.resolve(interaction.targetId);
+        const code = cleanInput(message.content);
         try {
             const evaled = eval(`(async()=>{${code}})()`);
             const cleaned = await clean(interaction.client, evaled);
@@ -49,9 +47,9 @@ export default {
                 });
             }
 
-            await interaction.editReply(codeBlock('js', cleaned));
+            return await interaction.editReply(codeBlock('js', cleaned));
         } catch (err) {
-            console.log(err);
+            return console.log(err);
         }
     },
 };

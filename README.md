@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 3.0.0
+
+-   Complete system overhaul!
+
 ### 2.8.0
 
 -   Added a weight fluctuation system for some loot that changes on a daily basis

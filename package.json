@@ -2,18 +2,19 @@
   "name": "prestigious",
   "version": "3.0.0",
   "description": "A bot all about getting the highest level possible!",
-  "main": "dist/src/index.js",
+  "main": "src/bot/index.js",
   "scripts": {
-    "deploy": "node --es-module-specifier-resolution=node dist/src/deploy.js",
+    "run": "node --es-module-specifier-resolution=node src/bot/index.js",
+    "deploy": "node --es-module-specifier-resolution=node src/bot/deploy.js",
     "lint": "eslint src --ext ts --fix",
-    "format": "prettier --write src/",
-    "run": "node --es-module-specifier-resolution=node ."
+    "format": "prettier --write src/"
   },
   "author": "Tim",
   "license": "ISC",
   "dependencies": {
     "@joshdb/core": "^1.2.7",
     "@joshdb/sqlite": "^1.1.9",
+    "@napi-rs/canvas": "^0.1.25",
     "@top-gg/sdk": "^3.1.3",
     "discord.js": "^14.0.3",
     "dotenv": "^16.0.1",

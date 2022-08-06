@@ -1,10 +1,17 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
-import { commands } from '.';
+import { Collection } from 'discord.js';
+import { commandFiles } from '.';
 
-const token: string = process.env.DISCORD_TOKEN!;
-const clientId: string = process.env.CLIENT_ID!;
+const token = process.env.DISCORD_TOKEN;
+const clientId = process.env.CLIENT_ID;
 const rest = new REST({ version: '10' }).setToken(token);
+const commands = new Collection();
+
+for (const file of commandFiles) {
+    const command = (await import(`./commands/${file}`)).default;
+    commands.set(command.data.name, command);
+}
 
 (async () => {
     try {
