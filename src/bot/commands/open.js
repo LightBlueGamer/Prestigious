@@ -15,6 +15,8 @@ export default {
         const lootbox = Object.values(lootboxes).find(lootbox => lootbox.name.toLowerCase() === box?.toLowerCase());
         const reward = lootbox?.open();
         player.addItem(reward, 1);
+        player.removeItem(lootbox, 1);
+        player.save();
         interaction.editReply(`You opened a ${lootbox?.name} and got a ${reward.name}!`);
     }
 }

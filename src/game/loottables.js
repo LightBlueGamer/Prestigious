@@ -1,6 +1,5 @@
 import { Loottable } from "../lib/structures/Loottable";
-import { creatureBox } from "./lootboxes";
-import { creatureRewards, lootboxReward } from "./rewards";
+import { creatureRewards, lootboxReward, creatureCrateReward } from "./rewards";
 
 export const messaging = new Loottable('Messaging', [
     lootboxReward
@@ -11,7 +10,7 @@ export const daily = new Loottable('Daily', [
 ]);
 
 export const lootboxTable = new Loottable('Lootbox', [
-    creatureBox
+    creatureCrateReward
 ]);
 
 export const creatureTable = new Loottable('Creature', creatureRewards);

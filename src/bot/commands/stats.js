@@ -54,7 +54,7 @@ export default {
         for(let i = 0; i < roundedPercent; i++) {
             context.beginPath()
             context.strokeStyle = '#008800'
-            context.arc(250 + (i * 6.5), canvas.height - 20, 8, Math.PI * 2, 0, false)
+            context.arc(250 + (i * 4), canvas.height - 20, 8, Math.PI * 2, 0, false)
             context.stroke()
         }
 

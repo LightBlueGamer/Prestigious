@@ -6,7 +6,8 @@ export default {
         type: 3,
     },
     async execute(interaction) {
-        if(interaction.user.id !== '232466273479426049') return interaction.reply('You do not have permission to use this command.');
+        await interaction.deferReply();
+        if(interaction.user.id !== '232466273479426049') return interaction.editReply('You do not have permission to use this command.');
         async function clean(client, text) {
             if (text && text.constructor.name === 'Promise') text = await text;
             if (typeof text !== 'string') text = (await import('util')).inspect(text, { depth: 1 });

@@ -124,8 +124,10 @@ export class Player {
     }
 
     removeItem(item, amount) {
-        if(item.amount - amount < 0) return this.inventory.splice(this.inventory.indexOf(item), 1), this.inventory.length;
-        else return item.amount -= amount;
+        const inventoryItem = this.inventory.find(i => i.name === item.name);
+        if(!inventoryItem) return false
+        if(inventoryItem.amount - amount <= 0) return this.inventory.splice(this.inventory.indexOf(inventoryItem), 1), this.inventory.length;
+        else return inventoryItem.amount -= amount;
     }
 
     getItem(name) {

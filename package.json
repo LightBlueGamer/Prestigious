@@ -6,6 +6,7 @@
   "scripts": {
     "run": "node --es-module-specifier-resolution=node src/bot/index.js",
     "deploy": "node --es-module-specifier-resolution=node src/bot/deploy.js",
+    "undeploy": "node --es-module-specifier-resolution=node src/bot/undeploy.js",
     "lint": "eslint src --ext ts --fix",
     "format": "prettier --write src/"
   },
