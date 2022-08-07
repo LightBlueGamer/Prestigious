@@ -2,6 +2,10 @@
 
 ## Release Notes
 
+### 3.1.0
+
+-   Voting has been re-added
+
 ### 3.0.0
 
 -   Complete system overhaul!
