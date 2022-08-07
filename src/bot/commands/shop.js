@@ -12,6 +12,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction) {
+        await interaction.deferReply(); 
         const amount = interaction.options.getNumber('amount') || 1;
         const item = interaction.options.getString('item');
         const lootbox = Object.values(lootboxes).find(lootbox => lootbox.name.toLowerCase() === item?.toLowerCase());

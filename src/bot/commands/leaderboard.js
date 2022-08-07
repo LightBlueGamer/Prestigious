@@ -10,6 +10,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction) {
+        await interaction.deferReply();
         let page = interaction.options.getNumber('page') || 1;
         const user = interaction.user;
         const player = await Player.get(user.id);

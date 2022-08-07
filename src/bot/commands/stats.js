@@ -11,6 +11,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction) {
+        await interaction.deferReply();
         const user = interaction.options.getUser('user') || interaction.user;
         const userBanner = (await interaction.client.users.fetch(user.id)).bannerURL({ format: 'jpg' })
         const player = await Player.get(user.id);

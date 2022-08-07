@@ -6,7 +6,6 @@ export default {
     name: 'chatInputCommandInteraction',
     once: false,
     async execute(interaction) {
-        await interaction.deferReply();
         const { user } = interaction;
         if (user.bot) return;
         

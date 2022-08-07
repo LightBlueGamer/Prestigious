@@ -8,6 +8,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction) {
+        await interaction.deferReply();
         const action = await interaction.editReply({
             content: `Pinging...`,
             fetchReply: true,

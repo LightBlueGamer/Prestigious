@@ -9,6 +9,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction) {
+        await interaction.deferReply();
         const { user } = interaction;
         const player = await Player.get(user.id);
         const box = interaction.options.getString('lootbox');

@@ -3,6 +3,7 @@ import { client } from "../../bot";
 import { players } from "../../database/main";
 import { daily, messaging } from "../../game/loottables";
 import { InventoryItem } from "./InventoryItem";
+import { lootboxReward } from "../../game/rewards";
 
 export class Player {
     tag;
@@ -160,6 +161,13 @@ export class Player {
                 comp: (row) => row.rarity.name,
             },
         }).slice((page - 1) * 50, (page - 1) * 50 + 50);
+    }
+
+    vote() {
+        this.addItem(lootboxReward, 2);
+        client.users.fetch(this.id).then(user => {
+            return user.send(`You have voted and received 2x lootboxes!`);
+        });
     }
 
     static async get(id) {
