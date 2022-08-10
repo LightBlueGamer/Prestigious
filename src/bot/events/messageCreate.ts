@@ -16,9 +16,8 @@ export default {
         // Player functions
 
         // Get clan boosters
-        const clanXp = (await Clan.getFromUser(user.id)).stats.xpMultiplier || 1;
-        const clanCoin = (await Clan.getFromUser(user.id)).stats.coinMultiplier || 1;
-
+        const clanXp = (await Clan.getFromUser(user.id)) ? (await Clan.getFromUser(user.id))!.stats.xpMultiplier : 1;
+        const clanCoin = (await Clan.getFromUser(user.id)) ? (await Clan.getFromUser(user.id))!.stats.coinMultiplier : 1;
 
         if(!cooldown.has(user.id)) {
             const xp = player.addXp(clanXp);

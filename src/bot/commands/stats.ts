@@ -13,6 +13,7 @@ export default {
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
         const user = interaction.options.getUser('user') || interaction.user;
+        if(user.bot) return interaction.editReply({content: 'You cannot check stats of a bot.'});
         const player = await Player.get(user.id);
         const canvas = Canvas.createCanvas(700, 250);
         const context = canvas.getContext('2d');
@@ -68,7 +69,7 @@ export default {
 
         const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: 'profile-image.png' });
 
-        interaction.editReply({files: [attachment], allowedMentions: {
+        return interaction.editReply({files: [attachment], allowedMentions: {
             repliedUser: player.ping
         }})
     }

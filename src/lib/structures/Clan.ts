@@ -231,11 +231,13 @@ export class Clan {
 
     static async getFromUser(id: string) {
         const clan = await clans.find(clan => clan.members.find(member => member.id === id)?.id === id);
+        if(!clan) return
         return Clan.fromJSON(clan);
     }
 
     static async getClan(name: string) {
         const clan = await clans.find(clan => clan.name === name);
+        if(!clan) return
         return Clan.fromJSON(clan);
     }
 

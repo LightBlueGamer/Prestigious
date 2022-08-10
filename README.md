@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 3.3.0
+
+-   Added pay command
+-   You can no longer check the profile of a bot
+
 ### 3.2.0
 
 -   Added Clans
