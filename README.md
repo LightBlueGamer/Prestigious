@@ -2,6 +2,14 @@
 
 ## Release Notes
 
+### 3.2.0
+
+-   Added Clans
+-   Converted to TypeScript
+-   Voting now only give 1 lootbox each per vote
+-   Daily reward now gives 2 lootboxes
+-   Added clan boosters for coins and experience
+
 ### 3.1.0
 
 -   Voting has been re-added

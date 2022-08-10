@@ -1,12 +1,12 @@
 {
   "name": "prestigious",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "A bot all about getting the highest level possible!",
-  "main": "src/bot/index.js",
+  "main": "dist/bot/index.js",
   "scripts": {
-    "run": "node --es-module-specifier-resolution=node src/bot/index.js",
-    "deploy": "node --es-module-specifier-resolution=node src/bot/deploy.js",
-    "undeploy": "node --es-module-specifier-resolution=node src/bot/undeploy.js",
+    "run": "node --es-module-specifier-resolution=node dist/bot/index.js",
+    "deploy": "node --es-module-specifier-resolution=node dist/bot/deploy.js",
+    "undeploy": "node --es-module-specifier-resolution=node dist/bot/undeploy.js",
     "lint": "eslint src --ext ts --fix",
     "format": "prettier --write src/"
   },
