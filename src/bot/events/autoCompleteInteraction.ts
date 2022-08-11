@@ -1,6 +1,7 @@
 import type { AutocompleteInteraction } from "discord.js";
 import * as lootboxes from "../../game/lootboxes";
 import { Player } from "../../lib/structures/Player";
+import { clans } from "../../database/main";
 
 const boxes = Object.values(lootboxes);
 
@@ -25,6 +26,28 @@ export default {
                 choices = boxxes.map(box => ({name: `${box.name}`, value: box.name}));
         
                 break;
+
+            case "clan": {
+                const subCommand = interaction.options.getSubcommand();
+                switch (subCommand) {
+                    case "search": {
+                        choices = (await clans.values).map(clan => ({name: clan.name, value: clan.name}));
+                    }
+                    
+                    break;
+
+                    case "join": {
+                        choices = (await clans.values).filter(clan => clan.invites.includes(interaction.user.id)).map(clan => ({name: clan.name, value: clan.name}));
+                    }
+
+                    break;
+                
+                    default:
+                        break;
+                }
+            }
+
+            break;
                 
             default:
                 break;

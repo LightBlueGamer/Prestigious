@@ -152,6 +152,19 @@ export default {
                         .setName('name')
                         .setDescription('The name of the clan to search for.')
                         .setRequired(true)
+                        .setAutocomplete(true)
+                )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('join')
+                .setDescription('Join a clan.')
+                .addStringOption(option =>
+                    option
+                        .setName('name')
+                        .setDescription('The name of the clan to join.')
+                        .setRequired(true)
+                        .setAutocomplete(true)
                 )
         )
         .toJSON(),
@@ -209,7 +222,7 @@ export default {
                                 content: 'The clan already exists.',
                             });
                         } else {
-                            player.removeCoins(10000);
+                            player.coins -= 10000;
                             player.save();
                             const clan = await Clan.get(name, interaction.user.id);
                             interaction.editReply({
@@ -245,7 +258,7 @@ export default {
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
+                if(!executor) throw new Error('You are not in the clan.');
                 const invite = userClan.addInvite(user.id, executor);
                 userClan.save();
                 if(!invite) return interaction.editReply({
@@ -260,6 +273,12 @@ export default {
                         repliedUser: player.ping
                     }
                 });
+                interaction.channel?.send({
+                    content: `<@${user.id}> you have been invited to the clan ${userClan.name} by ${interaction.user.username}.`,
+                    allowedMentions: {
+                        users: [user.id]
+                    }
+                })
             }
         
             break;
@@ -369,8 +388,8 @@ export default {
                                 },
                                 components: [],
                             });
-                            userClan.leave(executor);
-                            userClan.save();
+                            const leave = await userClan.leave(executor);
+                            if(leave) userClan.save();
                         } else {
                             await i.update({
                                 content: `You cancelled leaving the clan.`,
@@ -385,8 +404,8 @@ export default {
     
                     collector?.on('end', collected => console.log(`Collected ${collected.size} items`));
                 } else {
-                    userClan.leave(executor);
-                    userClan.save();
+                    const leave = await userClan.leave(executor);
+                    if(leave) userClan.save();
                     interaction.editReply({
                         content: `You have left your clan.`,
                         allowedMentions: {
@@ -652,7 +671,7 @@ export default {
             break;
 
             case 'search': {
-                const name = interaction.options.getString('name')!;
+                const name = interaction.options.getString('name', true);
                 const clan = await Clan.getClan(name);
                 if(!clan) return interaction.editReply({
                     content: `No clan found with the name ${name}.`,
@@ -660,12 +679,13 @@ export default {
                         repliedUser: player.ping
                     }
                 });
+                const members = await Promise.all(clan.getMembersRankSorted.map(async (m) => {
+                    const player = await Player.get(m.id);
+                    return `${ClanRanks[m.rank]} - ${player.getName()}: ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.`;
+                }))
                 const embed = new EmbedBuilder()
                     .setTitle(`${clan.name} - Lvl ${clan.level}`)
-                    .setDescription(`${clan.members.length} members:\n${clan.getMembersRankSorted.map(async(m) => {
-                        const player = await Player.get(m.id);
-                        return `${m.rank} - ${player.getName()} ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.\n`;
-                    })}`)
+                    .setDescription(`Members:\n\`\`\`${members.join('\n')}\`\`\``)
                     .addFields(
                         {name: `XP Boost`, value: `${clan.stats.xpMultiplier}x`, inline: true},
                         {name: '\u200b', value: '\u200b', inline: true},
@@ -676,6 +696,35 @@ export default {
                     )
                 interaction.editReply({
                     embeds: [embed],
+                    allowedMentions: {
+                        repliedUser: player.ping
+                    }
+                });
+            }
+
+            break;
+
+            case 'join': {
+                const userClan = await Clan.getFromUser(interaction.user.id);
+                if(userClan) return interaction.editReply({
+                    content: 'You are already in a clan.',
+                    allowedMentions: {
+                        repliedUser: player.ping
+                    }
+                });
+                const name = interaction.options.getString('name', true);
+                const clan = await Clan.getClan(name);
+                if(!clan) return interaction.editReply({
+                    content: `No clan found with the name ${name}.`,
+                    allowedMentions: {
+                        repliedUser: player.ping
+                    }
+                });
+                clan.addMember(interaction.user.id);
+                clan.save();
+
+                interaction.editReply({
+                    content: `You have joined the clan ${clan.name}.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }

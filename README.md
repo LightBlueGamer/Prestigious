@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 3.5.0
+
+-   Changed minimum allowed bet for blackjack to 100 coins
+-   Added high/low gambling command
+
 ### 3.4.0
 
 -   You may now randomly get a lootbox (1/1000) with a increasing amount of 1 for every message sent (uses global cooldown)

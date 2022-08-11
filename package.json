@@ -1,6 +1,6 @@
 {
   "name": "prestigious",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "A bot all about getting the highest level possible!",
   "main": "dist/bot/index.js",
   "scripts": {

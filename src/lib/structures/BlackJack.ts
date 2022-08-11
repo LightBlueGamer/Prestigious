@@ -3,7 +3,7 @@ export class BlackJack {
     player: BlackJack.Player;
     house: BlackJack.House;
     deck: BlackJack.Deck;
-    constructor(player: BlackJack.Player = new BlackJack.Player(), house: BlackJack.House = new BlackJack.House(), deck: BlackJack.Deck = cards) {
+    constructor(player: BlackJack.Player = new BlackJack.Player(), house: BlackJack.House = new BlackJack.House(), deck: BlackJack.Deck = cards.map(card => ({name: card.name, icon: card.icon, value: card.value}))) {
         this.player = player;
         this.house = house;
         this.deck = deck;

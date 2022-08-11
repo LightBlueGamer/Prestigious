@@ -58,7 +58,7 @@ export class Clan {
     addInvite(id: string, invitee: Clan.Member) {
         if(this.getRank(invitee) < ClanRanks.Soldier) return;
         if(this.getInvite(id)) return;
-        return this.invites.push(id), this.invites;
+        return this.invites.push(id), this.invites.flat();
     }
 
     removeInvite(id: string, member: Clan.Member) {
@@ -67,19 +67,16 @@ export class Clan {
         return this.invites.splice(this.invites.indexOf(id), 1), this.invites;
     }
 
-    addMember(id: string, rank: ClanRanks = ClanRanks.Member) {
+    addMember(id: string, rank: ClanRanks = ClanRanks.Member, skipInvite: boolean = false) {
+        const member = new Clan.Member(id, rank, {xp: 0, coins: 0}, Date.now(), 0);
+        if(skipInvite) {
+            this.members.push(member)
+            return this.members;
+        }
         if(!this.getInvite(id)) return
         this.invites.splice(this.invites.indexOf(id), 1);
-        return this.members.push({
-            id,
-            rank,
-            totalContribution: {
-                xp: 0,
-                coins: 0,
-            },
-            joined: Date.now(),
-            autoContribute: 0,
-        }), this.members;
+        this.members.push(member);
+        return this.members;
     }
 
     removeMember(member: Clan.Member, executor: Clan.Member) {
@@ -88,9 +85,14 @@ export class Clan {
         return this.members.splice(this.members.indexOf(member), 1), this.members;
     }
 
-    leave(member: Clan.Member) {
+    async leave(member: Clan.Member) {
         if(this.getRank(member) === ClanRanks.Leader) this.getMembersRankSorted[0].rank = ClanRanks.Leader;
-        return this.members.splice(this.members.indexOf(member), 1), this.members;
+        this.members.splice(this.members.indexOf(member), 1);
+        if(this.members.length === 0) {
+            await clans.delete(this.name);
+            return false;
+        }
+        return this.members;
     }
 
     increaseXpBoost(amount: number) {
@@ -150,6 +152,7 @@ export class Clan {
         player.xp -= amount;
         player.save();
         this.exp += amount;
+        member.totalContribution.xp += amount;
         while(this.canLevelUp()) {
             this.levelUp(this.xpRequired);
         }
@@ -224,19 +227,21 @@ export class Clan {
 
     static async get(name: string, executor?: string) {
         const defaultClan = new Clan(name);
-        if(executor) defaultClan.addMember(executor, ClanRanks.Leader);
+        if(executor) {
+            defaultClan.addMember(executor, ClanRanks.Leader, true);
+        }
         const dbClan = await clans.ensure(name, defaultClan.toJSON());
         return Clan.fromJSON(dbClan);
     }
 
     static async getFromUser(id: string) {
-        const clan = await clans.find(clan => clan.members.find(member => member.id === id)?.id === id);
+        const clan = (await clans.values).find(clan => clan.members.find(member => member.id === id)?.id === id);
         if(!clan) return
         return Clan.fromJSON(clan);
     }
 
     static async getClan(name: string) {
-        const clan = await clans.find(clan => clan.name === name);
+        const clan = await clans.get(name);
         if(!clan) return
         return Clan.fromJSON(clan);
     }
@@ -247,12 +252,20 @@ export class Clan {
 }
 
 export namespace Clan {
-    export interface Member {
+    export class Member {
         id: string;
         rank: number;
         totalContribution: Clan.Contribution;
         joined: number;
-        autoContribute: number;        
+        autoContribute: number;  
+
+        constructor(id: string, rank: number, totalContribution: Clan.Contribution, joined: number, autoContribute: number) {
+            this.id = id;
+            this.rank = rank;
+            this.totalContribution = totalContribution;
+            this.joined = joined;
+            this.autoContribute = autoContribute;
+        }
     }
 
     export type Members = Member[];
@@ -272,7 +285,7 @@ export namespace Clan {
         level: number;
         vault: number;
         exp: number;
-        members: Members;
+        members: Clan.Members;
         stats: Stats;
         statPoints: number;
         invites: string[];

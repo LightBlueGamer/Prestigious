@@ -108,14 +108,14 @@ export class Player {
 
     addXp(multiplier = 1) {
         const xp = Math.floor(Math.random() * (25 - 10)) + 10;
-        this.xp += xp * multiplier;
+        this.xp += Math.floor(xp * multiplier);
         return this.levelUp();
     }
 
     addCoins(multiplier = 1) {
         const coins = Math.floor(Math.random() * (50 - 20)) + 20;
-        this.coins += coins * multiplier;
-        return this.coins;
+        this.coins += Math.floor(coins * multiplier);
+        return Math.floor(coins * multiplier);
     }
 
     addSetCoins(amount: number) {
