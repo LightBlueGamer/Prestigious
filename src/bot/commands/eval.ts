@@ -6,7 +6,9 @@ export default {
         type: 3,
     },
     async execute(interaction: MessageContextMenuCommandInteraction) {
-        await interaction.deferReply();
+        await interaction.deferReply({
+            ephemeral: true,
+        });
         if(interaction.user.id !== '232466273479426049') return interaction.editReply('You do not have permission to use this command.');
         async function clean(client: Client<boolean>, text: string) {
             if (text && text.constructor.name === 'Promise') text = await text;

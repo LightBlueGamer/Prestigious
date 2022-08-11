@@ -23,7 +23,7 @@ export default {
         player.removeItem(invItem, 1);
         player.save();
         interaction.editReply({
-            content: `You opened a ${invItem.name} and got a ${reward.name}!`,
+            content: `You opened a ${invItem.name} and got a ${reward.rarity.name} ${reward.name}!`,
             allowedMentions: {
                 repliedUser: player.ping,
             }

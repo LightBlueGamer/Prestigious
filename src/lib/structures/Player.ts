@@ -162,7 +162,7 @@ export class Player {
 
     messagingReward() {
         const loot = Math.floor(Math.random() * (1000)) + 1;
-        if(loot === this.messages) {
+        if(loot <= this.messages) {
             this.messages = 0;
             const item = messaging.generateReward();
             this.addItem(item, 1);

@@ -23,6 +23,7 @@ export default {
             const xp = player.addXp(clanXp);
             player.addCoins(clanCoin);
             const messaging = player.messagingReward();
+            player.messages++;
 
             //Messages
             if(xp) message.reply({

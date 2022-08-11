@@ -2,6 +2,11 @@
 
 ## Release Notes
 
+### 3.4.0
+
+-   You may now randomly get a lootbox (1/1000) with a increasing amount of 1 for every message sent (uses global cooldown)
+-   Added blackjack command
+
 ### 3.3.0
 
 -   Added pay command

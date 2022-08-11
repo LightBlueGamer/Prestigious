@@ -17,7 +17,7 @@ export default {
         if(!target) return;
         if(target.bot) return interaction.editReply({content: 'You cannot pay a bot.', allowedMentions: {repliedUser: player.ping}});
         const targetPlayer = await Player.get(target.id);
-        const amount = interaction.options.getInteger('amount')!;
+        const amount = Math.floor(interaction.options.getInteger('amount', true));
         if(user.id === target.id) return interaction.editReply({content: 'You cannot pay yourself.'});
 
         player.removeCoins(amount);
