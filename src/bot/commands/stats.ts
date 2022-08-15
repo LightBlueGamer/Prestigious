@@ -30,10 +30,12 @@ export default {
 
         context.font = 'bold 30px Noto Sans CJK JP';
         const height = canvas.height / 2.25
+        const xpBoost = player.boosts.xp.length > 0 ? ` (${player.boosts.xp.reduce((a, b) => a + b.amount, 0)}x)` : '';
+        const coinBoost = player.boosts.coins.length > 0 ? ` (${player.boosts.coins.reduce((a, b) => a + b.amount, 0)}x)` : '';
         context.fillText(`Prestige: ${player.prestige}`, canvas.width / 2.5, height);
         context.fillText(`Level: ${player.level}`, canvas.width / 2.5, height + 30);
-        context.fillText(`Experience: ${player.xp}`, canvas.width / 2.5, height + 60);
-        context.fillText(`Coins: ${player.coins}`, canvas.width / 2.5, height + 90);
+        context.fillText(`Experience: ${player.xp}${xpBoost}`, canvas.width / 2.5, height + 60);
+        context.fillText(`Coins: ${player.coins}${coinBoost}`, canvas.width / 2.5, height + 90);
 
         const percentage = Math.floor((player.xp / player.requiredXp()) * 100);
         const roundedPercent = Math.round(percentage);

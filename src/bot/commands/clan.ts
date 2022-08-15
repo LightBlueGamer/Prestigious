@@ -167,6 +167,34 @@ export default {
                         .setAutocomplete(true)
                 )
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('info')
+                .setDescription('Check your clan info.')
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('autocontribute')
+                .setDescription('set the autocontribution amount.')
+                .addStringOption(option =>
+                    option
+                        .setName('type')
+                        .setDescription('The type of autocontribution.')
+                        .addChoices(
+                            { name: 'xp', value: 'xp' },
+                            { name: 'coin', value: 'coin' }
+                        )
+                        .setRequired(true)
+                )
+                .addNumberOption(option =>
+                    option
+                        .setName('amount')
+                        .setDescription('The amount to autocontribute.')
+                        .setMinValue(0)
+                        .setMaxValue(100)
+                        .setRequired(true)
+                )
+        )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
@@ -551,14 +579,14 @@ export default {
                 if(!member) return;
                 const promote = userClan.promoteMember(member, executor);
                 userClan.save();
-                if(!promote) return interaction.editReply({
-                    content: 'You can\'t promote this member because your not high enough rank.',
+                if(promote === 'outrank' || promote === 'rank' || promote === 'leader') return interaction.editReply({
+                    content: promote === 'outrank' ? 'You can\'t promote someone who is higher rank than you.' : promote === 'leader' ? 'You can\'t promote the leader.' : 'You can\'t promote someone to leader',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 interaction.editReply({
-                    content: `${user.username} has been promoted to ${member.rank} in your clan.`,
+                    content: `${user.username} has been promoted to ${ClanRanks[member.rank]} in your clan.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }
@@ -582,14 +610,14 @@ export default {
                 if(!member) return;
                 const demote = userClan.demoteMember(member, executor);
                 userClan.save();
-                if(!demote) return interaction.editReply({
-                    content: 'You can\'t demote this member because your not high enough rank.',
+                if(demote === 'outrank' || demote === 'rank' || demote === 'leader') return interaction.editReply({
+                    content: demote === 'outrank' ? 'You can\'t demote someone who is higher rank than you.' : demote === 'leader' ? 'You can\'t demote the leader.' : 'You can\'t demote someone to lower rank than member.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 interaction.editReply({
-                    content: `${user.username} has been demoted to ${member.rank} in your clan.`,
+                    content: `${user.username} has been demoted to ${ClanRanks[member.rank]} in your clan.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }
@@ -681,7 +709,7 @@ export default {
                 });
                 const members = await Promise.all(clan.getMembersRankSorted.map(async (m) => {
                     const player = await Player.get(m.id);
-                    return `${ClanRanks[m.rank]} - ${player.getName()}: ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.`;
+                    return `\`${ClanRanks[m.rank]} - ${player.getName()}: ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.\``;
                 }))
                 const embed = new EmbedBuilder()
                     .setTitle(`${clan.name} - Lvl ${clan.level}`)
@@ -720,6 +748,12 @@ export default {
                         repliedUser: player.ping
                     }
                 });
+                if(!clan.invites.includes(interaction.user.id)) return interaction.editReply({
+                    content: `You don't have an invite to join ${clan.name}.`,
+                    allowedMentions: {
+                        repliedUser: player.ping
+                    }
+                });
                 clan.addMember(interaction.user.id);
                 clan.save();
 
@@ -732,8 +766,8 @@ export default {
             }
 
             break;
-            
-            default: {
+
+            case 'info': {
                 const clan = await Clan.getFromUser(interaction.user.id);
                 if(!clan) return interaction.editReply({
                     content: `You are not in a clan.`,
@@ -741,12 +775,13 @@ export default {
                         repliedUser: player.ping
                     }
                 });
+                const members = await Promise.all(clan.getMembersRankSorted.map(async (m) => {
+                    const player = await Player.get(m.id);
+                    return `\`${ClanRanks[m.rank]} - ${player.getName()}: ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.\``;
+                }))
                 const embed = new EmbedBuilder()
                     .setTitle(`${clan.name} - Lvl ${clan.level}`)
-                    .setDescription(`${clan.members.length} members:\n${clan.getMembersRankSorted.map(async(m) => {
-                        const player = await Player.get(m.id);
-                        return `${m.rank} - ${player.getName()} ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.\n`;
-                    })}`)
+                    .setDescription(`Members:\n${members.join('\n')}`)
                     .addFields(
                         {name: `XP Boost`, value: `${clan.stats.xpMultiplier}x`, inline: true},
                         {name: '\u200b', value: '\u200b', inline: true},
@@ -762,7 +797,51 @@ export default {
                     }
                 });
             }
-                
+
+            break;
+
+            case 'autocontribute': {
+                const clan = await Clan.getFromUser(interaction.user.id);
+                if(!clan) return interaction.editReply({
+                    content: `You are not in a clan.`,
+                    allowedMentions: {
+                        repliedUser: player.ping
+                    }
+                });
+                const type = interaction.options.getString('type', true);
+                const amount = Math.round(interaction.options.getNumber('amount', true));
+                const member = clan.getMember(interaction.user.id)!;
+                if(type === 'xp') {
+                    member.autoContribute.xp = amount / 100;
+                    clan.save();
+                    interaction.editReply({
+                        content: `You have set your auto contribution to ${amount}% of your gained xp.`,
+                        allowedMentions: {
+                            repliedUser: player.ping
+                        }
+                    });
+                } else if(type === 'coin') {
+                    member.autoContribute.coins = amount / 100;
+                    clan.save();
+                    interaction.editReply({
+                        content: `You have set your auto contribution to ${amount}% of your gained coins.`,
+                        allowedMentions: {
+                            repliedUser: player.ping
+                        }
+                    });
+                } else {
+                    return interaction.editReply({
+                        content: `Invalid type.`,
+                        allowedMentions: {
+                            repliedUser: player.ping
+                        }
+                    });
+                }
+            }
+
+            break;
+            
+            default:   
             break;
         }
 

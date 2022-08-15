@@ -4,6 +4,9 @@ export class HighLow {
     deck: HighLow.Deck;
     constructor(deck: HighLow.Deck = cards.map(card => ({name: card.name, icon: card.icon, value: card.value}))) {
         this.deck = deck;
+        for(let i=0; i<3; i++) {
+            cards.map(card => this.deck.push(card));
+        }
     }
 
     shuffle() {

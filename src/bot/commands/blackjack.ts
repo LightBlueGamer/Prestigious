@@ -3,6 +3,8 @@ import { BlackJack } from '../../lib/structures/BlackJack';
 import { Player } from '../../lib/structures/Player';
 import { cardBack } from '../../lib/misc/cards';
 
+const inGame = new Set();
+
 export default {
     data: new SlashCommandBuilder()
         .setName('blackjack')
@@ -11,6 +13,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
+        if(inGame.has(interaction.user.id)) return interaction.reply('You are already playing a game of blackjack.');
         await interaction.deferReply();
         const bet = interaction.options.getInteger('bet', true);
         const { user } = interaction;
@@ -25,6 +28,7 @@ export default {
         const game = new BlackJack();
         game.shuffle();
         const { playerHand, houseHand } = game.deal();
+        inGame.add(interaction.user.id);
 
         const buttons = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
@@ -42,6 +46,7 @@ export default {
             player.coins += Math.floor(bet * 1.5);
             player.addXp(2);
             player.save();
+            inGame.delete(interaction.user.id);
             return interaction.editReply({
                 content: `You got a blackjack! You win ${Math.floor(bet * 1.5)}!`,
                 allowedMentions: {
@@ -49,6 +54,12 @@ export default {
                 },
                 embeds: [getEmbed()]
             });
+        } else if(game.hasBlackJack(playerHand) && game.hasBlackJack(houseHand)) {
+            interaction.editReply({
+                content: `The dealer got ${game.getValue(houseHand)}! It's a draw!`,
+                embeds: [getEmbed(true)]
+            });
+            return inGame.delete(interaction.user.id);
         } else {
             interaction.editReply({
                 embeds: [getEmbed()],
@@ -71,7 +82,7 @@ export default {
         function continueGame() {
             const collector = interaction.channel?.createMessageComponentCollector({
                 filter: (i) => ['hit', 'stand'].includes(i.customId) && i.user.id === interaction.user.id,
-                time: 15000,
+                time: 1000 * 60 * 5,
                 max: 1
             });
 
@@ -86,6 +97,7 @@ export default {
                         });
                         player.coins -= Math.floor(bet);
                         player.save();
+                        inGame.delete(interaction.user.id);
                         return;
                     } else if(game.getValue(playerHand) === 21) {
                         i.update({
@@ -96,6 +108,7 @@ export default {
                         player.coins += Math.floor(bet * 1.5);
                         player.addXp(2)
                         player.save();
+                        inGame.delete(interaction.user.id);
                         return;
                     } else {
                         i.update({
@@ -118,6 +131,17 @@ export default {
                     }, 100);
                 }
             });
+
+            collector?.on('end', (_collected, reason) => {
+                if(reason === 'time') {
+                    interaction.editReply({
+                        content: `You took too long to play!`,
+                        embeds: [getEmbed()],
+                        components: [],
+                    });
+                    inGame.delete(interaction.user.id);
+                }
+            });
         }
 
         function dealer() {
@@ -138,6 +162,7 @@ export default {
                 player.coins += Math.floor(bet);
                 player.addXp();
                 player.save();
+                inGame.delete(interaction.user.id);
             } else if(game.getValue(houseHand) === 21) {
                 interaction.editReply({
                     content: `The dealer got blackjack! You lose ${Math.floor(bet)}!`,
@@ -145,6 +170,7 @@ export default {
                 });
                 player.coins -= Math.floor(bet);
                 player.save();
+                inGame.delete(interaction.user.id);
             } else if(game.getValue(houseHand) > game.getValue(playerHand)) {
                 interaction.editReply({
                     content: `The dealer got ${game.getValue(houseHand)}! You lose ${Math.floor(bet)}!`,
@@ -152,6 +178,7 @@ export default {
                 });
                 player.coins -= Math.floor(bet);
                 player.save();
+                inGame.delete(interaction.user.id);
             } else if(game.getValue(houseHand) < game.getValue(playerHand)) {
                 interaction.editReply({
                     content: `The dealer got ${game.getValue(houseHand)}! You win ${Math.floor(bet)}!`,
@@ -160,11 +187,13 @@ export default {
                 player.coins += Math.floor(bet);
                 player.addXp();
                 player.save();
+                inGame.delete(interaction.user.id);
             } else if(game.getValue(houseHand) === game.getValue(playerHand)) {
                 interaction.editReply({
                     content: `The dealer got ${game.getValue(houseHand)}! It's a draw!`,
                     embeds: [getEmbed(true)]
                 });
+                inGame.delete(interaction.user.id);
             };
         }
 

@@ -68,7 +68,7 @@ export class Clan {
     }
 
     addMember(id: string, rank: ClanRanks = ClanRanks.Member, skipInvite: boolean = false) {
-        const member = new Clan.Member(id, rank, {xp: 0, coins: 0}, Date.now(), 0);
+        const member = new Clan.Member(id, rank, {xp: 0, coins: 0}, Date.now(), {coins: 0, xp: 0});
         if(skipInvite) {
             this.members.push(member)
             return this.members;
@@ -117,10 +117,10 @@ export class Clan {
         return xpRequirement && moneyRequirement;
     }
 
-    levelUp(amount: number) {
+    levelUp() {
         if(this.level === this.maxLevel) return;
         if(!this.canLevelUp()) return;
-        this.exp -= amount;
+        this.exp -= this.xpRequired;
         this.vault -= this.level * 10000;
         this.statPoints++;
         return this.level++;
@@ -133,8 +133,12 @@ export class Clan {
     async deposit(member: Clan.Member, amount: number) {
         if(this.vault + amount > this.maxVaulted) return;
         const player = await Player.get(member.id);
-        player.removeCoins(amount);
-        player.save();
+        if(player.coins - amount < 0) return;
+        member.totalContribution.coins += amount;
+        while(this.canLevelUp()) {
+            console.log('leveling up');
+            this.levelUp();
+        }
         return this.vault += amount, this.vault;
     }
 
@@ -143,31 +147,33 @@ export class Clan {
         const player = await Player.get(member.id);
         player.addSetCoins(amount);
         player.save();
+        member.totalContribution.coins -= amount;
         return this.vault -= amount, this.vault;
     }
 
     async addXp(member: Clan.Member, amount: number) {
         const player = await Player.get(member.id);
         if(player.xp - amount < 0) return;
-        player.xp -= amount;
-        player.save();
         this.exp += amount;
         member.totalContribution.xp += amount;
         while(this.canLevelUp()) {
-            this.levelUp(this.xpRequired);
+            console.log('leveling up');
+            this.levelUp();
         }
         return this.level;
     }
 
     promoteMember(member: Clan.Member, executor: Clan.Member) {
-        if(this.getRank(executor) >= this.getRank(member)) return;
-        if(this.getRank(member) <= ClanRanks.General) return;
+        if(this.getRank(executor) <= this.getRank(member)) return 'outrank';
+        if(this.getRank(member) === ClanRanks.Leader) return 'leader';
+        if(this.getRank(member) >= ClanRanks.General) return 'rank';
         return member.rank++, member;
     }
 
     demoteMember(member: Clan.Member, executor: Clan.Member) {
-        if(this.getRank(executor) >= this.getRank(member)) return;
-        if(this.getRank(member) <= ClanRanks.Member) return;
+        if(this.getRank(executor) <= this.getRank(member)) return 'outrank';
+        if(this.getRank(member) === ClanRanks.Leader) return 'leader';
+        if(this.getRank(member) <= ClanRanks.Member) return 'rank';
         return member.rank--, member;
     }
 
@@ -181,7 +187,7 @@ export class Clan {
     }
 
     get getMembersRankSorted() {
-        return this.members.sort((a, b) => a.rank - b.rank);
+        return this.members.sort((a, b) => b.rank - a.rank);
     }
 
     get getInvites() {
@@ -257,14 +263,21 @@ export namespace Clan {
         rank: number;
         totalContribution: Clan.Contribution;
         joined: number;
-        autoContribute: number;  
+        autoContribute: Clan.Member.AutoContribute;  
 
-        constructor(id: string, rank: number, totalContribution: Clan.Contribution, joined: number, autoContribute: number) {
+        constructor(id: string, rank: number, totalContribution: Clan.Contribution, joined: number, autoContribute: Clan.Member.AutoContribute = { coins: 0, xp: 0 }) {
             this.id = id;
             this.rank = rank;
             this.totalContribution = totalContribution;
             this.joined = joined;
             this.autoContribute = autoContribute;
+        }
+    }
+
+    export namespace Member {
+        export interface AutoContribute {
+            coins: number;
+            xp: number;
         }
     }
 

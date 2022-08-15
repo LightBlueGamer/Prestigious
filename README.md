@@ -2,6 +2,20 @@
 
 ## Release Notes
 
+### 3.6.0
+
+-   Added /booster command to show a users current active boosters
+-   Boosters now stack (2x + 3x not 2x + 2x) 
+-   Added /use command which allows you to use items in your inventory (only if they are useable)
+-   Increased the response timer for blackjack/highlow to 5 minutes
+-   Removed the ability to start a new game of blackjack/highlow before finishing current game
+-   Clan Autocontribution now functions as expected
+-   Added boosters (2x & 3x 1, 3, 6, 12, 18, 24 hours for XP and Coins)
+-   Added clan autocontribution (xp & coins)
+-   Clan boosters now function
+-   Fixed blackjack command
+-   Fixed highlow command
+
 ### 3.5.0
 
 -   Changed minimum allowed bet for blackjack to 100 coins

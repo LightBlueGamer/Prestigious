@@ -7,6 +7,9 @@ export class BlackJack {
         this.player = player;
         this.house = house;
         this.deck = deck;
+        for(let i=0; i<7; i++) {
+            cards.map(card => this.deck.push(card));
+        }
     }
 
     shuffle() {
@@ -15,7 +18,7 @@ export class BlackJack {
 
     nextCard(hand: BlackJack.Hand) {
         const card =  this.deck.shift()!;
-        if(card.value === 11 && this.getValue(hand) + card.value > 21) card.value = 1;
+        if(card.value === 11) this.getValue(hand) + card.value > 21 ? card.value = 1 : 11;
         return card;
     }
 

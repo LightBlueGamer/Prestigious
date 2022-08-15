@@ -2,6 +2,8 @@ import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, SlashC
 import { HighLow } from "../../lib/structures/HighLow";
 import { Player } from "../../lib/structures/Player";
 
+const inGame = new Set();
+
 export default {
     data: new SlashCommandBuilder()
         .setName('highlow')
@@ -10,6 +12,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
+        if(inGame.has(interaction.user.id)) return interaction.reply('You are already playing a game of highlow.');
         await interaction.deferReply();
         const bet = Math.floor(interaction.options.getInteger('bet', true));
         const { user } = interaction;
@@ -20,10 +23,10 @@ export default {
                 repliedUser: player.ping,
             },
         });
-        player.coins -= Math.floor(bet);
 
         const game = new HighLow();
         game.shuffle();
+        inGame.add(interaction.user.id);
 
         const buttons = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
@@ -39,13 +42,16 @@ export default {
 
         let currentCard = game.nextCard();
         let correct = 0;
+        let gained = 0;
+        player.coins -= Math.floor(bet);
+        player.save();
 
         update();
         continueGame();
 
         function update() {
             interaction.editReply({
-                content: `Higher or lower?\n${currentCard.icon}`,
+                content: `Higher or lower? Card ${correct+1}/${game.deck.length+correct+1}\n${currentCard.icon}`,
                 allowedMentions: {
                     repliedUser: player.ping,
                 },
@@ -53,19 +59,21 @@ export default {
             });
         }
 
-        function continueGame() {
+        async function continueGame() {
+            const nextCard = game.nextCard();
             if(game.deck.length === 0) {
-                let gained = 0;
-                        if(correct > 5) {
-                            gained = bet * (correct / 10)
-                            player.coins += Math.floor(bet * (correct / 10))
-                        }
-                const coins = player.addCoins(1 + correct / 10);
+                    if(correct > 5) {
+                        gained = bet * (correct / 25)
+                        player.coins += Math.floor(bet * (correct / 25))
+                        player.save();
+                    }
+                const coins = await player.addCoins(1 + correct / 20);
                 player.addXp(1 + correct / 10);
                 player.save();
+                inGame.delete(interaction.user.id);
 
-                interaction.editReply({
-                    content: `You got ${correct} correct! You got ${coins+gained} coins!`,
+                return interaction.editReply({
+                    content: `You got ${correct} correct! ${gained+coins > bet ? `You got ${Math.floor(gained+coins)} coins!` : `You lost ${bet-gained} coins!`}`,
                     allowedMentions: {
                         repliedUser: player.ping,
                     },
@@ -75,18 +83,17 @@ export default {
                 
             const collector = interaction.channel?.createMessageComponentCollector({
                 filter: (i) => ['higher', 'lower'].includes(i.customId) && i.user.id === interaction.user.id,
-                time: 20000,
+                time: 1000 * 60 * 5,
                 max: 1,
             });
 
             collector?.on('collect', async (i: ButtonInteraction) => {
                 if(i.customId === 'higher') {
-                    const nextCard = game.nextCard();
                     if(nextCard.value >= currentCard.value) {
                         correct++;
                         currentCard = nextCard;
                         i.update({
-                            content: `Correct!\nHigher or lower?\n${currentCard.icon}`,
+                            content: `Correct! Card ${correct+1}/${game.deck.length+correct+1}\nHigher or lower?\n${currentCard.icon}`,
                             allowedMentions: {
                                 repliedUser: player.ping,
                             },
@@ -94,17 +101,18 @@ export default {
                         })
                         continueGame();
                     } else {
-                        let gained = 0;
-                        if(correct > 5) {
-                            gained = bet * (correct / 10)
-                            player.coins += Math.floor(bet * (correct / 10))
-                        } else player.coins -= Math.floor(bet);
-                        const coins = player.addCoins(1 + (correct / 10));
+                        if(correct >= 5) {
+                            gained = bet * (correct / 25)
+                            player.coins += Math.floor(bet * (correct / 25))
+                            player.save()
+                        }
+                        const coins = await player.addCoins(1 + (correct / 20));
                         player.addXp(1 + (correct / 5));
                         player.save();
+                        inGame.delete(interaction.user.id);
 
                         i.update({
-                            content: `You lost and got ${correct} correct. You got a total of ${coins+gained} coins.\n${nextCard.icon}`,
+                            content: `You lost and got ${correct} correct. ${gained+coins > bet ? `You got ${gained} coins!` : `You lost ${bet-gained} coins!`}\n${nextCard.icon}`,
                             allowedMentions: {
                                 repliedUser: player.ping,
                             },
@@ -113,12 +121,11 @@ export default {
 
                     }
                 } else if(i.customId === 'lower') {
-                    const nextCard = game.nextCard();
                     if(nextCard.value <= currentCard.value) {
                         correct++;
                         currentCard = nextCard;
                         i.update({
-                            content: `Correct!\nHigher or lower?\n${currentCard.icon}`,
+                            content: `Correct! Card ${correct+1}/${game.deck.length+correct+1}\nHigher or lower?\n${currentCard.icon}`,
                             allowedMentions: {
                                 repliedUser: player.ping,
                             },
@@ -126,17 +133,18 @@ export default {
                         })
                         continueGame();
                     } else {
-                        let gained = 0;
-                        if(correct > 5) {
-                            gained = bet * (correct / 10)
-                            player.coins += Math.floor(bet * (correct / 10))
-                        }  else player.coins -= Math.floor(bet);
-                        const coins = player.addCoins(1 + (correct / 10));
+                        if(correct >= 5) {
+                            gained = bet * (correct / 26)
+                            player.coins += Math.floor(bet * (correct / 25))
+                            player.save();
+                        }
+                        const coins = await player.addCoins(1 + (correct / 20));
                         player.addXp(1 + (correct / 5));
                         player.save();
+                        inGame.delete(interaction.user.id);
 
                         i.update({
-                            content: `You lost and got ${correct} correct. You got a total of ${coins+gained} coins.\n${nextCard.icon}`,
+                            content: `You lost and got ${correct} correct. ${gained+coins > bet ? `You got ${Math.floor(gained+coins)} coins!` : `You lost ${Math.floor(bet-(gained+coins))} coins!`}\n${nextCard.icon}`,
                             allowedMentions: {
                                 repliedUser: player.ping,
                             },
@@ -145,7 +153,20 @@ export default {
                     }
                 }
             });
+
+            collector?.on('end', (_collected, reason) => {
+                if(reason === 'time') {
+                    interaction.editReply({
+                        content: `You took too long to play!`,
+                        components: [],
+                    });
+                    inGame.delete(interaction.user.id);
+                }
+            });
+
+            return;
         }
+
         return;
     }
 }

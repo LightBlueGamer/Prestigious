@@ -1,5 +1,4 @@
 import { ChannelType, Message } from "discord.js";
-import { Clan } from "../../lib/structures/Clan";
 import { Player } from "../../lib/structures/Player";
 const cooldown = new Set();
 
@@ -13,15 +12,12 @@ export default {
 
         // Ensure the player in the database and fetch it.
         const player = await Player.get(user.id);
-        // Player functions
 
-        // Get clan boosters
-        const clanXp = (await Clan.getFromUser(user.id)) ? (await Clan.getFromUser(user.id))!.stats.xpMultiplier : 1;
-        const clanCoin = (await Clan.getFromUser(user.id)) ? (await Clan.getFromUser(user.id))!.stats.coinMultiplier : 1;
+        player.checkBoosters();
 
         if(!cooldown.has(user.id)) {
-            const xp = player.addXp(clanXp);
-            player.addCoins(clanCoin);
+            const xp = await player.addXp();
+            await player.addCoins();
             const messaging = player.messagingReward();
             player.messages++;
 
@@ -45,5 +41,6 @@ export default {
             cooldown.add(user.id);
             setTimeout(() => cooldown.delete(user.id), 1000 * 10);
         }
+        return;
     }
 };

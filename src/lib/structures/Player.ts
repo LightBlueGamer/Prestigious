@@ -6,6 +6,9 @@ import { InventoryItem } from "./InventoryItem";
 import { lootboxReward } from "../../game/rewards";
 import type { Badge } from "./Badge";
 import type { Item } from "./Item";
+import { Clan } from "./Clan";
+import { useables } from "../misc/useables";
+import * as boosters from "../../game/boosters";
 
 export class Player {
     tag: string;
@@ -22,6 +25,7 @@ export class Player {
     ping: boolean;
     color: string;
     displayName: string;
+    boosts: Player.Boosts;
     constructor(
         tag: string, 
         id: string, 
@@ -37,6 +41,10 @@ export class Player {
         ping = false,
         color = 'random',
         displayName = '',
+        boosts: Player.Boosts = {
+            xp: [],
+            coins: [],
+        }
     ) {
         this.tag = tag;
         this.id = id;
@@ -52,6 +60,7 @@ export class Player {
         this.ping = ping;
         this.color = color;
         this.displayName = displayName;
+        this.boosts = boosts;
     }
 
     toJSON() {
@@ -70,6 +79,7 @@ export class Player {
             ping: this.ping,
             color: this.color,
             displayName: this.displayName,
+            boosts: this.boosts,
         };
     }
 
@@ -89,6 +99,7 @@ export class Player {
             object.ping,
             object.color,
             object.displayName,
+            object.boosts,
         );
     }
 
@@ -106,16 +117,32 @@ export class Player {
         return;
     }
 
-    addXp(multiplier = 1) {
-        const xp = Math.floor(Math.random() * (25 - 10)) + 10;
-        this.xp += Math.floor(xp * multiplier);
+    async addXp(multiplier = 1) {
+        const clan = await Clan.getFromUser(this.id);
+        const member = clan?.getMember(this.id);
+        const clanMult = clan?.stats.xpMultiplier || 1;
+        const autoContribution = clan?.getMember(this.id)?.autoContribute.xp || 0;
+        const booster = this.boosts.xp.reduce((a, b) => a + b.amount, 0) - 1;
+        const xp = Math.floor((Math.floor(Math.random() * (25 - 10)) + 10) * (multiplier + (clanMult - 1) + booster));
+        if(autoContribution > 0) await clan?.addXp(member!, Math.floor(xp * autoContribution))
+        await clan?.save();
+        const rest = Math.floor(xp - (xp * autoContribution));
+        this.xp += rest;
         return this.levelUp();
     }
 
-    addCoins(multiplier = 1) {
-        const coins = Math.floor(Math.random() * (50 - 20)) + 20;
-        this.coins += Math.floor(coins * multiplier);
-        return Math.floor(coins * multiplier);
+    async addCoins(multiplier = 1) {
+        const clan = await Clan.getFromUser(this.id);
+        const member = clan?.getMember(this.id);
+        const clanMult = clan?.stats.coinMultiplier || 1;
+        const autoContribution = clan?.getMember(this.id)?.autoContribute.coins || 0;
+        const booster = this.boosts.coins.reduce((a, b) => a + b.amount, 0) - 1;
+        const coins = Math.floor((Math.floor(Math.random() * (50 - 25)) + 25) * (multiplier + (clanMult - 1) + booster));
+        if(autoContribution > 0) await clan?.deposit(member!, Math.floor(coins * autoContribution));
+        clan?.save();
+        const rest = Math.floor(coins - (coins * autoContribution));
+        this.addSetCoins(rest);
+        return Math.floor(rest);
     }
 
     addSetCoins(amount: number) {
@@ -196,6 +223,56 @@ export class Player {
         return true;
     }
 
+    setExpBoost(amount: number, duration: number) {
+        const boost = this.boosts.xp.find(boost => boost.amount === amount);
+        if(boost) {
+            boost.duration += duration;
+        } else {
+            this.boosts.xp.push({
+                amount,
+                duration: Date.now() + duration,
+            });
+        }
+        return this.boosts.xp;
+    }
+
+    setCoinBoost(amount: number, duration: number) {
+        const boost = this.boosts.coins.find(boost => boost.amount === amount);
+        if(boost) {
+            boost.duration += duration;
+        } else {
+            this.boosts.coins.push({
+                amount,
+                duration: Date.now() + duration,
+            });
+        }
+        return this.boosts.coins;
+    }
+
+    checkBoosters() {
+        this.boosts.xp.forEach(boost => {
+            if(boost.duration - Date.now() <= 0) this.boosts.xp.splice(this.boosts.xp.indexOf(boost), 1);
+        });
+        this.boosts.coins.forEach(boost => {
+            if(boost.duration - Date.now() <= 0) this.boosts.coins.splice(this.boosts.coins.indexOf(boost), 1);
+        });
+        return this.boosts;
+    }
+
+    useItem(item: Item) {
+        const inventoryItem = this.inventory.find(i => i.name === item.name);
+        if(!inventoryItem) return false;
+        if(!useables.includes(inventoryItem.type)) return false;
+        if(inventoryItem.type === 'Booster') {
+            const booster = Object.values(boosters).find(b => b.name === inventoryItem.name);
+            if(!booster) return false;
+            if(booster.type === 'xp') this.setExpBoost(booster.multiplier, booster.duration);
+            if(booster.type === 'coins') this.setCoinBoost(booster.multiplier, Date.now() + booster.duration);
+        }
+        if(inventoryItem.amount - 1 <= 0) return this.removeItem(item, 1), this.inventory;
+        else return inventoryItem.amount -= 1, this.inventory;
+    }
+
     static async get(id: string) {
         const user = await client.users.fetch(id);
         const defaultPlayer = new Player(user.tag, id);
@@ -216,15 +293,28 @@ export namespace Player {
         level: number;
         xp: number;
         coins: number;
-        inventory: Player.Inventory;
-        badges: Player.Badges;
+        inventory: Inventory;
+        badges: Badges;
         joined: number;
         daily: number;
         messages: number;
         ping: boolean;
         color: string;
         displayName: string;
+        boosts: Boosts;
     }
+
+    export interface Boosts {
+        xp: Boost[],
+        coins: Boost[],
+    }
+
+    export interface Boost {
+        amount: number;
+        duration: number;
+    }
+
     export type Inventory = InventoryItem[];
+    
     export type Badges = Badge[];
 }

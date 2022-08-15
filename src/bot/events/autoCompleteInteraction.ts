@@ -2,6 +2,7 @@ import type { AutocompleteInteraction } from "discord.js";
 import * as lootboxes from "../../game/lootboxes";
 import { Player } from "../../lib/structures/Player";
 import { clans } from "../../database/main";
+import { useables } from "../../lib/misc/useables";
 
 const boxes = Object.values(lootboxes);
 
@@ -45,6 +46,13 @@ export default {
                     default:
                         break;
                 }
+            }
+
+            break;
+
+            case "use": {
+                const player = await Player.get(user.id);
+                choices = player.inventory.filter((item) => useables.includes(item.type)).map(item => ({name: item.name, value: item.name}));
             }
 
             break;
