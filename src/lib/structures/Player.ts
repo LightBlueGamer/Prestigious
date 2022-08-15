@@ -267,7 +267,7 @@ export class Player {
             const booster = Object.values(boosters).find(b => b.name === inventoryItem.name);
             if(!booster) return false;
             if(booster.type === 'xp') this.setExpBoost(booster.multiplier, booster.duration);
-            if(booster.type === 'coins') this.setCoinBoost(booster.multiplier, Date.now() + booster.duration);
+            if(booster.type === 'coins') this.setCoinBoost(booster.multiplier, booster.duration);
         }
         if(inventoryItem.amount - 1 <= 0) return this.removeItem(item, 1), this.inventory;
         else return inventoryItem.amount -= 1, this.inventory;
