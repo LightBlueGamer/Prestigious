@@ -28,28 +28,26 @@ export default {
         
                 break;
 
-            case "clan": {
+            case "clan": 
                 const subCommand = interaction.options.getSubcommand();
                 switch (subCommand) {
-                    case "search": {
+                    case "search": 
                         choices = (await clans.values).map(clan => ({name: clan.name, value: clan.name}));
-                    }
                     
                     break;
 
-                    case "join": {
+                    case "join": 
                         choices = (await clans.values).filter(clan => clan.invites.includes(interaction.user.id)).map(clan => ({name: clan.name, value: clan.name}));
-                    }
 
                     break;
                 
                     default:
                         break;
                 }
-            }
 
             break;
 
+            // eslint-disable-next-line no-lone-blocks
             case "use": {
                 const player = await Player.get(user.id);
                 choices = player.inventory.filter((item) => useables.includes(item.type)).map(item => ({name: item.name, value: item.name}));
