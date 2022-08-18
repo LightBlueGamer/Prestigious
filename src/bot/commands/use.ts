@@ -13,12 +13,13 @@ export default {
         await interaction.deferReply();
         const item = interaction.options.getString('item', true);
         const invItem = player.getItem(item);
-        if(!invItem) return interaction.editReply({
+        if(!invItem) {return interaction.editReply({
             content: `You don't have any ${item} in your inventory!`,
             allowedMentions: {
                 repliedUser: player.ping,
             },
-        });
+        });}
+        
         player.useItem(invItem);
         player.save();
         return interaction.editReply({

@@ -9,6 +9,7 @@ import type { Item } from "./Item";
 import { Clan } from "./Clan";
 import { useables } from "../misc/useables";
 import * as boosters from "../../game/boosters";
+import * as containers from '../../game/containers';
 
 export class Player {
     tag: string;
@@ -253,9 +254,11 @@ export class Player {
         this.boosts.xp.forEach(boost => {
             if(boost.duration - Date.now() <= 0) this.boosts.xp.splice(this.boosts.xp.indexOf(boost), 1);
         });
+
         this.boosts.coins.forEach(boost => {
             if(boost.duration - Date.now() <= 0) this.boosts.coins.splice(this.boosts.coins.indexOf(boost), 1);
         });
+
         return this.boosts;
     }
 
@@ -268,7 +271,12 @@ export class Player {
             if(!booster) return false;
             if(booster.type === 'xp') this.setExpBoost(booster.multiplier, booster.duration);
             if(booster.type === 'coins') this.setCoinBoost(booster.multiplier, booster.duration);
+        } else if (inventoryItem.type === 'Container') {
+            const container = Object.values(containers).find(c => c.name === inventoryItem.name);
+            if(!container) return false;
+            container.use(this);
         }
+
         if(inventoryItem.amount - 1 <= 0) return this.removeItem(item, 1), this.inventory;
         else return inventoryItem.amount -= 1, this.inventory;
     }
