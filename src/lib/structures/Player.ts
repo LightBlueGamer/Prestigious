@@ -123,7 +123,7 @@ export class Player {
         const clanMult = clan?.stats.xpMultiplier || 1;
         const autoContribution = clan?.getMember(this.id)?.autoContribute.xp || 0;
         const booster = this.boosts.xp.reduce((a, b) => a + b.amount, 0) - 1;
-        const xp = Math.floor((Math.floor(Math.random() * (25 - 10)) + 10) * (multiplier + (clanMult - 1) + booster));
+        const xp = Math.floor((Math.floor(Math.random() * (25 - 10)) + 10) * ((booster < 0 ? 0 : booster) + multiplier + (clanMult-1)));
         if(autoContribution > 0) await clan?.addXp(member!, Math.floor(xp * autoContribution))
         await clan?.save();
         const rest = Math.floor(xp - (xp * autoContribution));
@@ -137,7 +137,7 @@ export class Player {
         const clanMult = clan?.stats.coinMultiplier || 1;
         const autoContribution = clan?.getMember(this.id)?.autoContribute.coins || 0;
         const booster = this.boosts.coins.reduce((a, b) => a + b.amount, 0) - 1;
-        const coins = Math.floor((Math.floor(Math.random() * (50 - 25)) + 25) * (multiplier + (clanMult - 1) + booster));
+        const coins = Math.floor((Math.floor(Math.random() * (50 - 25)) + 25) * ((booster < 0 ? 0 : booster) + multiplier + (clanMult-1)));
         if(autoContribution > 0) await clan?.deposit(member!, Math.floor(coins * autoContribution));
         clan?.save();
         const rest = Math.floor(coins - (coins * autoContribution));
