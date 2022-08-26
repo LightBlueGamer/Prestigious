@@ -8,7 +8,7 @@ export default {
         .setDescription('Vote for the bot on TopGG')
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction?.channel?.send({
+        await interaction?.reply({
             content: `You can vote for the bot on TopGG here: <https://top.gg/bot/994973502975262980/vote>\nYou can also vote for the support server here: <https://top.gg/servers/891924180721893376/vote>\nBoth of these votes gives you a lootbox.`,
         })
     },

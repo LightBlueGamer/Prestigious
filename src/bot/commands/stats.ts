@@ -2,6 +2,7 @@ import { AttachmentBuilder, ChatInputCommandInteraction, SlashCommandBuilder } f
 import { Player } from '../../lib/structures/Player';
 import Canvas from '@napi-rs/canvas';
 import { request } from 'undici';
+import { Clan } from '../../lib/structures/Clan';
 
 export default {
     data: new SlashCommandBuilder()
@@ -30,8 +31,13 @@ export default {
 
         context.font = 'bold 30px Noto Sans CJK JP';
         const height = canvas.height / 2.25
-        const xpBoost = player.boosts.xp.length > 0 ? ` (${player.boosts.xp.reduce((a, b) => a + b.amount, 0)}x)` : '';
-        const coinBoost = player.boosts.coins.length > 0 ? ` (${player.boosts.coins.reduce((a, b) => a + b.amount, 0)}x)` : '';
+        const clan = await Clan.getFromUser(user.id);
+        const xpMult = clan?.stats.xpMultiplier || 0;
+        const coinMult = clan?.stats.coinMultiplier || 0;
+        const xpMultP = player.boosts.xp.reduce((a, b) => a + b.amount, 0);
+        const coinMultP = player.boosts.coins.reduce((a, b) => a + b.amount, 0);
+        const xpBoost = xpMult + xpMultP > 1 ? ` (${(xpMultP+xpMult).toFixed(1)}x)` : '';
+        const coinBoost = coinMult + coinMultP > 1 ? ` (${(xpMultP+coinMult).toFixed(1)}x)` : '';
         context.fillText(`Prestige: ${player.prestige}`, canvas.width / 2.5, height);
         context.fillText(`Level: ${player.level}`, canvas.width / 2.5, height + 30);
         context.fillText(`Experience: ${player.xp}${xpBoost}`, canvas.width / 2.5, height + 60);

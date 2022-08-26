@@ -10,6 +10,8 @@ import { Clan } from "./Clan";
 import { useables } from "../misc/useables";
 import * as boosters from "../../game/boosters";
 import * as containers from '../../game/containers';
+import { Buddy } from "./Buddy";
+import { Shop } from "./Shop";
 
 export class Player {
     tag: string;
@@ -27,6 +29,9 @@ export class Player {
     color: string;
     displayName: string;
     boosts: Player.Boosts;
+    buddys: Player.Buddys;
+    buddy: Player.Bud;
+    shop: Shop;
     constructor(
         tag: string, 
         id: string, 
@@ -45,7 +50,10 @@ export class Player {
         boosts: Player.Boosts = {
             xp: [],
             coins: [],
-        }
+        },
+        buddys: Player.Buddys = [],
+        buddy: Player.Bud = new Buddy(),
+        shop: Shop = new Shop(),
     ) {
         this.tag = tag;
         this.id = id;
@@ -62,6 +70,9 @@ export class Player {
         this.color = color;
         this.displayName = displayName;
         this.boosts = boosts;
+        this.buddys = buddys;
+        this.buddy = buddy;
+        this.shop = shop;
     }
 
     toJSON() {
@@ -81,6 +92,9 @@ export class Player {
             color: this.color,
             displayName: this.displayName,
             boosts: this.boosts,
+            buddys: this.buddys,
+            buddy: this.buddy,
+            shop: this.shop,
         };
     }
 
@@ -101,7 +115,14 @@ export class Player {
             object.color,
             object.displayName,
             object.boosts,
+            object.buddys,
+            object.buddy,
+            object.shop,
         );
+    }
+
+    hasBuddy() {
+        return this.buddy.name !== undefined;
     }
 
     getName() {
@@ -217,7 +238,7 @@ export class Player {
     }
 
     vote() {
-        this.addItem(lootboxReward, 1);
+        this.addItem(lootboxReward, 2);
         client.users.fetch(this.id).then(user => {
             return user.send(`You have voted and received 2x lootboxes!`);
         });
@@ -272,7 +293,7 @@ export class Player {
             if(booster.type === 'xp') this.setExpBoost(booster.multiplier, booster.duration);
             if(booster.type === 'coins') this.setCoinBoost(booster.multiplier, booster.duration);
         } else if (inventoryItem.type === 'Container') {
-            const container = Object.values(containers).find(c => c.name === inventoryItem.name);
+            const container = Object.values(containers).find(c => c.name === inventoryItem.name)!;
             if(!container) return false;
             container.use(this);
         }
@@ -280,6 +301,8 @@ export class Player {
         if(inventoryItem.amount - 1 <= 0) return this.removeItem(item, 1), this.inventory;
         else return inventoryItem.amount -= 1, this.inventory;
     }
+
+    
 
     static async get(id: string) {
         const user = await client.users.fetch(id);
@@ -310,6 +333,9 @@ export namespace Player {
         color: string;
         displayName: string;
         boosts: Boosts;
+        buddys: Buddys;
+        buddy: Player.Bud;
+        shop: Shop;
     }
 
     export interface Boosts {
@@ -325,4 +351,8 @@ export namespace Player {
     export type Inventory = InventoryItem[];
     
     export type Badges = Badge[];
+
+    export type Buddys = Buddy[];
+
+    export type Bud = Buddy;
 }

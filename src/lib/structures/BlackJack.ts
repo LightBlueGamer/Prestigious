@@ -17,8 +17,8 @@ export class BlackJack {
     }
 
     nextCard(hand: BlackJack.Hand) {
-        const card =  this.deck.shift()!;
-        if(card.value === 11) this.getValue(hand) + card.value > 21 ? card.value = 1 : 11;
+        const card = this.deck.shift()!;
+        if(card.value === 11) (this.getValue(hand) + card.value) > 21 ? card.value = 1 : 11;
         return card;
     }
 

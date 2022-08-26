@@ -2,6 +2,16 @@
 
 ## Release Notes
 
+### 3.7.0
+
+-   Added Buddies
+-   Clan info and clan search commands now also shows if the clan is on max level
+-   Fixed the vote to now give 2 lootboxes instead of 1
+-   Fixed a error with the Blackjack game that caused the ace if dealt as first card always count as 1
+-   Fixed a error with clans that caused the bot to get stuck in a infinite loop if a clan reached max level and tried to level up
+-   Added /buddy command to set a buddy or display a buddy
+-   Fixed an error with Players that could potentially reset a player completely
+
 ### 3.6.0
 
 -   Added /booster command to show a users current active boosters

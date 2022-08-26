@@ -12,45 +12,67 @@ export default {
     async execute(interaction: AutocompleteInteraction) {
         const { user } = interaction;
         if (user.bot) return;
+        const player = await Player.get(user.id);
+
 
         const focusedValue = interaction.options.getFocused();
         let choices: { name: string; value: string; }[] = [];
         switch (interaction.commandName) {
-            case "shop":
+            case "shop": {
                 choices = boxes.map(box => ({name: `${box.name}: ${box.price} coins each`, value: box.name}));
-                
-                break;
+            }
+            
+            break;
 
-            case "open":
-                const player = await Player.get(user.id);
+            case "open": {
                 const boxxes = player.inventory.filter((item) => item.type.toLowerCase() === "lootbox");
                 choices = boxxes.map(box => ({name: `${box.name}`, value: box.name}));
-        
-                break;
+            }
 
-            case "clan": 
+            break;
+
+            case "clan": {
                 const subCommand = interaction.options.getSubcommand();
                 switch (subCommand) {
-                    case "search": 
+                    case "search": {
                         choices = (await clans.values).map(clan => ({name: clan.name, value: clan.name}));
-                    
+                    }
+
                     break;
 
-                    case "join": 
+                    case "join": {
                         choices = (await clans.values).filter(clan => clan.invites.includes(interaction.user.id)).map(clan => ({name: clan.name, value: clan.name}));
+                    }
 
                     break;
                 
                     default:
                         break;
                 }
+            }
 
             break;
 
             // eslint-disable-next-line no-lone-blocks
             case "use": {
-                const player = await Player.get(user.id);
                 choices = player.inventory.filter((item) => useables.includes(item.type)).map(item => ({name: item.name, value: item.name}));
+            }
+
+            break;
+
+            case "buddy": {
+                const subCommand = interaction.options.getSubcommand();
+                switch (subCommand) {
+                    case "set": {
+                        choices = player.inventory.filter((item) => item.type.toLowerCase() === "creature").map(item => ({name: item.name, value: item.name}));
+                    }
+                    
+                    break;
+                
+                    default:
+                        break;
+                }
+
             }
 
             break;

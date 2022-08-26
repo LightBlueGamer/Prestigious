@@ -7,11 +7,11 @@ export default {
         .setName('clan')
         .setDescription('Check clan stats, create a new clan or edit an existing one!')
         .setDMPermission(false)
-        .addSubcommand(subcommand => 
+        .addSubcommand(subcommand =>
             subcommand
                 .setName('create')
                 .setDescription('Create a new clan, costs 10000 coins.')
-                .addStringOption(option => 
+                .addStringOption(option =>
                     option
                         .setName('name')
                         .setDescription('The name of the clan.')
@@ -101,7 +101,7 @@ export default {
                             { name: 'xpboost', value: 'xp' },
                             { name: 'coinboost', value: 'coin' }
                         )
-                .setRequired(true)
+                        .setRequired(true)
                 )
                 .addIntegerOption(option =>
                     option
@@ -182,7 +182,8 @@ export default {
                         .setDescription('The type of autocontribution.')
                         .addChoices(
                             { name: 'xp', value: 'xp' },
-                            { name: 'coin', value: 'coin' }
+                            { name: 'coin', value: 'coin' },
+                            { name: 'check', value: 'check' }
                         )
                         .setRequired(true)
                 )
@@ -192,7 +193,7 @@ export default {
                         .setDescription('The amount to autocontribute.')
                         .setMinValue(0)
                         .setMaxValue(100)
-                        .setRequired(true)
+                        .setRequired(false)
                 )
         )
         .toJSON(),
@@ -211,7 +212,7 @@ export default {
                     }
                 });
                 const inClan = await Clan.getFromUser(interaction.user.id);
-                if(inClan) return interaction.editReply({
+                if (inClan) return interaction.editReply({
                     content: 'You are already in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -243,9 +244,9 @@ export default {
                 });
 
                 collector?.on('collect', async (i) => {
-                    if(i.customId === 'ok') {
+                    if (i.customId === 'ok') {
                         const clanExists = await Clan.getClan(name);
-                        if(clanExists) {
+                        if (clanExists) {
                             interaction.editReply({
                                 content: 'The clan already exists.',
                             });
@@ -273,23 +274,23 @@ export default {
 
                 collector?.on('end', collected => console.log(`Collected ${collected.size} items`));
             }
-            
-            break;
+
+                break;
 
             case 'invite': {
                 const user = interaction.options.getUser('user')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) throw new Error('You are not in the clan.');
+                if (!executor) throw new Error('You are not in the clan.');
                 const invite = userClan.addInvite(user.id, executor);
                 userClan.save();
-                if(!invite) return interaction.editReply({
+                if (!invite) return interaction.editReply({
                     content: 'The user is already in the clan or you arent high enough rank to invite people.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -308,23 +309,23 @@ export default {
                     }
                 })
             }
-        
-            break;
-        
+
+                break;
+
             case 'uninvite': {
                 const user = interaction.options.getUser('user')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
+                if (!executor) return;
                 const invite = userClan.removeInvite(user.id, executor);
                 userClan.save();
-                if(!invite) return interaction.editReply({
+                if (!invite) return interaction.editReply({
                     content: 'The user is not invited to the clan or you arent high enough rank to remove invites.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -337,13 +338,13 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'kick': {
                 const user = interaction.options.getUser('user')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -351,11 +352,11 @@ export default {
                 });
                 const executor = userClan.getMember(interaction.user.id);
                 const member = userClan.getMember(user.id);
-                if(!executor) return;
-                if(!member) return 
+                if (!executor) return;
+                if (!member) return
                 const removed = userClan.removeMember(member, executor);
                 userClan.save();
-                if(!removed) return interaction.editReply({
+                if (!removed) return interaction.editReply({
                     content: 'The user is not in the clan or you arent high enough rank to kick people.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -368,20 +369,20 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'leave': {
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
-                if(executor.rank === ClanRanks.Leader) {
+                if (!executor) return;
+                if (executor.rank === ClanRanks.Leader) {
                     const row = new ActionRowBuilder<ButtonBuilder>()
                         .addComponents(
                             new ButtonBuilder()
@@ -400,15 +401,15 @@ export default {
                         },
                         components: [row],
                     });
-                
+
                     const collector = interaction.channel?.createMessageComponentCollector({
                         filter: (i) => ['ok', 'no'].includes(i.customId) && i.user.id === interaction.user.id,
                         time: 15000,
                         max: 1,
                     });
-    
+
                     collector?.on('collect', async (i) => {
-                        if(i.customId === 'ok') {
+                        if (i.customId === 'ok') {
                             await i.update({
                                 content: `You left your clan.`,
                                 allowedMentions: {
@@ -417,7 +418,7 @@ export default {
                                 components: [],
                             });
                             const leave = await userClan.leave(executor);
-                            if(leave) userClan.save();
+                            if (leave) userClan.save();
                         } else {
                             await i.update({
                                 content: `You cancelled leaving the clan.`,
@@ -429,11 +430,11 @@ export default {
                             return;
                         }
                     });
-    
+
                     collector?.on('end', collected => console.log(`Collected ${collected.size} items`));
                 } else {
                     const leave = await userClan.leave(executor);
-                    if(leave) userClan.save();
+                    if (leave) userClan.save();
                     interaction.editReply({
                         content: `You have left your clan.`,
                         allowedMentions: {
@@ -442,28 +443,30 @@ export default {
                     });
                 }
             }
-                
-            break;
+
+                break;
 
             case 'deposit': {
                 const amount = interaction.options.getInteger('amount')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
+                if (!executor) return;
                 const deposit = await userClan.deposit(executor, amount);
                 userClan.save();
-                if(!deposit) return interaction.editReply({
+                if (!deposit) return interaction.editReply({
                     content: 'The clans vault is full or you don\'t have enough money to deposit.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
+                player.coins -= amount;
+                player.save();
                 interaction.editReply({
                     content: `You have deposited ${amount} coins into your clan.`,
                     allowedMentions: {
@@ -471,28 +474,30 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'withdraw': {
                 const amount = interaction.options.getInteger('amount')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
+                if (!executor) return;
                 const withdraw = await userClan.withdraw(executor, amount);
                 userClan.save();
-                if(!withdraw) return interaction.editReply({
+                if (!withdraw) return interaction.editReply({
                     content: 'There is not enough money in the clans vault to withdraw.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
+                player.xp += amount;
+                player.save();
                 interaction.editReply({
                     content: `You have withdrawn ${amount} coins from your clan.`,
                     allowedMentions: {
@@ -500,28 +505,30 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'addxp': {
                 const amount = interaction.options.getInteger('amount')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
+                if (!executor) return;
                 const xp = await userClan.addXp(executor, amount);
                 userClan.save();
-                if(!xp) return interaction.editReply({
+                if (!xp) return interaction.editReply({
                     content: `You don't have enough xp to add ${amount} xp.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
+                player.xp -= amount;
+                player.save();
                 interaction.editReply({
                     content: `You have added ${amount} xp to your clan.`,
                     allowedMentions: {
@@ -529,28 +536,28 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'stats': {
                 const stat = interaction.options.getString('stat')!;
                 const amount = interaction.options.getInteger('amount') || 1;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
-                if(userClan.statPoints < amount) return interaction.editReply({
+                if (userClan.statPoints < amount) return interaction.editReply({
                     content: `Your clan don't have enough stat points to add ${amount} points.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
-                if(stat === 'xp') {
+                if (stat === 'xp') {
                     userClan.increaseXpBoost(amount);
-                } else if(stat === 'coin') {
+                } else if (stat === 'coin') {
                     userClan.increaseCoinBoost(amount);
                 }
                 userClan.save();
@@ -561,13 +568,13 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'promote': {
                 const user = interaction.options.getUser('user')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -575,11 +582,11 @@ export default {
                 });
                 const executor = userClan.getMember(interaction.user.id);
                 const member = userClan.getMember(user.id);
-                if(!executor) return;
-                if(!member) return;
+                if (!executor) return;
+                if (!member) return;
                 const promote = userClan.promoteMember(member, executor);
                 userClan.save();
-                if(promote === 'outrank' || promote === 'rank' || promote === 'leader') return interaction.editReply({
+                if (promote === 'outrank' || promote === 'rank' || promote === 'leader') return interaction.editReply({
                     content: promote === 'outrank' ? 'You can\'t promote someone who is higher rank than you.' : promote === 'leader' ? 'You can\'t promote the leader.' : 'You can\'t promote someone to leader',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -592,13 +599,13 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'demote': {
                 const user = interaction.options.getUser('user')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -606,11 +613,11 @@ export default {
                 });
                 const executor = userClan.getMember(interaction.user.id);
                 const member = userClan.getMember(user.id);
-                if(!executor) return;
-                if(!member) return;
+                if (!executor) return;
+                if (!member) return;
                 const demote = userClan.demoteMember(member, executor);
                 userClan.save();
-                if(demote === 'outrank' || demote === 'rank' || demote === 'leader') return interaction.editReply({
+                if (demote === 'outrank' || demote === 'rank' || demote === 'leader') return interaction.editReply({
                     content: demote === 'outrank' ? 'You can\'t demote someone who is higher rank than you.' : demote === 'leader' ? 'You can\'t demote the leader.' : 'You can\'t demote someone to lower rank than member.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -623,28 +630,28 @@ export default {
                     }
                 });
             }
-                
-            break;
+
+                break;
 
             case 'setleader': {
                 const user = interaction.options.getUser('user')!;
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(!userClan) return interaction.editReply({
+                if (!userClan) return interaction.editReply({
                     content: 'You are not in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const executor = userClan.getMember(interaction.user.id);
-                if(!executor) return;
-                if(executor.rank !== ClanRanks.Leader) return interaction.editReply({
+                if (!executor) return;
+                if (executor.rank !== ClanRanks.Leader) return interaction.editReply({
                     content: 'You can\'t set the leader of a clan unless you are the leader.',
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const member = userClan.getMember(user.id);
-                if(!member) return;
+                if (!member) return;
                 const row = new ActionRowBuilder<ButtonBuilder>()
                     .addComponents(
                         new ButtonBuilder()
@@ -671,7 +678,7 @@ export default {
                 });
 
                 collector?.on('collect', async (i) => {
-                    if(i.customId === 'ok') {
+                    if (i.customId === 'ok') {
                         await i.update({
                             content: `${user.username} is now the leader of your clan.`,
                             allowedMentions: {
@@ -695,13 +702,13 @@ export default {
 
                 collector?.on('end', collected => console.log(`Collected ${collected.size} items`));
             }
-                
-            break;
+
+                break;
 
             case 'search': {
                 const name = interaction.options.getString('name', true);
                 const clan = await Clan.getClan(name);
-                if(!clan) return interaction.editReply({
+                if (!clan) return interaction.editReply({
                     content: `No clan found with the name ${name}.`,
                     allowedMentions: {
                         repliedUser: player.ping
@@ -712,15 +719,15 @@ export default {
                     return `\`${ClanRanks[m.rank]} - ${player.getName()}: ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.\``;
                 }))
                 const embed = new EmbedBuilder()
-                    .setTitle(`${clan.name} - Lvl ${clan.level}`)
+                    .setTitle(`${clan.name} - Lvl ${clan.level}${clan.level === clan.maxLevel ? ` MAX` : ''}`)
                     .setDescription(`Members:\n\`\`\`${members.join('\n')}\`\`\``)
                     .addFields(
-                        {name: `XP Boost`, value: `${clan.stats.xpMultiplier}x`, inline: true},
-                        {name: '\u200b', value: '\u200b', inline: true},
-                        {name: `Coin Boost`, value: `${clan.stats.coinMultiplier}x`, inline: true},
-                        {name: `Vault`, value: `${clan.vault}/${clan.maxVaulted} coins`, inline: true},
-                        {name: `Experience`, value: `${clan.exp}/${clan.xpRequired}`, inline: true},
-                        {name: `Stat Points`, value: `${clan.statPoints}`, inline: true},
+                        { name: `XP Boost`, value: `${clan.stats.xpMultiplier.toFixed(1)}x`, inline: true },
+                        { name: '\u200b', value: '\u200b', inline: true },
+                        { name: `Coin Boost`, value: `${clan.stats.coinMultiplier.toFixed(1)}x`, inline: true },
+                        { name: `Vault`, value: `${clan.vault}/${clan.maxVaulted} coins`, inline: true },
+                        { name: `Experience`, value: `${clan.exp}/${clan.xpRequired}`, inline: true },
+                        { name: `Stat Points`, value: `${clan.statPoints}`, inline: true },
                     )
                 interaction.editReply({
                     embeds: [embed],
@@ -730,11 +737,11 @@ export default {
                 });
             }
 
-            break;
+                break;
 
             case 'join': {
                 const userClan = await Clan.getFromUser(interaction.user.id);
-                if(userClan) return interaction.editReply({
+                if (userClan) return interaction.editReply({
                     content: 'You are already in a clan.',
                     allowedMentions: {
                         repliedUser: player.ping
@@ -742,13 +749,13 @@ export default {
                 });
                 const name = interaction.options.getString('name', true);
                 const clan = await Clan.getClan(name);
-                if(!clan) return interaction.editReply({
+                if (!clan) return interaction.editReply({
                     content: `No clan found with the name ${name}.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
-                if(!clan.invites.includes(interaction.user.id)) return interaction.editReply({
+                if (!clan.invites.includes(interaction.user.id)) return interaction.editReply({
                     content: `You don't have an invite to join ${clan.name}.`,
                     allowedMentions: {
                         repliedUser: player.ping
@@ -765,11 +772,11 @@ export default {
                 });
             }
 
-            break;
+                break;
 
             case 'info': {
                 const clan = await Clan.getFromUser(interaction.user.id);
-                if(!clan) return interaction.editReply({
+                if (!clan) return interaction.editReply({
                     content: `You are not in a clan.`,
                     allowedMentions: {
                         repliedUser: player.ping
@@ -780,15 +787,15 @@ export default {
                     return `\`${ClanRanks[m.rank]} - ${player.getName()}: ${m.totalContribution.xp} xp ${m.totalContribution.coins} coins contributed.\``;
                 }))
                 const embed = new EmbedBuilder()
-                    .setTitle(`${clan.name} - Lvl ${clan.level}`)
+                    .setTitle(`${clan.name} - Lvl ${clan.level}${clan.level === clan.maxLevel ? ` MAX` : ''}`)
                     .setDescription(`Members:\n${members.join('\n')}`)
                     .addFields(
-                        {name: `XP Boost`, value: `${clan.stats.xpMultiplier}x`, inline: true},
-                        {name: '\u200b', value: '\u200b', inline: true},
-                        {name: `Coin Boost`, value: `${clan.stats.coinMultiplier}x`, inline: true},
-                        {name: `Vault`, value: `${clan.vault}/${clan.maxVaulted} coins`, inline: true},
-                        {name: `Experience`, value: `${clan.exp}/${clan.xpRequired}`, inline: true},
-                        {name: `Stat Points`, value: `${clan.statPoints}`, inline: true},
+                        { name: `XP Boost`, value: `${clan.stats.xpMultiplier.toFixed(1)}x`, inline: true },
+                        { name: '\u200b', value: '\u200b', inline: true },
+                        { name: `Coin Boost`, value: `${clan.stats.coinMultiplier.toFixed(1)}x`, inline: true },
+                        { name: `Vault`, value: `${clan.vault}/${clan.maxVaulted} coins`, inline: true },
+                        { name: `Experience`, value: `${clan.exp}/${clan.xpRequired}`, inline: true },
+                        { name: `Stat Points`, value: `${clan.statPoints}`, inline: true },
                     )
                 interaction.editReply({
                     embeds: [embed],
@@ -798,20 +805,20 @@ export default {
                 });
             }
 
-            break;
+                break;
 
             case 'autocontribute': {
                 const clan = await Clan.getFromUser(interaction.user.id);
-                if(!clan) return interaction.editReply({
+                if (!clan) return interaction.editReply({
                     content: `You are not in a clan.`,
                     allowedMentions: {
                         repliedUser: player.ping
                     }
                 });
                 const type = interaction.options.getString('type', true);
-                const amount = Math.round(interaction.options.getNumber('amount', true));
+                const amount = Math.round(interaction.options.getNumber('amount') || 0);
                 const member = clan.getMember(interaction.user.id)!;
-                if(type === 'xp') {
+                if (type === 'xp') {
                     member.autoContribute.xp = amount / 100;
                     clan.save();
                     interaction.editReply({
@@ -820,11 +827,18 @@ export default {
                             repliedUser: player.ping
                         }
                     });
-                } else if(type === 'coin') {
+                } else if (type === 'coin') {
                     member.autoContribute.coins = amount / 100;
                     clan.save();
                     interaction.editReply({
                         content: `You have set your auto contribution to ${amount}% of your gained coins.`,
+                        allowedMentions: {
+                            repliedUser: player.ping
+                        }
+                    });
+                } else if (type === 'check') {
+                    interaction.editReply({
+                        content: `You are currently contributing ${member.autoContribute.xp * 100}% of your gained xp and ${member.autoContribute.coins * 100}% of your gained coins.`,
                         allowedMentions: {
                             repliedUser: player.ping
                         }
@@ -839,10 +853,10 @@ export default {
                 }
             }
 
-            break;
-            
-            default:   
-            break;
+                break;
+
+            default:
+                break;
         }
 
         return

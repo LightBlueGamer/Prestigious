@@ -45,9 +45,9 @@ export class Clan {
     };
 
     getRank(member: Clan.Member) {
-        if(member.rank === ClanRanks.Leader) return ClanRanks.Leader;
-        if(member.rank === ClanRanks.General) return ClanRanks.General;
-        if(member.rank === ClanRanks.Soldier) return ClanRanks.Soldier;
+        if (member.rank === ClanRanks.Leader) return ClanRanks.Leader;
+        if (member.rank === ClanRanks.General) return ClanRanks.General;
+        if (member.rank === ClanRanks.Soldier) return ClanRanks.Soldier;
         return ClanRanks.Member;
     }
 
@@ -56,39 +56,39 @@ export class Clan {
     }
 
     addInvite(id: string, invitee: Clan.Member) {
-        if(this.getRank(invitee) < ClanRanks.Soldier) return;
-        if(this.getInvite(id)) return;
+        if (this.getRank(invitee) < ClanRanks.Soldier) return;
+        if (this.getInvite(id)) return;
         return this.invites.push(id), this.invites.flat();
     }
 
     removeInvite(id: string, member: Clan.Member) {
-        if(this.getRank(member) < ClanRanks.Soldier) return;
-        if(!this.getInvite(id)) return;
+        if (this.getRank(member) < ClanRanks.Soldier) return;
+        if (!this.getInvite(id)) return;
         return this.invites.splice(this.invites.indexOf(id), 1), this.invites;
     }
 
     addMember(id: string, rank: ClanRanks = ClanRanks.Member, skipInvite: boolean = false) {
-        const member = new Clan.Member(id, rank, {xp: 0, coins: 0}, Date.now(), {coins: 0, xp: 0});
-        if(skipInvite) {
+        const member = new Clan.Member(id, rank, { xp: 0, coins: 0 }, Date.now(), { coins: 0, xp: 0 });
+        if (skipInvite) {
             this.members.push(member)
             return this.members;
         }
-        if(!this.getInvite(id)) return
+        if (!this.getInvite(id)) return
         this.invites.splice(this.invites.indexOf(id), 1);
         this.members.push(member);
         return this.members;
     }
 
     removeMember(member: Clan.Member, executor: Clan.Member) {
-        if(this.getRank(executor) < ClanRanks.General) return;
-        if(!this.getMember(member.id)) return;
+        if (this.getRank(executor) < ClanRanks.General) return;
+        if (!this.getMember(member.id)) return;
         return this.members.splice(this.members.indexOf(member), 1), this.members;
     }
 
     async leave(member: Clan.Member) {
-        if(this.getRank(member) === ClanRanks.Leader) this.getMembersRankSorted[0].rank = ClanRanks.Leader;
+        if (this.getRank(member) === ClanRanks.Leader) this.getMembersRankSorted[0].rank = ClanRanks.Leader;
         this.members.splice(this.members.indexOf(member), 1);
-        if(this.members.length === 0) {
+        if (this.members.length === 0) {
             await clans.delete(this.name);
             return false;
         }
@@ -96,13 +96,13 @@ export class Clan {
     }
 
     increaseXpBoost(amount: number) {
-        if(this.statPoints - amount < 0) return;
+        if (this.statPoints - amount < 0) return;
         this.statPoints -= amount;
         return this.stats.xpMultiplier += (0.1 * amount), this.stats;
     }
 
     increaseCoinBoost(amount: number) {
-        if(this.statPoints - amount < 0) return;
+        if (this.statPoints - amount < 0) return;
         this.statPoints -= amount;
         return this.stats.coinMultiplier += (0.1 * amount), this.stats;
     }
@@ -114,12 +114,11 @@ export class Clan {
     canLevelUp() {
         const xpRequirement = this.exp >= this.xpRequired;
         const moneyRequirement = this.vault >= this.level * 10000;
-        return xpRequirement && moneyRequirement;
+        return (this.level < this.maxLevel) && xpRequirement && moneyRequirement;
     }
 
     levelUp() {
-        if(this.level === this.maxLevel) return;
-        if(!this.canLevelUp()) return;
+        if (!this.canLevelUp()) return;
         this.exp -= this.xpRequired;
         this.vault -= this.level * 10000;
         this.statPoints++;
@@ -131,11 +130,11 @@ export class Clan {
     }
 
     async deposit(member: Clan.Member, amount: number) {
-        if(this.vault + amount > this.maxVaulted) return;
         const player = await Player.get(member.id);
-        if(player.coins - amount < 0) return;
+        if (player.coins - amount < 0) return;
+        if (this.vault + amount > this.maxVaulted) return;
         member.totalContribution.coins += amount;
-        while(this.canLevelUp()) {
+        while (this.canLevelUp()) {
             console.log('leveling up');
             this.levelUp();
         }
@@ -143,7 +142,7 @@ export class Clan {
     }
 
     async withdraw(member: Clan.Member, amount: number) {
-        if(this.vault - amount < 0) return;
+        if (this.vault - amount < 0) return;
         const player = await Player.get(member.id);
         player.addSetCoins(amount);
         player.save();
@@ -153,10 +152,10 @@ export class Clan {
 
     async addXp(member: Clan.Member, amount: number) {
         const player = await Player.get(member.id);
-        if(player.xp - amount < 0) return;
+        if (player.xp - amount < 0) return;
         this.exp += amount;
         member.totalContribution.xp += amount;
-        while(this.canLevelUp()) {
+        while (this.canLevelUp()) {
             console.log('leveling up');
             this.levelUp();
         }
@@ -164,21 +163,21 @@ export class Clan {
     }
 
     promoteMember(member: Clan.Member, executor: Clan.Member) {
-        if(this.getRank(executor) <= this.getRank(member)) return 'outrank';
-        if(this.getRank(member) === ClanRanks.Leader) return 'leader';
-        if(this.getRank(member) >= ClanRanks.General) return 'rank';
+        if (this.getRank(executor) <= this.getRank(member)) return 'outrank';
+        if (this.getRank(member) === ClanRanks.Leader) return 'leader';
+        if (this.getRank(member) >= ClanRanks.General) return 'rank';
         return member.rank++, member;
     }
 
     demoteMember(member: Clan.Member, executor: Clan.Member) {
-        if(this.getRank(executor) <= this.getRank(member)) return 'outrank';
-        if(this.getRank(member) === ClanRanks.Leader) return 'leader';
-        if(this.getRank(member) <= ClanRanks.Member) return 'rank';
+        if (this.getRank(executor) <= this.getRank(member)) return 'outrank';
+        if (this.getRank(member) === ClanRanks.Leader) return 'leader';
+        if (this.getRank(member) <= ClanRanks.Member) return 'rank';
         return member.rank--, member;
     }
 
     setLeader(member: Clan.Member, executor: Clan.Member) {
-        if(this.getRank(executor) !== ClanRanks.Leader) return;
+        if (this.getRank(executor) !== ClanRanks.Leader) return;
         member.rank = ClanRanks.Leader;
     }
 
@@ -198,8 +197,8 @@ export class Clan {
 
     get maxLevel() {
         let max = 2;
-        for(let i=1; i<=this.members.length; i++) {
-            if(i === 1) continue;
+        for (let i = 1; i <= this.members.length; i++) {
+            if (i === 1) continue;
             max += i;
         }
         return max;
@@ -233,7 +232,7 @@ export class Clan {
 
     static async get(name: string, executor?: string) {
         const defaultClan = new Clan(name);
-        if(executor) {
+        if (executor) {
             defaultClan.addMember(executor, ClanRanks.Leader, true);
         }
         const dbClan = await clans.ensure(name, defaultClan.toJSON());
@@ -242,13 +241,13 @@ export class Clan {
 
     static async getFromUser(id: string) {
         const clan = (await clans.values).find(clan => clan.members.find(member => member.id === id)?.id === id);
-        if(!clan) return
+        if (!clan) return
         return Clan.fromJSON(clan);
     }
 
     static async getClan(name: string) {
         const clan = await clans.get(name);
-        if(!clan) return
+        if (!clan) return
         return Clan.fromJSON(clan);
     }
 
@@ -263,7 +262,7 @@ export namespace Clan {
         rank: number;
         totalContribution: Clan.Contribution;
         joined: number;
-        autoContribute: Clan.Member.AutoContribute;  
+        autoContribute: Clan.Member.AutoContribute;
 
         constructor(id: string, rank: number, totalContribution: Clan.Contribution, joined: number, autoContribute: Clan.Member.AutoContribute = { coins: 0, xp: 0 }) {
             this.id = id;

@@ -8,13 +8,18 @@ export class Creature {
     stamina: number;
     rarity: Rarity;
     weight: number;
+    level: number;
+    xp: number;
     constructor(
         name: string,
         description: string,
         health: number, 
         stamina: number, 
         rarity: Rarity, 
-        weight: number)
+        weight: number,
+        level: number = 1,
+        xp: number = 0,
+    )
      {
         this.name = name;
         this.description = description;
@@ -22,6 +27,8 @@ export class Creature {
         this.stamina = stamina;
         this.rarity = rarity;
         this.weight = weight;
+        this.level = level;
+        this.xp = xp;
     }
 
     toJSON() {
@@ -32,6 +39,8 @@ export class Creature {
             stamina: this.stamina,
             rarity: this.rarity,
             weight: this.weight,
+            level: this.level,
+            xp: this.xp,
         };
     }
 
@@ -42,7 +51,9 @@ export class Creature {
             object.health,
             object.stamina,
             object.rarity,
-            object.weight
+            object.weight,
+            object.level,
+            object.xp,
         );
     }
 
@@ -51,6 +62,12 @@ export class Creature {
         const dbCreature = await creatures.ensure(name, defaultCreature.toJSON());
         return Creature.fromJSON(dbCreature);
     }
+
+    static async find(name: string) {
+        const creature = await creatures.get(name);
+        return Creature.fromJSON(creature);
+    }
+
 
     async save() {
         return creatures.set(this.name, this.toJSON());
@@ -65,5 +82,7 @@ export namespace Creature {
         stamina: number;
         rarity: Rarity;
         weight: number;
+        level: number;
+        xp: number;
     }
 }
