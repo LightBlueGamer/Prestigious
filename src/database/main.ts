@@ -17,4 +17,4 @@ export const creatures = new Josh<Creature.JSON>({
 export const clans = new Josh<Clan.JSON>({
     name: 'Clans',
     provider,
-})
+});
