@@ -14,7 +14,7 @@
             "error",
             "multi-line"
         ],
-        "no-lone-blocks": "error",
+        "no-lone-blocks": "off",
         "no-tabs": "error",
         "padding-line-between-statements": [
             "error",
