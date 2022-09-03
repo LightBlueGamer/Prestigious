@@ -19,7 +19,19 @@ app.post("/dblwebhook", webhook.listener(async (vote) => {
     }
 }));
 
-const port = process.env.PORT || 9000
+function allowCrossDomain(_req: express.Request, res: express.Response, next: express.NextFunction) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Headers', "*");
+    next();
+}
+
+app.use(allowCrossDomain);
+
+import { router } from './router/router';
+
+app.use('/prestigious', router);
+
+const port = process.env.API_PORT || 9000
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)

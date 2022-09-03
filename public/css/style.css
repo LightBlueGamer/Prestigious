@@ -1,0 +1,64 @@
+table.leaderboard {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 70%;
+}
+
+td.leaderboard, th.leaderboard {
+    border: 1px solid;
+    text-align: center;
+    padding: 8px;
+}
+
+td.leaderboard > a:link {
+    color: black;
+}
+
+td.leaderboard > a:visited {
+    color: black;
+}
+
+td.leaderboard > a:active {
+    color: black;
+}
+
+tbody > tr:nth-child(even).leaderboard {
+    background-color: gray;
+}
+
+tbody > tr:nth-child(odd).leaderboard {
+    background-color: darkgray;
+}
+
+thead > tr.leaderboard {
+    background-color: gray;
+}
+
+table.inventory {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+table.inventory > tbody > tr > td, table.inventory > thead > tr > th, table.inventory > caption {
+    border: 1px solid;
+    text-align: center;
+    padding: 8px;
+}
+
+table.inventory > tbody > tr:nth-child(even) {
+    background-color: gray;
+}
+
+table.inventory > tbody > tr:nth-child(odd) {
+    background-color: darkgray;
+}
+
+table.inventory > thead > tr {
+    background-color: gray;
+}
+
+table.inventory > caption {
+    background-color: rgb(99, 99, 99);
+    font-weight: bold;
+}
