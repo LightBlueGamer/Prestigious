@@ -3,9 +3,9 @@ export default {
     data: new SlashCommandBuilder()
         .setName("deposit")
         .setDescription("Deposit money to your bank.")
-        .addNumberOption((o) => o.setName("Amount").setMinValue(1))
+        .addNumberOption((o) => o.setName("Amount").setMinValue(1).setAutocomplete(true))
         .setDMPermission(false),
-    async execute (interaction: ChatInputCommandInteraction) {
+    async execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
     },
 };
