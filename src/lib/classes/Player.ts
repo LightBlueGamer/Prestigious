@@ -1,4 +1,3 @@
-import type Josh from "@joshdb/core";
 import type { Client } from "discord.js";
 import { econ, globalEcon } from "../../database";
 
@@ -52,7 +51,7 @@ export class Player {
     levelUp() {
         this.experience -= this.expRequirement();
         this.level++;
-        if(this.experience >= this.expRequirement()) this.levelUp();
+        if (this.experience >= this.expRequirement()) this.levelUp();
         return this;
     }
 
@@ -61,17 +60,24 @@ export class Player {
         return this;
     }
 
+    pay(player: Player, amount: number) {
+        this.balance -= amount;
+        player.balance += amount;
+        player.save();
+        return this;
+    }
+
     // Other functions
 
     getName() {
         const cleaned = this.name.replace(/^_|_$/igm, '').replace(/_/igm, ' ').replace(/[^a-zAZ0-9]/igm, '');
-        return cleaned.endsWith("s") ? cleaned+"'" : cleaned+"'s"
+        return cleaned.endsWith("s") ? cleaned + "'" : cleaned + "'s"
     }
-    
+
     // Internal functions
 
     expRequirement() {
-        return 100 * (this.level**2) - (100*this.level);
+        return 100 * (this.level ** 2) - (100 * this.level);
     }
 
     // Required functions
@@ -79,7 +85,7 @@ export class Player {
     static async get(id: string, client: Client) {
         const user = await client.users.fetch(id);
         const player = new Player(id, user.username);
-        if(user.bot) return player;
+        if (user.bot) return player;
         return Player.fromJSON(await globalEcon.ensure(id, player.toJSON()));
     }
 
@@ -87,7 +93,7 @@ export class Player {
         const [_guildId, userId] = id.split("-");
         const user = await client.users.fetch(userId);
         const player = new Player(id, user.username);
-        if(user.bot) return player;
+        if (user.bot) return player;
         return Player.fromJSON(await econ.ensure(id, player.toJSON()));
     }
 
@@ -113,8 +119,8 @@ export class Player {
         };
     }
 
-    async save(database: Josh<Player.JSON>) {
-        return database.set(this.id, this.toJSON());
+    async save() {
+        return globalEcon.set(this.id, this.toJSON());
     }
 }
 

@@ -1,11 +1,11 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import ms from 'pretty-ms';
 
 export default {
 	data: new SlashCommandBuilder()
 		.setName('ping')
 		.setDescription('Checks latency.')
-		.setDMPermission(true),
+		.setDMPermission(false),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
@@ -13,8 +13,16 @@ export default {
 			content: 'Pinging...'
 		});
 
+		const embed = new EmbedBuilder()
+			.addFields([
+				{ name: 'Bot Latency', value: ms(message.createdTimestamp - interaction.createdTimestamp), inline: true },
+				{ name: 'API Latency', value: ms(interaction.client.ws.ping), inline: true },
+			])
+			.setColor("Random")
+			.setFooter({ text: `Requested by ${interaction.user.username}` })
+
 		interaction.editReply({
-			content: `Bot Latency: ${ms(message.createdTimestamp - interaction.createdTimestamp)}\nAPI Latency: ${ms(interaction.client.ws.ping)}`
+			embeds: [embed]
 		});
 	},
 };

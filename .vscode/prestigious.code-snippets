@@ -1,14 +1,18 @@
 {
     "Command": {
-        "prefix": ["command", "cmd"],
+        "prefix": [
+            "command",
+            "cmd"
+        ],
         "body": [
             "import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';",
-            "export default {","\tdata: new SlashCommandBuilder()",
+            "export default {",
+            "\tdata: new SlashCommandBuilder()",
             "\t\t.setName(\"${2:name}\")",
             "\t\t.setDescription(\"${1:description}\")",
             "\t\t.setDMPermission(${0:boolean}),",
             "\tasync execute (interaction: ChatInputCommandInteraction) {",
-            "\t\t await interaction.deferReply();",
+            "\t\tawait interaction.deferReply();",
             "\t},",
             "};"
         ],
@@ -18,10 +22,15 @@
         "prefix": "player",
         "body": "const player = await Player.get(${2:id}, ${1:client});",
         "description": "Gets the player"
-    },/*
-    "Get Local Player": {
-        "prefix": "local player",
-        "body": "const localPlayer = await Player.getGuild(${2:guildId}-${1:userId}, ${0:client});",
-        "description": "Gets the local player"
-    }*/
+    },
+    "User Option": {
+        "prefix": "user",
+        "body": ".addUserOption((option) => option.setName(\"${2:name}\").setDescription(\"${1:description}\").setRequired(${0:boolean}))",
+        "description": "Make a user option"
+    },
+    "Number Option": {
+        "prefix": "number",
+        "body": ".addNumberOption((option) => option.setName(\"${2:name}\").setDescription(\"${1:description}\").setMinValue(1).setRequired(${0:boolean}))",
+        "description": "Make a number option"
+    },
 }
