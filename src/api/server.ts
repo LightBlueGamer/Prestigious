@@ -10,7 +10,7 @@ import { resolve } from "path";
 app.post("/dblwebhook", webhook.listener(async (vote) => {
     try {
         const player = await Player.get(vote.user);
-        player.vote()
+        player.vote();
         console.log(`${player.tag} has voted!`);
         appendFileSync(resolve('logs.txt'), `${player.tag} has voted!\n`);
         player.save();

@@ -2,6 +2,24 @@
 
 ## Release Notes
 
+### 4.0.0
+
+#### Additions
+-   Added dashboard leaderboard + user pages
+-   Added an API to access server side stuff
+
+#### Bug Fixes
+-   Fixed a bug causing lootboxes sometimes not to appear
+-   Fixed a bug causing dailies to be claimable infinite times altho no lootboxes was given
+-   Fixed a bug causing commands to execute twice at once
+-   Fixed a bug casuing money to not be taken when gambling
+-   Fixed a bug causing money to not be given when gambling
+-   Fixed a bug causing xp to not be given
+-   Fixed a bug causing money to not be given
+-   Fixed a bug causing none users when fetched to crash the bot
+-   Fixed a bug causing the reward cooldown to sometimes be doubled (trippled on very few occasions)
+-   Fixed a bug causing the bot to sometimes duplicate it's process and crash repeatedly
+
 ### 3.7.0
 
 -   Added Buddies
