@@ -1,0 +1,17 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "target": "esnext",
+        "module": "esnext",
+        "sourceMap": true,
+        "outDir": "../dist",
+        "moduleResolution": "node",
+        "allowJs": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        ".",
+    ]
+}
