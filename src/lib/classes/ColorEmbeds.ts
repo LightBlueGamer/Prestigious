@@ -6,4 +6,4 @@ export class GreenEmbed extends EmbedBuilder {
         super(data);
         this.setColor(Colors.Green)
     };
-}
+};

@@ -2,9 +2,9 @@ import { readdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { GatewayIntentBits, Client } from "discord.js";
-import { commands } from "./lib/misc/commands";
-import type { Command } from "./lib/classes/Command";
-import type { Event } from "./lib/classes/Event";
+import { commands } from "./lib/misc/commands.js";
+import type { Command } from "./lib/classes/Command.js";
+import type { Event } from "./lib/classes/Event.js";
 import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,6 +15,7 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent
     ]
 });
 

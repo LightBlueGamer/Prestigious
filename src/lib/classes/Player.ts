@@ -1,9 +1,10 @@
 import type { Client } from "discord.js";
-import { econ, globalEcon } from "../../database";
+import { economy } from "../../database/index.js";
 
 export class Player {
     id: string;
     name: string;
+    prestige: number;
     level: number;
     experience: number;
     balance: number;
@@ -11,6 +12,7 @@ export class Player {
     constructor(
         id: string,
         name: string,
+        prestige: number = 0,
         level: number = 1,
         experience: number = 0,
         balance: number = 0,
@@ -18,66 +20,34 @@ export class Player {
     ) {
         this.id = id;
         this.name = name;
+        this.prestige = prestige;
         this.level = level;
         this.experience = experience;
         this.balance = balance;
         this.bank = bank;
     }
 
-    // Chained functions
-
-    deposit(amount: number) {
-        this.balance -= amount;
-        this.bank += amount;
+    addMoney(amount: number) {
+        this.balance += Math.floor(amount);
         return this;
     }
 
-    withdraw(amount: number) {
-        this.balance += amount;
-        this.bank -= amount;
+    addExperience(amount: number) {
+        this.experience += Math.floor(amount);
         return this;
     }
 
-    giveRandomExp(min: number, max: number) {
-        this.experience += Math.floor(Math.random() * (max - min) + min);
-        return this;
-    }
-
-    giveRandomBalance(min: number, max: number) {
-        this.balance += Math.floor(Math.random() * (max - min) + min);
-        return this;
-    }
-
-    levelUp() {
-        this.experience -= this.expRequirement();
+    increaseLevel() {
+        this.experience -= this.experienceRequirement();
         this.level++;
-        if (this.experience >= this.expRequirement()) this.levelUp();
+        if(this.experience >= this.experienceRequirement()) this.increaseLevel();
         return this;
     }
 
-    updateName(name: string) {
-        this.name = name;
-        return this;
-    }
+    // Internals
 
-    pay(player: Player, amount: number) {
-        this.balance -= amount;
-        player.balance += amount;
-        player.save();
-        return this;
-    }
-
-    // Other functions
-
-    getName() {
-        const cleaned = this.name.replace(/^_|_$/igm, '').replace(/_/igm, ' ').replace(/[^a-zAZ0-9]/igm, '');
-        return cleaned.endsWith("s") ? cleaned + "'" : cleaned + "'s"
-    }
-
-    // Internal functions
-
-    expRequirement() {
-        return 100 * (this.level ** 2) - (100 * this.level);
+    experienceRequirement() {
+        return Math.floor(((this.level-1) * 100) + (this.level * 100));
     }
 
     // Required functions
@@ -86,21 +56,14 @@ export class Player {
         const user = await client.users.fetch(id);
         const player = new Player(id, user.username);
         if (user.bot) return player;
-        return Player.fromJSON(await globalEcon.ensure(id, player.toJSON()));
-    }
-
-    static async getGuild(id: string, client: Client) {
-        const [_guildId, userId] = id.split("-");
-        const user = await client.users.fetch(userId);
-        const player = new Player(id, user.username);
-        if (user.bot) return player;
-        return Player.fromJSON(await econ.ensure(id, player.toJSON()));
+        return Player.fromJSON(await economy.ensure(id, player.toJSON()));
     }
 
     static fromJSON(object: Player.JSON) {
         return new Player(
             object.id,
             object.name,
+            object.prestige,
             object.level,
             object.experience,
             object.balance,
@@ -112,6 +75,7 @@ export class Player {
         return {
             id: this.id,
             name: this.name,
+            prestige: this.prestige,
             level: this.level,
             experience: this.experience,
             balance: this.balance,
@@ -120,7 +84,7 @@ export class Player {
     }
 
     async save() {
-        return globalEcon.set(this.id, this.toJSON());
+        return economy.set(this.id, this.toJSON());
     }
 }
 
@@ -128,6 +92,7 @@ export namespace Player {
     export interface JSON {
         id: string;
         name: string;
+        prestige: number;
         level: number;
         experience: number;
         balance: number;
