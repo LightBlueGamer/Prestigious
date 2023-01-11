@@ -44,6 +44,33 @@ export class Player {
         return this;
     }
 
+    depositMoney(amount: number) {
+        if(amount >= this.balance) {
+            this.bank += this.balance;
+            this.balance -= this.balance;
+        } else {
+            this.bank += amount;
+            this.balance -= amount;
+        }
+        return this;
+    }
+
+    withdrawMoney(amount: number) {
+        if(amount >= this.bank) {
+            this.balance += this.bank;
+            this.bank -= this.bank;
+        } else {
+            this.balance += amount;
+            this.bank -= amount;
+        }
+        return this;
+    }
+
+    removeMoney(amount: number) {
+        this.balance -= amount;
+        return this;
+    }
+
     // Internals
 
     experienceRequirement() {

@@ -1,6 +1,6 @@
 import Josh from "@joshdb/core";
 import provider from "@joshdb/mongo";
-import type { Player } from "../lib/classes/Player";
+import type { Player } from "../lib/classes/Player.js";
 import "dotenv/config";
 
 export const economy = new Josh<Player.JSON>({

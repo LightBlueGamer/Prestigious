@@ -1,6 +1,6 @@
 import type { Message } from "discord.js";
-import { Player } from "../lib/classes/Player";
-import { countRepeats, random, valuateArr } from "../utils/functions";
+import { Player } from "../lib/classes/Player.js";
+import { countRepeats, random, valuateArr } from "../utils/functions.js";
 
 const cooldown = new Set();
 

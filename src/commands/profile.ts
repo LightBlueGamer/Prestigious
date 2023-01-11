@@ -1,7 +1,7 @@
 import { AttachmentBuilder, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { Player } from '../lib/classes/Player';
+import { Player } from '../lib/classes/Player.js';
 import Canvas from '@napi-rs/canvas';
-import { randomColor, invertColor, applyText } from '../utils/functions';
+import { randomColor, invertColor, applyText } from '../utils/functions.js';
 import { request } from 'undici';
 
 export default {

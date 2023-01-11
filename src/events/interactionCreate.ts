@@ -1,5 +1,5 @@
 import type { BaseInteraction } from "discord.js";
-import { commands } from "../lib/misc/commands";
+import { commands } from "../lib/misc/commands.js";
 
 export default {
 	name: 'interactionCreate',

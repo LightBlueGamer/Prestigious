@@ -1,4 +1,4 @@
-import { letters } from "../lib/misc/letters";
+import { letters } from "../lib/misc/letters.js";
 import type Canvas from '@napi-rs/canvas';
 
 /**
