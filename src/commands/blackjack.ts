@@ -44,7 +44,7 @@ export default {
                 .save();
                 inGame.delete(user.id);
                 return interaction.editReply({
-                    content: `You got a blackjack! You win ${Math.floor(bet * 1.5)}!`,
+                    content: `You got a blackjack! You win $${Math.floor(bet * 1.5)}!`,
                     embeds: [getEmbed()]
                 });
             } else if(deck.hasBlackJack(player) && deck.hasBlackJack(house)) {
@@ -84,7 +84,7 @@ export default {
                     deck.hit(player);
                     if(deck.getValue(player) >= 22) {
                         i.update({
-                            content: `You busted! You lose ${Math.floor(bet)}!`,
+                            content: `You busted! You lose $${Math.floor(bet)}!`,
                             embeds: [getEmbed()],
                             components: [],
                         });
@@ -94,7 +94,7 @@ export default {
                         return;
                     } else if(deck.getValue(player) === 21) {
                         i.update({
-                            content: `You got blackjack! You win ${Math.floor(bet * 1.5)}!`,
+                            content: `You got blackjack! You win $${Math.floor(bet * 1.5)}!`,
                             embeds: [getEmbed()],
                             components: [],
                         });
@@ -141,14 +141,12 @@ export default {
                 embeds: [getEmbed(true)],
                 components: [],
             });
-            while(deck.getValue(house) < 17) {
-                setTimeout(() => {
-                    deck.hit(house);
-                }, 1000);
-            }
+
+            houseHit();
+
             if(deck.getValue(house) > 21) {
                 interaction.editReply({
-                    content: `The dealer busted! You win ${Math.floor(bet * 1.2)}!`,
+                    content: `The dealer busted! You win $${Math.floor(bet * 1.2)}!`,
                     embeds: [getEmbed(true)]
                 });
                 p.addMoney(Math.floor(bet * 1.2))
@@ -156,7 +154,7 @@ export default {
                 inGame.delete(user.id);
             } else if(deck.getValue(house) === 21) {
                 interaction.editReply({
-                    content: `The dealer got blackjack! You lose ${Math.floor(bet)}!`,
+                    content: `The dealer got blackjack! You lose $${Math.floor(bet)}!`,
                     embeds: [getEmbed(true)]
                 });
                 p.removeMoney(Math.floor(bet))
@@ -164,7 +162,7 @@ export default {
                 inGame.delete(interaction.user.id);
             } else if(deck.getValue(house) > deck.getValue(player)) {
                 interaction.editReply({
-                    content: `The dealer got ${deck.getValue(house)}! You lose ${Math.floor(bet)}!`,
+                    content: `The dealer got ${deck.getValue(house)}! You lose $${Math.floor(bet)}!`,
                     embeds: [getEmbed(true)]
                 });
                 p.removeMoney(Math.floor(bet))
@@ -172,7 +170,7 @@ export default {
                 inGame.delete(user.id);
             } else if(deck.getValue(house) < deck.getValue(player)) {
                 interaction.editReply({
-                    content: `The dealer got ${deck.getValue(house)}! You win ${Math.floor(bet * 1.2)}!`,
+                    content: `The dealer got ${deck.getValue(house)}! You win $${Math.floor(bet * 1.2)}!`,
                     embeds: [getEmbed(true)]
                 });
                 p.addMoney(Math.floor(bet))
@@ -185,6 +183,17 @@ export default {
                 });
                 inGame.delete(interaction.user.id);
             };
+        };
+
+        function houseHit() {
+            setTimeout(() => {
+                deck.hit(house);
+                interaction.editReply({
+                    content: `The dealer busted! You win $${Math.floor(bet * 1.2)}!`,
+                    embeds: [getEmbed(true)]
+                });
+                if(deck.getValue(house) < 17) houseHit();
+            }, 1000);
         };
 
         return p.save();
