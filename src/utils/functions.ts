@@ -1,5 +1,6 @@
 import { letters } from "../lib/misc/letters.js";
 import type Canvas from '@napi-rs/canvas';
+import type { Poker } from "../lib/classes/Poker.js";
 
 /**
  * Generates a random number between min and max
@@ -8,7 +9,7 @@ import type Canvas from '@napi-rs/canvas';
  * @returns Number
  */
 export function random(min: number, max: number) {
-    return Math.floor(Math.random()*(max - min + 1) + max);
+    return Math.floor(Math.random() * (max - min + 1) + max);
 };
 
 /**
@@ -21,11 +22,11 @@ export function valuate(str: string) {
     let points = 0;
     console.log(letters["K"])
 
-    for(const [i, l] of arr.entries()) {
+    for (const [i, l] of arr.entries()) {
         const letter = l.toUpperCase();
-        if(!letters[letter]) return;
+        if (!letters[letter]) return;
         console.log(points, l)
-        if(i >= 2 && l === arr[i-2] && l === arr[i-1]) {
+        if (i >= 2 && l === arr[i - 2] && l === arr[i - 1]) {
             points -= letters[letter] * 3
         }
         points += letters[letter];
@@ -43,11 +44,11 @@ export function countRepeats(arr: string[]) {
     const repeats = [];
     let count = 1;
 
-    for(let i = 0; i < arr.length; i++) {
-        if(!arr[i].match(/[a-z]/igm)) continue;
-        if(arr[i] === arr[i+1]) count++;
-        if(arr[i] !== arr[i+1]) {
-            repeats.push({"key": arr[i], "count": count});
+    for (let i = 0; i < arr.length; i++) {
+        if (!arr[i].match(/[a-z]/igm)) continue;
+        if (arr[i] === arr[i + 1]) count++;
+        if (arr[i] !== arr[i + 1]) {
+            repeats.push({ "key": arr[i], "count": count });
             count = 1;
         };
     };
@@ -60,10 +61,10 @@ export function countRepeats(arr: string[]) {
  * @returns Number of points all the letters gives.
  */
 
-export function valuateArr(arr: Array<{key: string, count: number}>) {
+export function valuateArr(arr: Array<{ key: string, count: number }>) {
     let points = 0;
-    for(const k of arr) {
-        if(k.count >= 3) continue;
+    for (const k of arr) {
+        if (k.count >= 3) continue;
         else points += letters[k.key.toUpperCase()] * k.count;
     }
     return points;
@@ -76,10 +77,10 @@ export function valuateArr(arr: Array<{key: string, count: number}>) {
 
 export function randomColor() {
     let color = '#';
-    for (let i = 0; i < 6; i++){
-       const random = Math.random();
-       const bit = (random * 16) | 0;
-       color += (bit).toString(16);
+    for (let i = 0; i < 6; i++) {
+        const random = Math.random();
+        const bit = (random * 16) | 0;
+        color += (bit).toString(16);
     }
 
     return color;
@@ -112,33 +113,33 @@ export function applyText(canvas: Canvas.Canvas, text: string) {
 
 export function invertColor(hex: string, bw: boolean = true) {
 
-    if(hex.startsWith('#')) {
+    if (hex.startsWith('#')) {
         if (hex.indexOf('#') === 0) {
             hex = hex.slice(1);
         }
-    
+
         if (hex.length === 3) {
             hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
         }
-    
+
         if (hex.length !== 6) {
             throw new Error('Invalid HEX color.');
         }
-    
+
         let r: string | number = parseInt(hex.slice(0, 2), 16),
             g: string | number = parseInt(hex.slice(2, 4), 16),
             b: string | number = parseInt(hex.slice(4, 6), 16);
-    
+
         if (bw) {
             return (r * 0.299 + g * 0.587 + b * 0.114) > 186
                 ? '#000000'
                 : '#FFFFFF';
         }
-    
+
         r = (255 - r).toString(16);
         g = (255 - g).toString(16);
         b = (255 - b).toString(16);
-    
+
         return "#" + r + g + b;
     } else {
         const rgb = hex.replace(/rgba?/gim, '').replace(/\(\)/gim, '').split(', ');
@@ -151,11 +152,31 @@ export function invertColor(hex: string, bw: boolean = true) {
                 ? '#000000'
                 : '#FFFFFF';
         }
-    
+
         r = (255 - r).toString(16);
         g = (255 - g).toString(16);
         b = (255 - b).toString(16);
-    
+
         return "#" + r + g + b;
     }
+}
+
+export function toHandString(hand: Poker.Hand) {
+    for (const card of hand) {
+        card.icon.replace(/\[\]/igm, '');
+        card.icon.replace('♠', 'spades');
+        card.icon.replace('♥', 'hearts');
+        card.icon.replace('♦', 'diamonds');
+        card.icon.replace('♣', 'clubs');
+    }
+}
+
+export function pokerhandArray(string: string) {
+    return string
+        .replace(/\[\]/igm, '')
+        .replace(/♠/igm, 'spades-')
+        .replace(/♥/igm, 'hearts-')
+        .replace(/♦/igm, 'diamonds-')
+        .replace(/♣/igm, 'clubs-')
+        .split(' ');
 }
