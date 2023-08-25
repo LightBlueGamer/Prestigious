@@ -1,0 +1,27 @@
+{
+    "name": "litecraft",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "scripts": {
+        "start": "node --es-module-specifier-resolution=node dist/index.js",
+        "deploy": "node --es-module-specifier-resolution=node dist/deploy.js",
+        "compile": "tsc --build --verbose src",
+        "prettier": "prettier src --write",
+        "backup": "sudo rm -drf /mnt/chromeos/removable/'Backup USB'/Prestigious && cp -r ./src /mnt/chromeos/removable/'Backup USB'/Prestigious"
+    },
+    "keywords": [],
+    "author": "Tim",
+    "license": "ISC",
+    "type": "module",
+    "description": "",
+    "devDependencies": {
+        "@sapphire/ts-config": "^4.0.1"
+    },
+    "dependencies": {
+        "@joshdb/core": "^1.2.7",
+        "@joshdb/mongo": "^1.1.6",
+        "discord.js": "^14.13.0",
+        "dotenv": "^16.3.1",
+        "pretty-ms": "^8.0.0"
+    }
+}

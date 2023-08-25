@@ -1,0 +1,33 @@
+{
+    "Command": {
+        "prefix": ["command", "cmd"],
+        "body": [
+            "import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';",
+            "export default {",
+            "\tdevMode: ${3:boolean},",
+            "\tdata: new SlashCommandBuilder()",
+            "\t\t.setName(\"${2:name}\")",
+            "\t\t.setDescription(\"${1:description}\")",
+            "\t\t.setDMPermission(${0:boolean}),",
+            "\tasync execute (interaction: ChatInputCommandInteraction) {",
+            "\t\tawait interaction.deferReply();",
+            "\t},",
+            "};"
+        ],
+        "isFileTemplate": true
+    },
+    "Event": {
+        "prefix": ["event"],
+        "body": [
+            "import type {  } from 'discord.js';",
+
+            "export default {",
+            "\tname: '${2:name}',",
+            "\tonce: ${1:boolean},",
+            "\tasync execute() {",
+            "\t},",
+            "};"
+        ],
+        "isFileTemplate": true
+    }
+}
