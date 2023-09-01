@@ -5,15 +5,18 @@ export class Item {
     name: string;
     description: string;
     size: number;
+    weight: number;
     constructor(
         rarity: Rarity,
         name: string,
         description: string,
-        size: number
+        size: number,
+        weight: number,
     ) {
         this.rarity = rarity;
         this.name = name;
         this.description = description;
         this.size = size;
+        this.weight = weight;
     }
 }

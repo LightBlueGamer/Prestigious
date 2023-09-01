@@ -6,8 +6,7 @@
         "start": "node --es-module-specifier-resolution=node dist/index.js",
         "deploy": "node --es-module-specifier-resolution=node dist/deploy.js",
         "compile": "tsc --build --verbose src",
-        "prettier": "prettier src --write",
-        "backup": "sudo rm -drf /mnt/chromeos/removable/'Backup USB'/Prestigious && cp -r ./src /mnt/chromeos/removable/'Backup USB'/Prestigious"
+        "prettier": "prettier src --write"
     },
     "keywords": [],
     "author": "Tim",

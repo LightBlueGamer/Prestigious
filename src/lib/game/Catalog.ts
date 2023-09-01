@@ -1,4 +1,5 @@
 import { Backpack } from "./Backpack.js";
+import { Item } from "./Item.js";
 import { Rarities } from "./Rarities.js";
 
 export const Backpacks = {
@@ -13,4 +14,11 @@ export const Backpacks = {
     ),
 };
 
-export const Items = {};
+export const Items = {
+    Stone: new Item(
+        Rarities.VeryCommon,
+        "Stone",
+        "A stone scavenged from the ground.",
+        1
+    ),
+};
