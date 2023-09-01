@@ -17,11 +17,12 @@ export class Backpack extends Item {
         name: string,
         description: string,
         size: number,
+        weight: number,
         level: number,
         slots: number,
         inventory: Item[]
     ) {
-        super(rarity, name, description, size);
+        super(rarity, name, description, size, weight);
         this.level = level;
         this.slots = slots;
         this.inventory = inventory;

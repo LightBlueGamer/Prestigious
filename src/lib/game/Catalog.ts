@@ -8,6 +8,7 @@ export const Backpacks = {
         "Pouch",
         "Just a pouch you grabbed from home.",
         0,
+        0,
         1,
         10,
         []
@@ -19,6 +20,7 @@ export const Items = {
         Rarities.VeryCommon,
         "Stone",
         "A stone scavenged from the ground.",
-        1
+        1,
+        15000
     ),
 };
