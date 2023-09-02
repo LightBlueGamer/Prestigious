@@ -1,3 +1,5 @@
+import { Items } from "../lib/game/Catalog.js";
+
 /**
  * Gets the correct ordinal from a number
  * @param n The number to get the ordinal from
@@ -26,4 +28,20 @@ export function random(min: number, max: number) {
  */
 export function firstLetterUppercase(string: string) {
     return string.replace(string[0], string[0].toUpperCase());
+}
+
+/**
+ * Returns a random item based on the items weight.
+ * @returns Item
+ */
+export function getRandomItem() {
+    const items = Object.values(Items);
+    const total = items.reduce((p, c) => p + c.weight, 0);
+    const random = Math.random() * total;
+    let curWeight = 0;
+    for(let item of items) {
+        curWeight += item.weight;
+        if(random < curWeight) return item;
+    }
+    return Items.Stone;
 }
