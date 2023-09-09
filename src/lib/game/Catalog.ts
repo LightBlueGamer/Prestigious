@@ -23,7 +23,7 @@ export const Items = {
         "A stone scavenged from the ground.",
         1,
         150000,
-        1
+        0
     ),
     Stick: new Item(
         Rarities.VeryCommon,
@@ -31,7 +31,7 @@ export const Items = {
         "A dead branch from a bush.",
         1,
         135000,
-        1
+        0
     ),
     PlantFiber: new Item(
         Rarities.Common,
@@ -39,6 +39,6 @@ export const Items = {
         "Fiber gathered from different plants.",
         1,
         105000,
-        1
-    )
+        0
+    ),
 };

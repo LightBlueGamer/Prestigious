@@ -1,4 +1,5 @@
 import { Items } from "../lib/game/Catalog.js";
+import type { Item } from "../lib/game/Item.js";
 
 /**
  * Gets the correct ordinal from a number
@@ -34,14 +35,14 @@ export function firstLetterUppercase(string: string) {
  * Returns a random item based on the items weight.
  * @returns Item
  */
-export function getRandomItem() {
-    const items = Object.values(Items);
-    const total = items.reduce((p, c) => p + c.weight, 0);
+export function getRandomItem(items: Item[]) {
+    const itemsArr = items;
+    const total = itemsArr.reduce((p, c) => p + c.weight, 0);
     const random = Math.random() * total;
     let curWeight = 0;
-    for(let item of items) {
+    for (let item of itemsArr) {
         curWeight += item.weight;
-        if(random < curWeight) return item;
+        if (random < curWeight) return item;
     }
     return Items.Stone;
 }

@@ -52,4 +52,24 @@ export class Backpack extends Item {
     public getSlots() {
         return this.slots;
     }
+
+    /**
+     * Add a item to the backpacks inventory
+     * @param item The item to be added to the inventory
+     * @returns Inventory
+     */
+    public addItem(item: Item) {
+        this.inventory.push(item);
+        return this.inventory;
+    }
+
+    /**
+     * Add items to the backpacks inventory
+     * @param items The items to be added to the inventory
+     * @returns Inventory
+     */
+    public addItems(items: Item[]) {
+        for (const item of items) this.addItem(item);
+        return this.inventory;
+    }
 }

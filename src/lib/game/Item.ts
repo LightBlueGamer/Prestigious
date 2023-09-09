@@ -24,7 +24,7 @@ export class Item {
         description: string,
         size: number,
         weight: number,
-        scavenge: number,
+        scavenge: number
     ) {
         this.rarity = rarity;
         this.name = name;

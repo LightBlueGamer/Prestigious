@@ -3,6 +3,7 @@ import type { Client } from "discord.js";
 import { Backpack } from "./Backpack.js";
 import { random } from "../../utils/misc.js";
 import { Backpacks } from "./Catalog.js";
+import type { Item } from "./Item.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -223,6 +224,26 @@ export class Player {
      */
     public getStats() {
         return this.data.stats;
+    }
+
+    /**
+     * Add a item to the players backpack
+     * @param item The item to add to the backpack
+     * @returns Player
+     */
+    public addItem(item: Item) {
+        this.data.backpack.addItem(item);
+        return this;
+    }
+
+    /**
+     * Add items to the players backpack
+     * @param items The items to add to the backpack
+     * @returns Player
+     */
+    public addItems(items: Item[]) {
+        this.data.backpack.addItems(items);
+        return this;
     }
 
     //! Private Methods used by the class internally
