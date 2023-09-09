@@ -178,14 +178,6 @@ export class Player {
     }
 
     /**
-     * Get the players stats
-     * @returns Player.Stats
-     */
-    public getStats() {
-        return this.data.stats;
-    }
-
-    /**
      * Gets the players prestige
      * @returns Player.data.prestige
      */
@@ -223,6 +215,14 @@ export class Player {
      */
     public getBackpack() {
         return this.data.backpack;
+    }
+
+    /**
+     * Get the players stats
+     * @returns Player.Stats
+     */
+    public getStats() {
+        return this.data.stats;
     }
 
     //! Private Methods used by the class internally
@@ -306,6 +306,7 @@ export namespace Player {
         defense: number;
         agility: number;
         intelligence: number;
+        scavenge: number;
     }
 }
 
@@ -328,6 +329,7 @@ export function generateData() {
             defense: random(0, 3),
             agility: random(0, 3),
             intelligence: random(0, 3),
+            scavenge: 0,
         },
     };
 }

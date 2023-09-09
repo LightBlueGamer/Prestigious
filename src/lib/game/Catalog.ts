@@ -10,6 +10,7 @@ export const Backpacks = {
         0,
         0,
         1,
+        1,
         10,
         []
     ),
@@ -21,20 +22,23 @@ export const Items = {
         "Stone",
         "A stone scavenged from the ground.",
         1,
-        150000
+        150000,
+        1
     ),
     Stick: new Item(
         Rarities.VeryCommon,
         "Stick",
         "A dead branch from a bush.",
         1,
-        135000
+        135000,
+        1
     ),
     PlantFiber: new Item(
         Rarities.Common,
         "Plant Fiber",
         "Fiber gathered from different plants.",
         1,
-        105000
+        105000,
+        1
     )
 };

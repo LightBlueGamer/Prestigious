@@ -1,3 +1,9 @@
+/**
+ * The base class for rarities
+ * @param name The name of the rarity
+ * @param rarity The number representing the rarity
+ * @returns Rarity
+ */
 export class Rarity {
     name: string;
     rarity: number;
