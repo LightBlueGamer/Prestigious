@@ -1,3 +1,4 @@
+import { InventoryItem } from "./../lib/game/InventoryItem.js";
 import {
     ChatInputCommandInteraction,
     EmbedBuilder,
@@ -6,6 +7,9 @@ import {
 import { Player } from "../lib/game/Player.js";
 import { Items } from "../lib/game/Catalog.js";
 import { getRandomItem } from "../utils/misc.js";
+
+const cooldown = new Set();
+
 export default {
     devMode: true,
     data: new SlashCommandBuilder()
@@ -19,7 +23,7 @@ export default {
         const items = Object.values(Items).filter(
             (x) => x.scavenge <= scavenge
         );
-        const item = getRandomItem(items);
+        const item = InventoryItem.createInventoryItem(getRandomItem(items), 1);
         await interaction.deferReply();
 
         player.addItem(item).save();

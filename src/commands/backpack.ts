@@ -6,7 +6,7 @@ import {
 import { Player } from "../lib/game/Player.js";
 import { firstLetterUppercase } from "../utils/misc.js";
 export default {
-    devMode: true,
+    devMode: false,
     data: new SlashCommandBuilder()
         .setName("backpack")
         .setDescription("Shows the backpack of selected user")
@@ -31,7 +31,11 @@ export default {
                 ? backpack
                       .getItems()
                       .map((item) => {
-                          return `**${item.rarity.name}** ${item.name}: ${item.description} - ${item.size}`;
+                          return `** ${
+                              item.amount > 1 ? `${item.amount}x ` : ``
+                          } ${item.rarity.name} ${item.name}**: ${
+                              item.description
+                          }`;
                       })
                       .join("\n")
                 : `You don't currently have any items in your backpack`;

@@ -3,7 +3,7 @@ import type { Client } from "discord.js";
 import { Backpack } from "./Backpack.js";
 import { random } from "../../utils/misc.js";
 import { Backpacks } from "./Catalog.js";
-import type { Item } from "./Item.js";
+import type { InventoryItem } from "./InventoryItem.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -231,7 +231,7 @@ export class Player {
      * @param item The item to add to the backpack
      * @returns Player
      */
-    public addItem(item: Item) {
+    public addItem(item: InventoryItem) {
         this.data.backpack.addItem(item);
         return this;
     }
@@ -241,7 +241,7 @@ export class Player {
      * @param items The items to add to the backpack
      * @returns Player
      */
-    public addItems(items: Item[]) {
+    public addItems(items: InventoryItem[]) {
         this.data.backpack.addItems(items);
         return this;
     }

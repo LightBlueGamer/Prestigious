@@ -1,3 +1,4 @@
+import type { InventoryItem } from "./InventoryItem.js";
 import { Item } from "./Item.js";
 import type { Rarity } from "./Rarities.js";
 
@@ -11,7 +12,7 @@ import type { Rarity } from "./Rarities.js";
 export class Backpack extends Item {
     level: number;
     slots: number;
-    inventory: Item[];
+    inventory: InventoryItem[];
     constructor(
         rarity: Rarity,
         name: string,
@@ -21,7 +22,7 @@ export class Backpack extends Item {
         scavenge: number,
         level: number,
         slots: number,
-        inventory: Item[]
+        inventory: InventoryItem[]
     ) {
         super(rarity, name, description, size, weight, scavenge);
         this.level = level;
@@ -42,7 +43,7 @@ export class Backpack extends Item {
      * @returns number
      */
     public getItemCount() {
-        return this.inventory.length;
+        return this.inventory.reduce((p, c) => p + c.amount, 0);
     }
 
     /**
@@ -58,8 +59,10 @@ export class Backpack extends Item {
      * @param item The item to be added to the inventory
      * @returns Inventory
      */
-    public addItem(item: Item) {
-        this.inventory.push(item);
+    public addItem(item: InventoryItem) {
+        const itm = this.inventory.find((i) => i.name === item.name);
+        if (itm) itm.amount += item.amount;
+        else this.inventory.push(item);
         return this.inventory;
     }
 
@@ -68,7 +71,7 @@ export class Backpack extends Item {
      * @param items The items to be added to the inventory
      * @returns Inventory
      */
-    public addItems(items: Item[]) {
+    public addItems(items: InventoryItem[]) {
         for (const item of items) this.addItem(item);
         return this.inventory;
     }
