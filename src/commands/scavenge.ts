@@ -37,6 +37,10 @@ export default {
         );
         const item = InventoryItem.createInventoryItem(getRandomItem(items), 1);
 
+        if(player.getBackpack().isFull()) return interaction.editReply({
+            content: `Your backpack is full and you can't put more items in it, consider upgrading your backpack.`
+        });
+
         player.addItem(item).save();
 
         const embed = new EmbedBuilder()
