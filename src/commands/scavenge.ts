@@ -11,7 +11,7 @@ import { getRandomItem } from "../utils/misc.js";
 const cooldown = new Set();
 
 export default {
-    devMode: true,
+    devMode: false,
     data: new SlashCommandBuilder()
         .setName("scavenge")
         .setDescription("Scavenge for item based on your scavenging level")
