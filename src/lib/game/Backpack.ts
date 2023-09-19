@@ -75,4 +75,13 @@ export class Backpack extends Item {
         for (const item of items) this.addItem(item);
         return this.inventory;
     }
+    
+    /**
+     * Checks if the backpack is full or not and returns a boolean
+     * @returns Boolean
+     */
+    public isFull() {
+        if(this.getItemCount() >= this.getSlots()) return true
+        return false;
+    }
 }
