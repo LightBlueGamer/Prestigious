@@ -18,13 +18,24 @@ export default {
         .setDMPermission(false),
     async execute(interaction: ChatInputCommandInteraction) {
         const { user, client } = interaction;
+
+        await interaction.deferReply();
+
+        if(cooldown.has(user.id)) return interaction.editReply({
+            content: `You must wait until you can scavenge again.`
+        });
+
+        cooldown.add(user.id);
+        setTimeout(() => {
+            cooldown.delete(user.id);
+        }, 1000 * 60 * 5);
+
         const player = await Player.get(user.id, client);
         const { scavenge } = player.getStats();
         const items = Object.values(Items).filter(
             (x) => x.scavenge <= scavenge
         );
         const item = InventoryItem.createInventoryItem(getRandomItem(items), 1);
-        await interaction.deferReply();
 
         player.addItem(item).save();
 
@@ -36,7 +47,7 @@ export default {
                 { name: "Size", value: item.size.toString(), inline: true }
             );
 
-        interaction.editReply({
+        return interaction.editReply({
             content: `You scavenge for resources...`,
             embeds: [embed],
         });
