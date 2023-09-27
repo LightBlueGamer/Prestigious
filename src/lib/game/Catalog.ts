@@ -41,4 +41,12 @@ export const Items = {
         105000,
         0
     ),
+    Meteor: new Item(
+        Rarities.Rare,
+        "Meteor",
+        "Meteor that came from space.",
+        1,
+        22500,
+        0
+    )
 };
