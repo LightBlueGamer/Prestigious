@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { Player } from '../lib/game/Player.js';
+//import { Player } from '../lib/game/Player.js';
 export default {
     devMode: true,
     data: new SlashCommandBuilder()
@@ -22,11 +22,11 @@ export default {
     async execute (interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
 
-        const { user, client, options } = interaction;
-        const userOption = options.getUser("user", true);
+        //const { user, client, options } = interaction;
+        //const userOption = options.getUser("user", true);
 
-        const player = await Player.get(user.id, client);
-        const toGive = await Player.get(userOption.id, client);
+        //const player = await Player.get(user.id, client);
+        //const toGive = await Player.get(userOption.id, client);
 
     },
 };

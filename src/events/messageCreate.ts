@@ -13,7 +13,7 @@ export default {
         if (!cooldown.has(member.id)) {
             const player = await Player.get(member.id, client);
 
-            player.addBalWallet(random(10, 35)).save();
+            player.addBalWallet(random(10, 35)).addExp(random(2, 5)).save();
 
             cooldown.add(member.id);
             setTimeout(() => {
