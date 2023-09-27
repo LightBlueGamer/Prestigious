@@ -18,7 +18,7 @@ export default {
             cooldown.add(member.id);
             setTimeout(() => {
                 cooldown.delete(member.id);
-            }, 10000);
+            }, 30000);
         }
     },
 };
