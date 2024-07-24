@@ -2,7 +2,6 @@ import { Pouch } from "../game/backpacks.js";
 import { emojis } from "../lib/bot/emojis.js";
 import type { Item } from "../lib/game/Item.js";
 import type { Player } from "../lib/game/Player.js";
-import { exec } from "child_process";
 
 /**
  * A function to generate the default player data.
@@ -167,18 +166,3 @@ export function getRandomHexColor(): string {
     const hexColor = randomInt.toString(16).padStart(6, "0");
     return `#${hexColor}`;
 }
-
-export const getLinesOfCode = (
-    directory: string = "C:/Users/timjo/Desktop/Projects/Prestigious/src"
-): Promise<{ code: number; nFiles: number }> => {
-    return new Promise((resolve, reject) => {
-        exec(`cloc ${directory} --json`, (error, stdout, stderr) => {
-            if (error) {
-                reject(`Error: ${stderr}`);
-            } else {
-                const result = JSON.parse(stdout);
-                resolve({ code: result.SUM.code, nFiles: result.SUM.nFiles });
-            }
-        });
-    });
-};

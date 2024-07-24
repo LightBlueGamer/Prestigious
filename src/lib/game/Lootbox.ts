@@ -18,6 +18,11 @@ export class Lootbox {
         this.loot = loot;
     }
 
+    /**
+     * Opens the lootbox and returns a random item based on the item weights.
+     *
+     * @returns {Item} - The randomly selected item from the lootbox.
+     */
     open(): Item {
         const item = getRandomLootboxItemByWeight(this.loot);
         return item;

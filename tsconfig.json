@@ -11,4 +11,9 @@
         "skipLibCheck": true
     },
     "include": ["./src/lib"],
+    "typedocOptions": {
+        "entryPoints": ["src/lib/"],
+        "out": "docs",
+        "entryPointStrategy": "Expand"
+    }
 }

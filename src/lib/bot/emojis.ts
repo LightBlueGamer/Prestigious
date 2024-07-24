@@ -1,4 +1,14 @@
-export const emojis = [
+/**
+ * An array of objects representing different emoji names and their IDs.
+ * Each object has two properties: `name` (string) and `id` (string).
+ *
+ * @example
+ * ```typescript
+ * const emoji = emojis.find(e => e.name === 'empty_left');
+ * console.log(emoji.id); // Output: "1250067781702123600"
+ * ```
+ */
+export const emojis: { name: string; id: string }[] = [
     { name: "empty_left", id: "1250067781702123600" },
     { name: "one_left", id: "1250068199970574407" },
     { name: "two_left", id: "1250068189891788871" },
