@@ -26,6 +26,7 @@
     "simple-youtube-api": "^5.2.1"
   },
   "devDependencies": {
+    "@mxssfd/typedoc-theme": "^1.1.6",
     "@sapphire/ts-config": "^4.0.1",
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
