@@ -1,0 +1,14 @@
+{
+    "extends": "@sapphire/ts-config",
+    "compilerOptions": {
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "target": "esnext",
+        "module": "esnext",
+        "sourceMap": true,
+        "outDir": "../dist",
+        "moduleResolution": "node",
+        "skipLibCheck": true
+    },
+    "include": [".", "../tests"]
+}
