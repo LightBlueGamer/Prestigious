@@ -3,7 +3,6 @@ import { readdirSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import type { Command } from "./lib/bot/Command.js";
-import YouTube from "simple-youtube-api";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,8 +17,6 @@ export const client = new Client({
 
 import "dotenv/config";
 import { startDB } from "./db/index.js";
-
-export const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
 
 const eventFiles = readdirSync(`${__dirname}/bot/events`).filter((x) =>
     x.endsWith(".js")
