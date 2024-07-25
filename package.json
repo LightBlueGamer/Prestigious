@@ -3,12 +3,12 @@
   "version": "4.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "start": "npm run prettier && npm run compile && node --es-module-specifier-resolution=node dist/index.js",
-    "deploy": "npm run prettier && npm run compile && node --es-module-specifier-resolution=node dist/bot/deploy.js",
+    "start": "npm run build && node --es-module-specifier-resolution=node dist/index.js",
+    "deploy": "npm run build && node --es-module-specifier-resolution=node dist/bot/deploy.js",
     "compile": "tsc --build --verbose src",
     "prettier": "prettier src --write",
-    "build": "npm run prettier && npm run compile && npx typedoc",
-    "test": "npx typedoc && npx http-server docs/"
+    "build": "npm run prettier && npm run compile && npx typedoc --options typedoc.json",
+    "test": "npx typedoc --options typedoc.json && npx http-server docs/"
   },
   "author": "Tim",
   "license": "ISC",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@mxssfd/typedoc-theme": "^1.1.6",
     "@sapphire/ts-config": "^4.0.1",
-    "typedoc": "^0.26.5"
+    "typedoc": "^0.26.5",
+    "typedoc-plugin-markdown": "^4.2.3"
   }
 }
