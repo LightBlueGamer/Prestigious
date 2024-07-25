@@ -2,6 +2,7 @@ import { emojis } from "../resources/emojis.js";
 import type { Item } from "../classes/Item.js";
 import type { Player } from "../classes/Player.js";
 import { backpacks } from "../resources/backpacks.js";
+import { Attribute } from "../library.js";
 
 /**
  * A function to generate the default player data.
@@ -24,8 +25,32 @@ export function generateData(): Player.Data {
         lootboxes: [],
         statistics: [],
         class: null,
-        attributes: [],
+        attributes: generateAttributes(),
     };
+}
+
+/**
+ * A function to generate an array of default attributes for a player.
+ *
+ * @returns {Attribute[]} - An array of Attribute objects, each representing a default attribute.
+ *                          The attributes are: Strength, Dexterity, Intelligence, Constitution, Charisma, and Wisdom.
+ *                          All attributes are initialized with a value of 0.
+ *
+ * @example
+ * ```typescript
+ * const playerAttributes = generateAttributes();
+ * console.log(playerAttributes); // [Attribute { name: 'Strength', value: 0 }, Attribute { name: 'Dexterity', value: 0 }, ...]
+ * ```
+ */
+export function generateAttributes(): Attribute[] {
+    return [
+        new Attribute("Strength", 0),
+        new Attribute("Dexterity", 0),
+        new Attribute("Intelligence", 0),
+        new Attribute("Constitution", 0),
+        new Attribute("Charisma", 0),
+        new Attribute("Wisdom", 0),
+    ];
 }
 
 /**
@@ -166,4 +191,27 @@ export function getRandomHexColor(): string {
     const randomInt = Math.floor(Math.random() * 16777215);
     const hexColor = randomInt.toString(16).padStart(6, "0");
     return `#${hexColor}`;
+}
+
+/**
+ * Generates a string representation of a progress bar using Discord emoji characters.
+ *
+ * @param amount - The number of blue squares to display in the progress bar.
+ *                  Must be a non-negative integer less than or equal to 10.
+ *
+ * @returns {string} - A string representing the progress bar.
+ *                      The progress bar consists of `amount` blue squares followed by
+ *                      (10 - `amount`) black large squares.
+ *
+ * @example
+ * ```typescript
+ * const progress = attributeBar(5);
+ * console.log(progress); // ":blue_square::blue_square::blue_square::blue_square::blue_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:"
+ * ```
+ */
+export function attributeBar(amount: number): string {
+    return (
+        ":blue_square:".repeat(amount) +
+        ":black_large_square:".repeat(10 - amount)
+    );
 }
