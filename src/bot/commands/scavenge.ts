@@ -19,8 +19,6 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
-
         const { user, client } = interaction;
         const player = await Player.get(user.id, client);
 
@@ -36,7 +34,7 @@ export default {
                 .setTitle(`You found an item!`)
                 .setDescription(`1x ${item.name}`);
 
-            interaction.editReply({
+            interaction.reply({
                 embeds: [embed],
             });
 
@@ -48,7 +46,7 @@ export default {
                 1000 * 60 * 5
             );
         } else
-            return interaction.editReply({
+            return interaction.reply({
                 content: `You can't scavenge again just yet!`,
             });
         return;

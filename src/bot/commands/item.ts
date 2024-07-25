@@ -17,8 +17,6 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
-
         const { options } = interaction;
         const itemName = options.getString("item", true);
         const item = Object.values(items).find(
@@ -30,7 +28,7 @@ export default {
                 `There is no item called ${itemName}`
             );
 
-            return interaction.editReply({ embeds: [embed] });
+            return interaction.reply({ embeds: [embed] });
         }
 
         const embed = greenEmbed()
@@ -60,6 +58,6 @@ export default {
                 },
             ]);
 
-        return interaction.editReply({ embeds: [embed] });
+        return interaction.reply({ embeds: [embed] });
     },
 };

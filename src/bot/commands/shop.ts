@@ -58,8 +58,6 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
-
         const { user, client, options } = interaction;
         const subCmd = options.getSubcommand(true);
         const player = await Player.get(user.id, client);
@@ -75,14 +73,14 @@ export default {
             embed = redEmbed().setTitle(
                 "You don't have enough space in your backpack to buy this item!"
             );
-            return interaction.editReply({
+            return interaction.reply({
                 embeds: [embed],
             });
         }
 
         if (!item) {
             embed = redEmbed().setTitle("That item doesn't exist in the shop!");
-            return interaction.editReply({
+            return interaction.reply({
                 embeds: [embed],
             });
         }
@@ -122,7 +120,7 @@ export default {
 
         player.save();
 
-        return interaction.editReply({
+        return interaction.reply({
             embeds: [embed],
         });
     },

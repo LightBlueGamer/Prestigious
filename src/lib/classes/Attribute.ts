@@ -1,6 +1,6 @@
 /**
  * Represents an attribute with a name and a numeric value.
- * 
+ *
  * @example
  * ```typescript
  * const attribute = new Attribute('strength', 10);

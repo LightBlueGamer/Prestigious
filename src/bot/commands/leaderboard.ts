@@ -30,7 +30,7 @@ export default {
         .setDMPermission(false)
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
+        await interaction.reply({ content: "Fetching leaderboard..." });
         let page = interaction.options.getNumber("page") || 1;
         const type = interaction.options.getString("type") || "levels";
         const { user } = interaction;

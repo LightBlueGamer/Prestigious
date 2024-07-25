@@ -23,7 +23,6 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
         const { options, user, client } = interaction;
 
         const lootboxName = options.getString("lootbox", true)!;
@@ -37,7 +36,7 @@ export default {
                 `You don't have a ${lootboxName} lootbox!`
             );
 
-            return interaction.editReply({
+            return interaction.reply({
                 embeds: [embed],
             });
         }
@@ -50,7 +49,7 @@ export default {
             .setTitle(`You opened a ${lootbox.name} lootbox!`)
             .setDescription(`You got a ${item.name}!`);
 
-        return interaction.editReply({
+        return interaction.reply({
             embeds: [embed],
         });
     },

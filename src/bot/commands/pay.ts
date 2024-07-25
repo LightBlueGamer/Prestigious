@@ -22,25 +22,23 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
-
         const { options, user, client } = interaction;
 
         const toPay = options.getUser("user")!;
         const amount = options.getNumber("amount")!;
 
         if (amount < 1)
-            return interaction.editReply({
+            return interaction.reply({
                 content: `You must pay a minimum of $1!`,
             });
 
         if (toPay?.bot)
-            return interaction.editReply({
+            return interaction.reply({
                 content: `You can't pay a bot money!`,
             });
 
         if (toPay.id === user.id)
-            return interaction.editReply({
+            return interaction.reply({
                 content: `You can't pay yourself money!`,
             });
 
@@ -48,7 +46,7 @@ export default {
         const player = await Player.get(user.id, client);
 
         if (player.getBalance() < amount)
-            return interaction.editReply({
+            return interaction.reply({
                 content: `You don't have enough money to pay ${toPay.displayName} $${amount}!`,
             });
 
@@ -67,7 +65,7 @@ export default {
                 },
             ]);
 
-        return interaction.editReply({
+        return interaction.reply({
             embeds: [embed],
         });
     },

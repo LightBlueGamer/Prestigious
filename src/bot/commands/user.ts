@@ -20,8 +20,6 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply();
-
         const user = interaction.options.getUser("user") || interaction.user;
 
         const player = await Player.get(user.id, interaction.client);
@@ -59,6 +57,6 @@ export default {
                     "\u200b```"
             );
 
-        interaction.editReply({ embeds: [embed] });
+        interaction.reply({ embeds: [embed] });
     },
 };

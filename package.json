@@ -7,8 +7,8 @@
     "deploy": "npm run build && node --es-module-specifier-resolution=node dist/bot/deploy.js",
     "compile": "tsc --build --verbose src",
     "prettier": "prettier src --write",
-    "build": "npm run prettier && npm run compile && npx typedoc --options typedoc.json",
-    "test": "npx typedoc --options typedoc.json && npx http-server docs/"
+    "build": "npm run prettier && npm run compile",
+    "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server docs/"
   },
   "author": "Tim",
   "license": "ISC",
