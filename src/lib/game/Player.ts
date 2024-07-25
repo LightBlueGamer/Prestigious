@@ -481,7 +481,9 @@ export class Player {
      * // strengthAttribute will be the Attribute instance with the name 'Strength'.
      */
     getAttribute(name: string): Attribute {
-        return this.getAttributes().find((attr) => attr.name.toLowerCase().startsWith(name))!;
+        return this.getAttributes().find((attr) =>
+            attr.name.toLowerCase().startsWith(name)
+        )!;
     }
 
     /**
@@ -497,7 +499,7 @@ export class Player {
      */
     increaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
-        if(attribute) attribute.value += amount;
+        if (attribute) attribute.value += amount;
         return this;
     }
 
@@ -514,7 +516,7 @@ export class Player {
      */
     decreaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
-        if(attribute) attribute.value -= amount;
+        if (attribute) attribute.value -= amount;
         return this;
     }
 
@@ -531,7 +533,7 @@ export class Player {
      */
     setAttribute(name: string, value: number): Player {
         const attribute = this.getAttribute(name);
-        if(attribute) attribute.value = value;
+        if (attribute) attribute.value = value;
         return this;
     }
 
