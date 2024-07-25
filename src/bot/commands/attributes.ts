@@ -18,7 +18,7 @@ export default {
         const { user, client } = interaction;
         const player = await Player.get(user.id, client);
         const attributes = player.getAttributes();
-        
+
         const embed = randomEmbed()
             .setTitle(`${user.username}'s attributes`)
             .setDescription(
