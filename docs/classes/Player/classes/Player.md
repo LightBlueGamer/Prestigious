@@ -48,7 +48,7 @@ The Data of the player
 
 #### Defined in
 
-[classes/Player.ts:35](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L35)
+[classes/Player.ts:35](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L35)
 
 ## Properties
 
@@ -58,7 +58,7 @@ The Data of the player
 
 #### Defined in
 
-[classes/Player.ts:34](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L34)
+[classes/Player.ts:34](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L34)
 
 ***
 
@@ -68,7 +68,7 @@ The Data of the player
 
 #### Defined in
 
-[classes/Player.ts:32](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L32)
+[classes/Player.ts:32](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L32)
 
 ***
 
@@ -78,7 +78,7 @@ The Data of the player
 
 #### Defined in
 
-[classes/Player.ts:33](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L33)
+[classes/Player.ts:33](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L33)
 
 ## Methods
 
@@ -113,7 +113,7 @@ player.addItem(sword);
 
 #### Defined in
 
-[classes/Player.ts:296](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L296)
+[classes/Player.ts:296](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L296)
 
 ***
 
@@ -151,7 +151,7 @@ player.addStatistic('kills', 5);
 
 #### Defined in
 
-[classes/Player.ts:414](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L414)
+[classes/Player.ts:414](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L414)
 
 ***
 
@@ -181,7 +181,7 @@ console.log(player.canPrestige()); // Output: false
 
 #### Defined in
 
-[classes/Player.ts:438](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L438)
+[classes/Player.ts:438](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L438)
 
 ***
 
@@ -212,7 +212,7 @@ The updated Player instance with the decreased attribute value.
 
 #### Defined in
 
-[classes/Player.ts:517](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L517)
+[classes/Player.ts:517](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L517)
 
 ***
 
@@ -242,7 +242,7 @@ const xpBar = player.generateBar();
 
 #### Defined in
 
-[classes/Player.ts:182](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L182)
+[classes/Player.ts:182](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L182)
 
 ***
 
@@ -284,7 +284,7 @@ const strengthAttribute = player.getAttribute('Strength');
 
 #### Defined in
 
-[classes/Player.ts:483](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L483)
+[classes/Player.ts:483](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L483)
 
 ***
 
@@ -302,7 +302,7 @@ An array of Attribute objects representing the player's attributes.
 
 #### Defined in
 
-[classes/Player.ts:461](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L461)
+[classes/Player.ts:461](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L461)
 
 ***
 
@@ -328,7 +328,7 @@ const backpack = player.getBackpack();
 
 #### Defined in
 
-[classes/Player.ts:266](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L266)
+[classes/Player.ts:266](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L266)
 
 ***
 
@@ -354,7 +354,7 @@ const backpackContents = player.getBackpackContents();
 
 #### Defined in
 
-[classes/Player.ts:280](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L280)
+[classes/Player.ts:280](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L280)
 
 ***
 
@@ -381,7 +381,7 @@ const balance = player.getBalance();
 
 #### Defined in
 
-[classes/Player.ts:252](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L252)
+[classes/Player.ts:252](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L252)
 
 ***
 
@@ -412,7 +412,7 @@ const lootboxes = player.getLootboxes();
 
 #### Defined in
 
-[classes/Player.ts:347](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L347)
+[classes/Player.ts:347](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L347)
 
 ***
 
@@ -443,7 +443,7 @@ The updated Player instance with the increased attribute value.
 
 #### Defined in
 
-[classes/Player.ts:500](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L500)
+[classes/Player.ts:500](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L500)
 
 ***
 
@@ -479,7 +479,7 @@ player.increaseBalance(10, 50);
 
 #### Defined in
 
-[classes/Player.ts:72](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L72)
+[classes/Player.ts:72](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L72)
 
 ***
 
@@ -513,7 +513,7 @@ player.increaseXP(10, 50);
 
 #### Defined in
 
-[classes/Player.ts:52](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L52)
+[classes/Player.ts:52](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L52)
 
 ***
 
@@ -542,7 +542,7 @@ player.levelUp();
 
 #### Defined in
 
-[classes/Player.ts:160](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L160)
+[classes/Player.ts:160](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L160)
 
 ***
 
@@ -574,7 +574,7 @@ player.modifyBalance(50);
 
 #### Defined in
 
-[classes/Player.ts:108](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L108)
+[classes/Player.ts:108](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L108)
 
 ***
 
@@ -606,7 +606,7 @@ player.modifyXp(50);
 
 #### Defined in
 
-[classes/Player.ts:91](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L91)
+[classes/Player.ts:91](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L91)
 
 ***
 
@@ -655,7 +655,7 @@ const { player, item } = player.openLootbox(Lootbox.Type.COMMON);
 
 #### Defined in
 
-[classes/Player.ts:326](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L326)
+[classes/Player.ts:326](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L326)
 
 ***
 
@@ -693,7 +693,7 @@ player1.payToUser(player2, 50);
 
 #### Defined in
 
-[classes/Player.ts:235](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L235)
+[classes/Player.ts:235](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L235)
 
 ***
 
@@ -713,7 +713,7 @@ Adds a statistic to the player's statistics list indicating the number of times 
 
 #### Defined in
 
-[classes/Player.ts:449](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L449)
+[classes/Player.ts:449](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L449)
 
 ***
 
@@ -745,7 +745,7 @@ player.removeBalance(50);
 
 #### Defined in
 
-[classes/Player.ts:363](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L363)
+[classes/Player.ts:363](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L363)
 
 ***
 
@@ -784,7 +784,7 @@ player.removeItem(sword);
 
 #### Defined in
 
-[classes/Player.ts:384](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L384)
+[classes/Player.ts:384](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L384)
 
 ***
 
@@ -810,7 +810,7 @@ await player.save();
 
 #### Defined in
 
-[classes/Player.ts:593](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L593)
+[classes/Player.ts:593](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L593)
 
 ***
 
@@ -841,7 +841,7 @@ The updated Player instance with the set attribute value.
 
 #### Defined in
 
-[classes/Player.ts:534](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L534)
+[classes/Player.ts:534](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L534)
 
 ***
 
@@ -879,7 +879,7 @@ const playerJSON = player.toJSON();
 
 #### Defined in
 
-[classes/Player.ts:577](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L577)
+[classes/Player.ts:577](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L577)
 
 ***
 
@@ -906,7 +906,7 @@ const requiredXP = player.requiredXp();
 
 #### Defined in
 
-[classes/Player.ts:124](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L124)
+[classes/Player.ts:124](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L124)
 
 ***
 
@@ -933,7 +933,7 @@ const requiredXP = player.xpRequired();
 
 #### Defined in
 
-[classes/Player.ts:139](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L139)
+[classes/Player.ts:139](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L139)
 
 ***
 
@@ -964,7 +964,7 @@ const player = Player.fromJSON(playerJSON);
 
 #### Defined in
 
-[classes/Player.ts:565](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L565)
+[classes/Player.ts:565](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L565)
 
 ***
 
@@ -998,4 +998,4 @@ const player = await Player.get(interaction.user.id, interaction.client);
 
 #### Defined in
 
-[classes/Player.ts:550](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L550)
+[classes/Player.ts:550](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L550)

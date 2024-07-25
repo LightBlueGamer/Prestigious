@@ -40,7 +40,7 @@ The function to execute when the command is invoked.
 
 #### Defined in
 
-[classes/Command.ts:38](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Command.ts#L38)
+[classes/Command.ts:38](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Command.ts#L38)
 
 ## Properties
 
@@ -52,7 +52,7 @@ The data for the command, including its name, description, options, etc.
 
 #### Defined in
 
-[classes/Command.ts:24](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Command.ts#L24)
+[classes/Command.ts:24](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Command.ts#L24)
 
 ***
 
@@ -64,7 +64,7 @@ Indicates whether the command is in development mode.
 
 #### Defined in
 
-[classes/Command.ts:14](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Command.ts#L14)
+[classes/Command.ts:14](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Command.ts#L14)
 
 ***
 
@@ -76,7 +76,7 @@ The function to execute when the command is invoked.
 
 #### Defined in
 
-[classes/Command.ts:29](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Command.ts#L29)
+[classes/Command.ts:29](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Command.ts#L29)
 
 ***
 
@@ -88,4 +88,4 @@ The module the command belongs to.
 
 #### Defined in
 
-[classes/Command.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Command.ts#L19)
+[classes/Command.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Command.ts#L19)

@@ -19,7 +19,7 @@ Economy module for managing economic activities.
 
 #### Defined in
 
-[enums/Modules.ts:9](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/enums/Modules.ts#L9)
+[enums/Modules.ts:9](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/enums/Modules.ts#L9)
 
 ***
 
@@ -31,7 +31,7 @@ Fun module for entertaining users with various commands.
 
 #### Defined in
 
-[enums/Modules.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/enums/Modules.ts#L19)
+[enums/Modules.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/enums/Modules.ts#L19)
 
 ***
 
@@ -43,7 +43,7 @@ Information module for providing various types of information.
 
 #### Defined in
 
-[enums/Modules.ts:14](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/enums/Modules.ts#L14)
+[enums/Modules.ts:14](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/enums/Modules.ts#L14)
 
 ***
 
@@ -55,4 +55,4 @@ Miscellaneous module for commands that don't fit into other categories.
 
 #### Defined in
 
-[enums/Modules.ts:24](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/enums/Modules.ts#L24)
+[enums/Modules.ts:24](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/enums/Modules.ts#L24)

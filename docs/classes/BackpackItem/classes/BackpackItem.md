@@ -69,7 +69,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/BackpackItem.ts:24](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/BackpackItem.ts#L24)
+[classes/BackpackItem.ts:24](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/BackpackItem.ts#L24)
 
 ## Properties
 
@@ -81,7 +81,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/BackpackItem.ts:9](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/BackpackItem.ts#L9)
+[classes/BackpackItem.ts:9](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/BackpackItem.ts#L9)
 
 ***
 
@@ -95,7 +95,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L19)
+[classes/Item.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L19)
 
 ***
 
@@ -109,7 +109,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L21)
+[classes/Item.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L21)
 
 ***
 
@@ -123,7 +123,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:22](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L22)
+[classes/Item.ts:22](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L22)
 
 ***
 
@@ -137,7 +137,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:15](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L15)
+[classes/Item.ts:15](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L15)
 
 ***
 
@@ -151,7 +151,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:20](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L20)
+[classes/Item.ts:20](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L20)
 
 ***
 
@@ -165,7 +165,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:16](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L16)
+[classes/Item.ts:16](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L16)
 
 ***
 
@@ -179,7 +179,7 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:17](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L17)
+[classes/Item.ts:17](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L17)
 
 ***
 
@@ -193,4 +193,4 @@ The amount of this item in the backpack.
 
 #### Defined in
 
-[classes/Item.ts:18](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L18)
+[classes/Item.ts:18](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L18)

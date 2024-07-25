@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[classes/Player.ts:614](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L614)
+[classes/Player.ts:614](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L614)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[classes/Player.ts:610](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L610)
+[classes/Player.ts:610](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L610)
 
 ***
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[classes/Player.ts:606](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L606)
+[classes/Player.ts:606](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L606)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[classes/Player.ts:613](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L613)
+[classes/Player.ts:613](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L613)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[classes/Player.ts:608](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L608)
+[classes/Player.ts:608](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L608)
 
 ***
 
@@ -64,7 +64,7 @@
 
 #### Defined in
 
-[classes/Player.ts:611](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L611)
+[classes/Player.ts:611](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L611)
 
 ***
 
@@ -74,7 +74,7 @@
 
 #### Defined in
 
-[classes/Player.ts:609](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L609)
+[classes/Player.ts:609](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L609)
 
 ***
 
@@ -84,7 +84,7 @@
 
 #### Defined in
 
-[classes/Player.ts:612](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L612)
+[classes/Player.ts:612](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L612)
 
 ***
 
@@ -94,4 +94,4 @@
 
 #### Defined in
 
-[classes/Player.ts:607](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Player.ts#L607)
+[classes/Player.ts:607](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Player.ts#L607)

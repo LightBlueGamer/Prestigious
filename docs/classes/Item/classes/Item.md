@@ -75,7 +75,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:23](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L23)
+[classes/Item.ts:23](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L23)
 
 ## Properties
 
@@ -85,7 +85,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L19)
+[classes/Item.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L19)
 
 ***
 
@@ -95,7 +95,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L21)
+[classes/Item.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L21)
 
 ***
 
@@ -105,7 +105,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:22](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L22)
+[classes/Item.ts:22](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L22)
 
 ***
 
@@ -115,7 +115,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:15](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L15)
+[classes/Item.ts:15](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L15)
 
 ***
 
@@ -125,7 +125,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:20](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L20)
+[classes/Item.ts:20](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L20)
 
 ***
 
@@ -135,7 +135,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:16](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L16)
+[classes/Item.ts:16](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L16)
 
 ***
 
@@ -145,7 +145,7 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:17](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L17)
+[classes/Item.ts:17](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L17)
 
 ***
 
@@ -155,4 +155,4 @@ Whether the item can be found in a lootbox.
 
 #### Defined in
 
-[classes/Item.ts:18](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Item.ts#L18)
+[classes/Item.ts:18](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Item.ts#L18)

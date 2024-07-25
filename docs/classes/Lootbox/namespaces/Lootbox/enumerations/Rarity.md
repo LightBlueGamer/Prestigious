@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:39](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L39)
+[classes/Lootbox.ts:39](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L39)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:42](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L42)
+[classes/Lootbox.ts:42](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L42)
 
 ***
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:43](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L43)
+[classes/Lootbox.ts:43](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L43)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:41](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L41)
+[classes/Lootbox.ts:41](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L41)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:40](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L40)
+[classes/Lootbox.ts:40](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L40)
 
 ***
 
@@ -64,4 +64,4 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:38](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L38)
+[classes/Lootbox.ts:38](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L38)

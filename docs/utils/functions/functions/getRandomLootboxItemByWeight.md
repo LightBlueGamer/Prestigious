@@ -43,4 +43,4 @@ console.log(randomLootboxItem.item.name); // "Example Item 1" or "Example Item 2
 
 ## Defined in
 
-[utils/functions.ts:141](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/utils/functions.ts#L141)
+[utils/functions.ts:141](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/utils/functions.ts#L141)

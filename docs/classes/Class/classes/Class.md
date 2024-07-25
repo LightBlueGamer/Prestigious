@@ -48,7 +48,7 @@ The experience points earned by the character. Default is 0.
 
 #### Defined in
 
-[classes/Class.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Class.ts#L21)
+[classes/Class.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Class.ts#L21)
 
 ## Properties
 
@@ -60,7 +60,7 @@ The attributes associated with the class.
 
 #### Defined in
 
-[classes/Class.ts:18](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Class.ts#L18)
+[classes/Class.ts:18](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Class.ts#L18)
 
 ***
 
@@ -72,7 +72,7 @@ The experience points earned by the character.
 
 #### Defined in
 
-[classes/Class.ts:20](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Class.ts#L20)
+[classes/Class.ts:20](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Class.ts#L20)
 
 ***
 
@@ -84,7 +84,7 @@ The name of the class.
 
 #### Defined in
 
-[classes/Class.ts:17](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Class.ts#L17)
+[classes/Class.ts:17](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Class.ts#L17)
 
 ***
 
@@ -96,4 +96,4 @@ The proficiencies associated with the class.
 
 #### Defined in
 
-[classes/Class.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Class.ts#L19)
+[classes/Class.ts:19](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Class.ts#L19)

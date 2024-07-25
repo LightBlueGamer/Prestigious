@@ -36,7 +36,7 @@ The amount associated with the statistic.
 
 #### Defined in
 
-[classes/Statistic.ts:12](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Statistic.ts#L12)
+[classes/Statistic.ts:12](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Statistic.ts#L12)
 
 ## Properties
 
@@ -46,7 +46,7 @@ The amount associated with the statistic.
 
 #### Defined in
 
-[classes/Statistic.ts:11](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Statistic.ts#L11)
+[classes/Statistic.ts:11](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Statistic.ts#L11)
 
 ***
 
@@ -56,4 +56,4 @@ The amount associated with the statistic.
 
 #### Defined in
 
-[classes/Statistic.ts:10](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Statistic.ts#L10)
+[classes/Statistic.ts:10](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Statistic.ts#L10)

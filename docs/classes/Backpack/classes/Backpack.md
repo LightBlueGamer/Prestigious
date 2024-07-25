@@ -40,7 +40,7 @@ The items currently in the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:35](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L35)
+[classes/Backpack.ts:35](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L35)
 
 ## Properties
 
@@ -52,7 +52,7 @@ The items currently in the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:26](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L26)
+[classes/Backpack.ts:26](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L26)
 
 ***
 
@@ -64,7 +64,7 @@ The name of the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:11](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L11)
+[classes/Backpack.ts:11](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L11)
 
 ***
 
@@ -76,7 +76,7 @@ The total size of the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:16](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L16)
+[classes/Backpack.ts:16](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L16)
 
 ***
 
@@ -88,7 +88,7 @@ The number of slots available in the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L21)
+[classes/Backpack.ts:21](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L21)
 
 ## Methods
 
@@ -117,7 +117,7 @@ The updated backpack instance.
 
 #### Defined in
 
-[classes/Backpack.ts:76](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L76)
+[classes/Backpack.ts:76](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L76)
 
 ***
 
@@ -135,7 +135,7 @@ The items currently in the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:51](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L51)
+[classes/Backpack.ts:51](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L51)
 
 ***
 
@@ -153,4 +153,4 @@ The number of free slots in the backpack.
 
 #### Defined in
 
-[classes/Backpack.ts:59](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Backpack.ts#L59)
+[classes/Backpack.ts:59](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Backpack.ts#L59)

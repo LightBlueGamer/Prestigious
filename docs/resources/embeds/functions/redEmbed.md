@@ -26,4 +26,4 @@ await channel.send({ embeds: [redEmbed] });
 
 ## Defined in
 
-[resources/embeds.ts:51](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/resources/embeds.ts#L51)
+[resources/embeds.ts:51](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/resources/embeds.ts#L51)

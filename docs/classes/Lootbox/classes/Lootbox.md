@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:9](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L9)
+[classes/Lootbox.ts:9](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L9)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:8](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L8)
+[classes/Lootbox.ts:8](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L8)
 
 ***
 
@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:5](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L5)
+[classes/Lootbox.ts:5](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L5)
 
 ***
 
@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:7](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L7)
+[classes/Lootbox.ts:7](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L7)
 
 ***
 
@@ -68,7 +68,7 @@
 
 #### Defined in
 
-[classes/Lootbox.ts:6](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L6)
+[classes/Lootbox.ts:6](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L6)
 
 ## Methods
 
@@ -86,4 +86,4 @@ Opens the lootbox and returns a random item based on the item weights.
 
 #### Defined in
 
-[classes/Lootbox.ts:26](https://github.com/LightBlueGamer/Prestigious/blob/bceae299d5416ea8756fa7d0aa42b82d959295c3/src/lib/classes/Lootbox.ts#L26)
+[classes/Lootbox.ts:26](https://github.com/LightBlueGamer/Prestigious/blob/0cab475f7a09d3ad5cc01bbd453a1ccfa07d4865/src/lib/classes/Lootbox.ts#L26)
