@@ -3,9 +3,7 @@ import {
     GuildMember,
     SlashCommandBuilder,
 } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
-import { randomEmbed } from "../../utils/embeds.js";
-import { Modules } from "../../lib/bot/Modules.js";
+import { Modules, Player, randomEmbed } from "../../lib/library.js";
 
 export default {
     devMode: false,

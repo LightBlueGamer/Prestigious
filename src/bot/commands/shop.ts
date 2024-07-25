@@ -3,12 +3,13 @@ import {
     EmbedBuilder,
     SlashCommandBuilder,
 } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
-import * as cItems from "../../game/items.js";
-import { greenEmbed, redEmbed } from "../../utils/embeds.js";
-import { Modules } from "../../lib/bot/Modules.js";
-
-const items = Object.values(cItems);
+import {
+    Modules,
+    Player,
+    items,
+    greenEmbed,
+    redEmbed,
+} from "../../lib/library.js";
 
 export default {
     devMode: false,
@@ -62,7 +63,7 @@ export default {
         const { user, client, options } = interaction;
         const subCmd = options.getSubcommand(true);
         const player = await Player.get(user.id, client);
-        const item = items.find(
+        const item = Object.values(items).find(
             (item) => item.name === options.getString("item", true)
         )!;
         const amount = options.getNumber("amount", true);

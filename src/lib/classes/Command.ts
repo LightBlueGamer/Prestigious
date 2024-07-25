@@ -2,7 +2,7 @@ import type {
     ChatInputCommandInteraction,
     SlashCommandBuilder,
 } from "discord.js";
-import type { Modules } from "./Modules";
+import type { Modules } from "../enums/Modules";
 
 /**
  * Represents a command for a Discord bot.

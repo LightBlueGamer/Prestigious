@@ -1,6 +1,6 @@
 import { commands } from "../../index.js";
 import type { ChatInputCommandInteraction } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
+import { Player } from "../../lib/library.js";
 
 export default {
     name: "chatInputCommandInteraction",

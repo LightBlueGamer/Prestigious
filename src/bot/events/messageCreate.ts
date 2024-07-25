@@ -1,5 +1,5 @@
-import { Player } from "../../lib/game/Player.js";
 import type { Message } from "discord.js";
+import { Player } from "../../lib/library.js";
 
 const cooldown = new Set();
 

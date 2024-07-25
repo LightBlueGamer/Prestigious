@@ -1,7 +1,6 @@
 import type { AutocompleteInteraction } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
-import * as cItems from "../../game/items.js";
 import { commands } from "../../index.js";
+import { Player, items } from "../../lib/library.js";
 
 export default {
     name: "autoCompleteInteraction",
@@ -32,21 +31,21 @@ export default {
                         "amount",
                         true
                     );
-                    let items;
+                    let filteredItems;
                     if (subCmd === "buy") {
-                        items = Object.values(cItems).filter(
+                        filteredItems = Object.values(items).filter(
                             (item) =>
                                 item.buy &&
                                 Math.ceil(item.value * 1.3 * amount) <=
                                     player.getBalance()
                         );
-                        choices = items.map((item) => ({
+                        choices = filteredItems.map((item) => ({
                             name: `${amount}x ${item.name} for $${Math.ceil(item.value * 1.3 * amount)}`,
                             value: `${item.name}`,
                         }));
                     } else if (subCmd === "sell") {
-                        items = player.getBackpackContents();
-                        choices = items.map((item) => ({
+                        filteredItems = player.getBackpackContents();
+                        choices = filteredItems.map((item) => ({
                             name: `${amount}x ${item.name} for $${item.value * amount}`,
                             value: `${item.name}`,
                         }));
@@ -57,7 +56,7 @@ export default {
 
             case "item":
                 {
-                    choices = Object.values(cItems).map((item) => ({
+                    choices = Object.values(items).map((item) => ({
                         name: `${item.name}`,
                         value: `${item.name}`,
                     }));

@@ -4,17 +4,17 @@ import {
     generateData,
     numberToWord,
     randomNumber,
-} from "../../utils/functions.js";
-import { emojis } from "../bot/emojis.js";
+} from "../utils/functions.js";
+import { emojis } from "../resources/emojis.js";
 import type { Backpack } from "./Backpack.js";
 import type { BackpackItem } from "./BackpackItem.js";
 import type { Item } from "./Item.js";
 import type { Lootbox } from "./Lootbox.js";
 import { LootboxItem } from "./LootboxItem.js";
-import { lootboxes } from "../../game/lootboxes/lootboxes.js";
 import { Statistic } from "./Statistic.js";
 import type { Class } from "./Class.js";
 import type { Attribute } from "./Attribute.js";
+import { lootboxes } from "../resources/lootboxes.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -295,7 +295,7 @@ export class Player {
      */
     addItem(item: Item, amount: number = 1): Player {
         if (item instanceof LootboxItem) {
-            const lootbox = lootboxes.find(
+            const lootbox = Object.values(lootboxes).find(
                 (lootbox) => lootbox.name === item.name
             )!;
             this.data.lootboxes?.push(lootbox);

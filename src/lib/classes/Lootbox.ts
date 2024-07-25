@@ -1,4 +1,4 @@
-import { getRandomLootboxItemByWeight } from "../../utils/functions.js";
+import { getRandomLootboxItemByWeight } from "../utils/functions.js";
 import type { Item } from "./Item.js";
 
 export class Lootbox {

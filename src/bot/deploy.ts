@@ -1,6 +1,6 @@
 import { Collection, REST, Routes } from "discord.js";
 import { commandFiles } from "../index.js";
-import type { Command } from "../lib/bot/Command.js";
+import type { Command } from "../lib/library.js";
 
 const token = process.env.DISCORD_TOKEN!;
 const clientId = process.env.CLIENT_ID!;

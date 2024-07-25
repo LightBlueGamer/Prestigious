@@ -1,7 +1,7 @@
-import { Pouch } from "../game/backpacks.js";
-import { emojis } from "../lib/bot/emojis.js";
-import type { Item } from "../lib/game/Item.js";
-import type { Player } from "../lib/game/Player.js";
+import { emojis } from "../resources/emojis.js";
+import type { Item } from "../classes/Item.js";
+import type { Player } from "../classes/Player.js";
+import { backpacks } from "../resources/backpacks.js";
 
 /**
  * A function to generate the default player data.
@@ -20,7 +20,7 @@ export function generateData(): Player.Data {
         xp: 0,
         level: 1,
         prestige: 0,
-        backpack: Pouch,
+        backpack: backpacks.Pouch,
         lootboxes: [],
         statistics: [],
         class: null,

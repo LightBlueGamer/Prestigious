@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import prettyMilliseconds from "pretty-ms";
-import { Modules } from "../../lib/bot/Modules.js";
+import { Modules } from "../../lib/library.js";
 
 export default {
     devMode: false,

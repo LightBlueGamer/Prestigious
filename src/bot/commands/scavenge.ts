@@ -1,9 +1,11 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
-import { getRandomItemByWeight } from "../../utils/functions.js";
-import { greenEmbed } from "../../utils/embeds.js";
-import * as items from "../../game/items.js";
-import { Modules } from "../../lib/bot/Modules.js";
+import {
+    items,
+    Modules,
+    Player,
+    getRandomItemByWeight,
+    greenEmbed,
+} from "../../lib/library.js";
 const cooldown = new Set();
 
 const scavenge = Object.values(items).filter((item) => item.canScavenge);

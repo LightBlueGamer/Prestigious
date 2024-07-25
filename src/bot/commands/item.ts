@@ -1,8 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import * as cItems from "../../game/items.js";
-import { greenEmbed, redEmbed } from "../../utils/embeds.js";
-import { Modules } from "../../lib/bot/Modules.js";
-const items = Object.values(cItems);
+import { Modules, items, redEmbed, greenEmbed } from "../../lib/library.js";
 
 export default {
     devMode: false,
@@ -24,7 +21,9 @@ export default {
 
         const { options } = interaction;
         const itemName = options.getString("item", true);
-        const item = items.find((item) => item.name === itemName);
+        const item = Object.values(items).find(
+            (item) => item.name === itemName
+        );
 
         if (!item) {
             const embed = redEmbed().setTitle(

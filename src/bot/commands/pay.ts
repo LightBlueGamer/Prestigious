@@ -1,7 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
-import { greenEmbed } from "../../utils/embeds.js";
-import { Modules } from "../../lib/bot/Modules.js";
+import { Modules, Player, greenEmbed } from "../../lib/library.js";
 
 export default {
     devMode: false,

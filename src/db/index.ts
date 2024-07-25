@@ -1,7 +1,7 @@
 import Josh from "@joshdb/core";
 import provider from "@joshdb/mongo";
 import "dotenv/config";
-import type { Player } from "../lib/game/Player.js";
+import type { Player } from "../lib/classes/Player.js";
 
 const uri = `mongodb+srv://Laptop:${process.env.MONGO_PASSWORD}@cluster0.bjnb7xh.mongodb.net/`;
 

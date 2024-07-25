@@ -1,22 +1,19 @@
 {
     "extends": "@sapphire/ts-config",
     "compilerOptions": {
-        "importHelpers": true,
-        "noEmitHelpers": true,
-        "target": "esnext",
-        "module": "esnext",
-        "sourceMap": true,
-        "outDir": "../dist",
-        "moduleResolution": "node",
-        "skipLibCheck": true
+      "importHelpers": true,
+      "noEmitHelpers": true,
+      "target": "esnext",
+      "module": "esnext",
+      "sourceMap": true,
+      "outDir": "./dist",
+      "moduleResolution": "node",
+      "skipLibCheck": true,
+      "baseUrl": "./src",
+      "paths": {
+        "*": ["./src/*"]
+      }
     },
-    "include": ["src/"],
-    "typedocOptions": {
-        "entryPoints": ["src/lib/bot", "src/lib/game", "src/utils/"],
-        "out": "docs",
-        "entryPointStrategy": "Expand",
-        "plugin": ["@mxssfd/typedoc-theme"],
-        "theme": "my-theme",
-        "name": "Prestigious Lib"
-    }
-}
+    "include": ["./src"]
+  }
+  

@@ -4,9 +4,8 @@ import {
     SlashCommandBuilder,
     type EmbedField,
 } from "discord.js";
-import { Player } from "../../lib/game/Player.js";
+import { Modules, Player } from "../../lib/library.js";
 import { db as players } from "../../db/index.js";
-import { Modules } from "../../lib/bot/Modules.js";
 
 export default {
     devMode: false,
