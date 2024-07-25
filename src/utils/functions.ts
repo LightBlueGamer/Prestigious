@@ -24,6 +24,7 @@ export function generateData(): Player.Data {
         lootboxes: [],
         statistics: [],
         class: null,
+        attributes: []
     };
 }
 

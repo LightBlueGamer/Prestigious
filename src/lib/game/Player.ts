@@ -14,6 +14,7 @@ import { LootboxItem } from "./LootboxItem.js";
 import { lootboxes } from "../../game/lootboxes/lootboxes.js";
 import { Statistic } from "./Statistic.js";
 import type { Class } from "./Class.js";
+import type { Attribute } from "./Attribute.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -453,6 +454,87 @@ export class Player {
         return this;
     }
 
+    /**
+     * Retrieves the attributes of the player.
+     * @returns {Attribute[]} An array of Attribute objects representing the player's attributes.
+     */
+    getAttributes(): Attribute[] {
+        return this.data.attributes;
+    }
+
+    /**
+     * Retrieves an attribute from the player's attributes list based on the provided name.
+     * The search is case-insensitive and matches the beginning of the attribute's name.
+     * If no attribute is found, it throws an error.
+     *
+     * @param name - The name of the attribute to retrieve.
+     * @returns The attribute with the matching name.
+     * @throws Will throw an error if no attribute is found with the provided name.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.attributes = [
+     *     new Attribute('Strength', 10),
+     *     new Attribute('Dexterity', 8),
+     * ];
+     * const strengthAttribute = player.getAttribute('Strength');
+     * // strengthAttribute will be the Attribute instance with the name 'Strength'.
+     */
+    getAttribute(name: string): Attribute {
+        return this.getAttributes().find((attr) => attr.name.toLowerCase().startsWith(name))!;
+    }
+
+    /**
+     * Increases the value of the attribute with the specified name by the provided amount.
+     * If the attribute is found, its value is updated and the updated Player instance is returned.
+     * If the attribute is not found, the function does nothing and returns the original Player instance.
+     *
+     * @param name - The name of the attribute to increase.
+     * @param amount - The amount to increase the attribute's value by.
+     *
+     * @returns The updated Player instance with the increased attribute value.
+     *          If the attribute is not found, the original Player instance is returned.
+     */
+    increaseAttribute(name: string, amount: number): Player {
+        const attribute = this.getAttribute(name);
+        if(attribute) attribute.value += amount;
+        return this;
+    }
+
+    /**
+     * Decreases the value of the attribute with the specified name by the provided amount.
+     * If the attribute is found, its value is updated and the updated Player instance is returned.
+     * If the attribute is not found, the function does nothing and returns the original Player instance.
+     *
+     * @param name - The name of the attribute to decrease.
+     * @param amount - The amount to decrease the attribute's value by.
+     *
+     * @returns The updated Player instance with the decreased attribute value.
+     *          If the attribute is not found, the original Player instance is returned.
+     */
+    decreaseAttribute(name: string, amount: number): Player {
+        const attribute = this.getAttribute(name);
+        if(attribute) attribute.value -= amount;
+        return this;
+    }
+
+    /**
+     * Sets the value of the attribute with the specified name to the provided value.
+     * If the attribute is found, its value is updated and the updated Player instance is returned.
+     * If the attribute is not found, the function does nothing and returns the original Player instance.
+     *
+     * @param name - The name of the attribute to set.
+     * @param value - The value to set the attribute's value to.
+     *
+     * @returns The updated Player instance with the set attribute value.
+     *          If the attribute is not found, the original Player instance is returned.
+     */
+    setAttribute(name: string, value: number): Player {
+        const attribute = this.getAttribute(name);
+        if(attribute) attribute.value = value;
+        return this;
+    }
+
     // !!!OBS!!! Internal Functions !!!OBS!!!
 
     /**
@@ -527,5 +609,6 @@ export namespace Player {
         lootboxes: Lootbox[] | null;
         statistics: Statistic[];
         class: Class | null;
+        attributes: Attribute[];
     }
 }
