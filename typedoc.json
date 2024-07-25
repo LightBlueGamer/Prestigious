@@ -1,9 +1,7 @@
 {
     "entryPoints": ["src/lib/**/*.ts"],
     "out": "docs",
-    "plugin": ["typedoc-plugin-markdown", "@mxssfd/typedoc-theme"],
-    "theme": "default",
-    "$schema": "https://typedoc-plugin-markdown.org/schema.json",
-    "outputFileStrategy": "modules",
-    "darkHighlightTheme": "dark-plus"
+    "plugin": ["@mxssfd/typedoc-theme"],
+    "theme": "my-theme",
+    "exclude": ["./src/lib/modules/josh.d.ts"],
 }
