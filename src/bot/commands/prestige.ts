@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { Modules, Player } from "../../lib/library.js";
 
 export default {
-    devMode: true,
+    devMode: false,
     module: Modules.Economy,
     data: new SlashCommandBuilder()
         .setName("prestige")

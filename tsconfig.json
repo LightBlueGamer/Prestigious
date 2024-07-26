@@ -1,19 +1,7 @@
 {
-    "extends": "@sapphire/ts-config",
-    "compilerOptions": {
-      "importHelpers": true,
-      "noEmitHelpers": true,
-      "target": "esnext",
-      "module": "esnext",
-      "sourceMap": true,
-      "outDir": "./dist",
-      "moduleResolution": "node",
-      "skipLibCheck": true,
-      "baseUrl": "./src",
-      "paths": {
-        "*": ["./src/*"]
-      }
-    },
-    "include": ["./src", "./src/lib/**/*"]
+    "files": [],
+    "references": [
+      { "path": "./src/tsconfig.json" }
+    ]
   }
   

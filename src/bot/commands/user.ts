@@ -7,6 +7,7 @@ import { Modules, Player, randomEmbed } from "../../lib/library.js";
 
 export default {
     devMode: false,
+    userContext: true,
     module: Modules.Economy,
     data: new SlashCommandBuilder()
         .setName("user")

@@ -18,6 +18,12 @@ export default {
                 interaction
             );
 
+        if (interaction.isContextMenuCommand())
+            return interaction.client.emit(
+                "contextMenuCommandInteraction",
+                interaction
+            );
+
         if (interaction.type === InteractionType.ModalSubmit)
             return interaction.client.emit("modalSubmit", interaction);
         else return;

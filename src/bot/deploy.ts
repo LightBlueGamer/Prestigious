@@ -8,6 +8,7 @@ const guildId = process.env.SERVER_ID!;
 const rest = new REST({ version: "10" }).setToken(token);
 const commands = new Collection<Command.Data.Name, Command>();
 const devCommands = new Collection<Command.Data.Name, Command>();
+const userContextCommands = new Collection<Command.Data.Name, Command>();
 
 for (const file of commandFiles) {
     const command: Command = (await import(`./commands/${file}`)).default;
@@ -19,7 +20,10 @@ for (const file of commandFiles) {
 (async () => {
     try {
         await rest.put(Routes.applicationCommands(clientId), {
-            body: commands.map((command) => command.data),
+            body: [
+                commands.map((command) => command.data),
+                userContextCommands.map((command) => command.data),
+            ],
         });
         await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
             body: devCommands.map((command) => command.data),

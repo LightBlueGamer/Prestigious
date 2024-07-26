@@ -7,7 +7,7 @@ import {
 } from "../../lib/library.js";
 
 export default {
-    devMode: true,
+    devMode: false,
     module: Modules.Fun,
     data: new SlashCommandBuilder()
         .setName("attributes")
