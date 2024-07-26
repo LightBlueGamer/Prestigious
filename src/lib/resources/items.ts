@@ -26,7 +26,7 @@ export const items = {
         "Common Lootbox",
         2,
         5000,
-        50000,
+        1200,
         true,
         false,
         true,

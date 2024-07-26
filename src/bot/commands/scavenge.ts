@@ -5,6 +5,7 @@ import {
     Player,
     getRandomItemByWeight,
     greenEmbed,
+    randomNumber,
 } from "../../lib/library.js";
 const cooldown = new Set();
 
@@ -27,11 +28,19 @@ export default {
                 (item) => item.size <= player.getBackpack().getFreeSpace()
             );
             const item = getRandomItemByWeight(itemList);
+            const { expBoost } = player.getPrestigeBoosts();
+            const xp = Math.floor(
+                randomNumber(item.value * 0.25, item.value * 2) * expBoost
+            );
 
-            player.addStatistic("Times scavenged").addItem(item).save();
+            player
+                .addStatistic("Times scavenged")
+                .addItem(item)
+                .modifyXp(Math.floor(xp))
+                .save();
 
             const embed = greenEmbed()
-                .setTitle(`You found an item!`)
+                .setTitle(`You found an item and got ${xp} xp!`)
                 .setDescription(`1x ${item.name}`);
 
             interaction.reply({
