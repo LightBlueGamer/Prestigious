@@ -28,12 +28,6 @@ for (const file of commandFiles) {
         await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
             body: devCommands.map((command) => command.data),
         });
-        await rest.put(
-            Routes.applicationGuildCommands(clientId, "1154158504614056016"),
-            {
-                body: devCommands.map((command) => command.data),
-            }
-        );
     } catch (error) {
         console.error(error);
     } finally {
