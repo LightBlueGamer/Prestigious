@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "name": "Prestigious Bot",
+      "script": "dist/index.js",
+      "interpreter": "node",
+      "interpreter_args": "--es-module-specifier-resolution=node",
+      "instances": 1,
+      "autorestart": true,
+      "watch": true,
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      },
+      "exec_mode": "fork",
+      "max_memory_restart": "2G",
+      "post_start": "npm run build"
+    }
+  ]
+}
