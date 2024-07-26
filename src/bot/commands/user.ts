@@ -37,8 +37,8 @@ export default {
             )
             .addFields([
                 {
-                    name: "Balance",
-                    value: player.data.balance.toString(),
+                    name: "Prestige",
+                    value: player.data.prestige.toString(),
                     inline: true,
                 },
                 {
@@ -46,6 +46,11 @@ export default {
                     value: player.data.level.toString(),
                     inline: true,
                 },
+                {
+                    name: "Balance",
+                    value: "$"+player.data.balance.toString(),
+                    inline: true,
+                }
             ])
             .setDescription(
                 `${player.data.xp}/${player.xpRequired()} xp\n${player.generateBar()}\n\n**(${player.getBackpackContents().reduce((p, c) => p + c.amount * c.size, 0)}/${player.getBackpack().slots}) Backpack:**\n\`\`\`` +
