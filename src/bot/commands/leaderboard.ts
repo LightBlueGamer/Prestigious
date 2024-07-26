@@ -58,7 +58,7 @@ export default {
             for (let i = 0; i < sliced.length; i++) {
                 const player = sliced[i];
                 const name =
-                    player.name === user.displayName
+                    player.id === user.id
                         ? `#${i + (page - 1) * 10 + 1} ${player.name} (You)`
                         : `#${i + (page - 1) * 10 + 1} ${player.name}`;
                 if (i & 1) {
@@ -89,7 +89,7 @@ export default {
             for (let i = 0; i < sliced.length; i++) {
                 const player = sliced[i];
                 const name =
-                    player.name === user.displayName
+                    player.id === user.id
                         ? `#${i + (page - 1) * 10 + 1} ${player.name} (You)`
                         : `#${i + (page - 1) * 10 + 1} ${player.name}`;
                 if (i & 1) {
@@ -121,7 +121,8 @@ export default {
                 (a, b) =>
                     b.data.prestige - a.data.prestige ||
                     b.data.level - a.data.level ||
-                    b.data.xp - a.data.xp
+                    b.data.xp - a.data.xp ||
+                    b.data.balance - a.data.balance
             );
             const sortedBalance = playerList.sort(
                 (a, b) => b.data.balance - a.data.balance
@@ -153,7 +154,7 @@ export default {
             for (let i = 0; i < sliced.length; i++) {
                 const player = sliced[i];
                 const name =
-                    player.name === user.displayName
+                    player.id === user.id
                         ? `#${i + (page - 1) * 10 + 1} ${player.name} (You)`
                         : `#${i + (page - 1) * 10 + 1} ${player.name}`;
                 if (i & 1) {
@@ -187,7 +188,7 @@ export default {
                 })
                 .addFields(embedFields!);
 
-            return interaction.editReply({ embeds: [embed] });
+            return interaction.editReply({ content: "", embeds: [embed] });
         }
 
         const embed = new EmbedBuilder()
@@ -201,6 +202,6 @@ export default {
             .addFields(embedFields!)
             .setColor("Random");
 
-        return interaction.editReply({ embeds: [embed] });
+        return interaction.editReply({ content: "", embeds: [embed] });
     },
 };
