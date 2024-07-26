@@ -57,6 +57,12 @@ export default {
                     "\u200b```"
             );
 
-        interaction.reply({ embeds: [embed] });
+        const content = player.hasStatPoints()
+            ? `You have available statpoints you can use to improve your attributes! You can increase them with the /attributes command`
+            : ``;
+
+        console.log(content);
+
+        interaction.reply({ embeds: [embed], content });
     },
 };

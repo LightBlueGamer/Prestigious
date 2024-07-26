@@ -1,6 +1,6 @@
 {
   "name": "prestigious",
-  "version": "4.0.0",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run build && node --es-module-specifier-resolution=node dist/index.js",
@@ -12,7 +12,7 @@
   },
   "author": "Tim",
   "license": "ISC",
-  "description": "",
+  "description": "Prestigious is an RPG bot designed to be a hard grind, good luck!",
   "type": "module",
   "dependencies": {
     "@joshdb/core": "^1.2.7",

@@ -499,6 +499,7 @@ export class Player {
      */
     increaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
+        if(attribute.value === 10) return this;
         if (attribute) attribute.value += amount;
         return this;
     }
@@ -516,6 +517,7 @@ export class Player {
      */
     decreaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
+        if(attribute.value === 0) return this;
         if (attribute) attribute.value -= amount;
         return this;
     }
@@ -535,6 +537,26 @@ export class Player {
         const attribute = this.getAttribute(name);
         if (attribute) attribute.value = value;
         return this;
+    }
+
+    /**
+     * Checks if the player has any stat points left.
+     * A player has stat points when their level is greater than 1.
+     *
+     * @returns {boolean} `true` if the player has stat points, `false` otherwise.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.level = 2;
+     * player.data.statPoints = 10;
+     * console.log(player.hasStatPoints()); // Output: true
+     *
+     * player.data.level = 1;
+     * player.data.statPoints = 0;
+     * console.log(player.hasStatPoints()); // Output: false
+     */
+    hasStatPoints(): boolean {
+        return this.data.statPoints > 0;
     }
 
     // !!!OBS!!! Internal Functions !!!OBS!!!
@@ -612,5 +634,7 @@ export namespace Player {
         statistics: Statistic[];
         class: Class | null;
         attributes: Attribute[];
+        statPoints: number;
+        prestigePoints: number;
     }
 }
