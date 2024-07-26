@@ -1,7 +1,9 @@
 import type { Client } from "discord.js";
 import { db } from "../../db/index.js";
 import {
+    generateAttributes,
     generateData,
+    generatePrestigeAttributes,
     numberToWord,
     randomNumber,
 } from "../utils/functions.js";
@@ -15,6 +17,7 @@ import { Statistic } from "./Statistic.js";
 import type { Class } from "./Class.js";
 import type { Attribute } from "./Attribute.js";
 import { lootboxes } from "../resources/lootboxes.js";
+import type { PrestigeAttribute } from "./PrestigeAttribute.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -50,7 +53,8 @@ export class Player {
      * // player.data.xp will be increased by a random amount between 10 and 50.
      */
     increaseXP(minAmount: number, maxAmount: number): Player {
-        const randomAmount = randomNumber(minAmount, maxAmount);
+        const { expBoost } = this.getPrestigeBoosts();
+        const randomAmount = Math.floor(randomNumber(minAmount, maxAmount) * expBoost);
         this.addStatistic("Experience earned", randomAmount);
         this.data.xp += randomAmount;
         return this;
@@ -70,7 +74,8 @@ export class Player {
      * // player.data.balance will be increased by a random amount between 10 and 50.
      */
     increaseBalance(minAmount: number, maxAmount: number): Player {
-        const randomAmount = randomNumber(minAmount, maxAmount);
+        const { moneyBoost } = this.getPrestigeBoosts();
+        const randomAmount = Math.floor(randomNumber(minAmount, maxAmount) * moneyBoost);
         this.addStatistic("Money earned", randomAmount);
         this.data.balance += randomAmount;
         return this;
@@ -137,11 +142,7 @@ export class Player {
      * // requiredXP === 143
      */
     xpRequired(): number {
-        return Math.floor(
-            7 *
-                (6 * Math.pow(this.data.level + 1, 4) -
-                    5 * (this.data.level + 1))
-        );
+        return Math.floor(7 * (6 * Math.pow(this.data.level + 1, 3) - 3 * (this.data.level + 1)));
     }
 
     /**
@@ -441,16 +442,74 @@ export class Player {
 
     /**
      * Performs a prestige action for the player.
-     * Resets the player's level, XP, and increments the prestige count by 1.
+     * Resets the player's level, XP, balance, prestige points, prestige count, and attributes.
      * Adds a statistic to the player's statistics list indicating the number of times prestiged.
      *
-     * @returns {Player} - Returns the instance of the Player class for method chaining.
+     * @returns The updated Player instance.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.level = 20;
+     * player.data.xp = 1000;
+     * player.data.balance = 500;
+     * player.data.prestigePoints = 10;
+     * player.data.prestige = 2;
+     * player.data.attributes = [...];
+     *
+     * player.prestige();
+     * // The player's level, XP, balance, prestige points, prestige count, and attributes are reset.
+     * // A statistic with the name 'Times Prestiged' is added to the player's statistics list.
      */
     prestige() {
-        this.data.level = 1;
-        this.data.xp = 0;
-        this.data.prestige++;
+        this.reset(true);
         this.addStatistic("Times Prestiged");
+        return this;
+    }
+
+    /**
+     * Resets the player's data based on the provided reset options.
+     *
+     * @param prestigeReset - If `true`, resets the player's level, XP, balance, prestige points, prestige count, and attributes.
+     * @param fullReset - If `true`, resets all player's data to the initial state, including prestige points, prestige count, and attributes.
+     *
+     * @returns The updated Player instance.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.level = 20;
+     * player.data.xp = 1000;
+     * player.data.balance = 500;
+     * player.data.prestigePoints = 10;
+     * player.data.prestige = 2;
+     * player.data.attributes = [...];
+     *
+     * player.reset(true);
+     * // The player's level, XP, balance, prestige points, prestige count, and attributes are reset.
+     *
+     * player.reset(false, true);
+     * // All player's data is reset to the initial state, including prestige points, prestige count, and attributes.
+     */
+    reset(prestigeReset: boolean = false, fullReset: boolean = false) {
+        if (fullReset) {
+            this.data = generateData();
+        } else if(prestigeReset) { 
+            this.data.xp = 0;
+            this.data.level = 0;
+            this.data.balance = 0;
+            this.data.prestigePoints++;
+            this.data.prestige++;
+            this.data.attributes = generateAttributes();
+            this.data.statPoints = 18;
+        } else {
+            this.data.xp = 0;
+            this.data.level = 0;
+            this.data.balance = 0;
+            this.data.prestigePoints = 0;
+            this.data.prestige = 0;
+            this.data.attributes = generateAttributes();
+            this.data.prestigeAttributes = generatePrestigeAttributes();
+            this.data.statPoints = 18;
+        }
         return this;
     }
 
@@ -559,6 +618,149 @@ export class Player {
         return this.data.statPoints > 0;
     }
 
+    /**
+     * Retrieves the prestige boosts for experience and money.
+     * The prestige boosts are calculated based on the values of the 'Experience Boost' and 'Money Boost' attributes.
+     * The boosts are calculated by adding the attribute values to 1 and dividing by 10.
+     *
+     * @returns An object containing the prestige boosts for experience and money.
+     * @property {number} ExpBoost - The prestige boost for experience, calculated as 1 + (Experience Boost attribute value / 10).
+     * @property {number} MoneyBoost - The prestige boost for money, calculated as 1 + (Money Boost attribute value / 10).
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.prestigeAttributes = [
+     *     new PrestigeAttribute('Experience Boost', 20),
+     *     new PrestigeAttribute('Money Boost', 15),
+     * ];
+     * const boosts = player.getPrestigeBoosts();
+     * // boosts = { ExpBoost: 3, MoneyBoost: 2.5 }
+     */
+    getPrestigeBoosts() {
+        const attributes = this.data.prestigeAttributes;
+        const [experienceBoost, moneyBoost] = attributes;
+        return { expBoost: 1 + (experienceBoost.value / 10), moneyBoost: 1 + (moneyBoost.value / 10) };
+    }
+
+    /**
+     * Retrieves the prestige attributes of the player.
+     * @returns An array of PrestigeAttribute instances representing the player's prestige attributes.
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.prestigeAttributes = [
+     *     new PrestigeAttribute('Experience Boost', 20),
+     *     new PrestigeAttribute('Money Boost', 15),
+     * ];
+     * const prestigeAttributes = player.getPrestigeAttributes();
+     * // prestigeAttributes = [
+     * //     { name: 'Experience Boost', value: 20 },
+     * //     { name: 'Money Boost', value: 15 },
+     * // ]
+     */
+    getPrestigeAttributes() {
+        return this.data.prestigeAttributes;
+    }
+
+    /**
+     * Retrieves a prestige attribute from the player's prestige attributes list based on the provided name.
+     * The search is case-insensitive and matches the beginning of the attribute's name.
+     * If no attribute is found, it returns `undefined`.
+     *
+     * @param name - The name of the prestige attribute to retrieve.
+     * @returns The prestige attribute with the matching name, or `undefined` if no attribute is found.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.prestigeAttributes = [
+     *     new PrestigeAttribute('Experience Boost', 20),
+     *     new PrestigeAttribute('Money Boost', 15),
+     * ];
+     * const experienceBoostAttribute = player.getPrestigeAttribute('Experience Boost');
+     * // experienceBoostAttribute = { name: 'Experience Boost', value: 20 }
+     */
+    getPrestigeAttribute(name: string): PrestigeAttribute {
+        return this.getPrestigeAttributes().find((attribute) => attribute.name.toLowerCase() === name.toLowerCase())!;
+    }
+
+    /**
+     * Increases the value of the prestige attribute with the specified name by the provided amount.
+     * If the attribute is found, its value is updated and the updated Player instance is returned.
+     * If the attribute is not found, the function does nothing and returns the original Player instance.
+     *
+     * @param name - The name of the prestige attribute to increase.
+     * @param amount - The amount to increase the attribute's value by. Default is 1.
+     *
+     * @returns The updated Player instance with the increased prestige attribute value.
+     *          If the attribute is not found, the original Player instance is returned.
+     */
+    increasePrestigeAttribute(name: string, amount: number = 1): Player {
+        const attribute = this.getPrestigeAttribute(name);
+        if (attribute) attribute.value += amount;
+        return this;
+    }
+
+    /**
+     * Decreases the value of the prestige attribute with the specified name by the provided amount.
+     * If the attribute is found and its value is greater than 0, its value is updated and the updated Player instance is returned.
+     * If the attribute is not found or its value is 0, the function does nothing and returns the original Player instance.
+     *
+     * @param name - The name of the prestige attribute to decrease.
+     * @param amount - The amount to decrease the attribute's value by. Default is 1.
+     *
+     * @returns The updated Player instance with the decreased prestige attribute value.
+     *          If the attribute is not found or its value is 0, the original Player instance is returned.
+     */
+    decreasePrestigeAttribute(name: string, amount: number = 1) {
+        const attribute = this.getPrestigeAttribute(name);
+        if (attribute && attribute.value > 0) attribute.value -= amount;
+        return this;
+    }
+
+    /**
+     * Sets the value of the prestige attribute with the specified name to the provided value.
+     * If the attribute is found, its value is updated and the updated Player instance is returned.
+     * If the attribute is not found, the function does nothing and returns the original Player instance.
+     *
+     * @param name - The name of the prestige attribute to set.
+     * @param value - The value to set the attribute's value to.
+     *
+     * @returns The updated Player instance with the set prestige attribute value.
+     *          If the attribute is not found, the original Player instance is returned.
+     */
+    setPrestigeAttribute(name: string, value: number) {
+        const attribute = this.getPrestigeAttribute(name);
+        if (attribute) attribute.value = value;
+        return this;
+    }
+
+    /**
+     * Retrieves the number of stat points the player has.
+     *
+     * @returns The number of stat points the player has.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.statPoints = 10;
+     * console.log(player.getStatPoints()); // Output: 10
+     */
+    getStatPoints() {
+        return this.data.statPoints;
+    }
+
+    /**
+     * Retrieves the number of prestige points the player has.
+     *
+     * @returns The number of prestige points the player has.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.prestigePoints = 10;
+     * console.log(player.getPrestigePoints()); // Output: 10
+     */
+    getPrestigePoints() {
+        return this.data.prestigePoints;
+    }
+
     // !!!OBS!!! Internal Functions !!!OBS!!!
 
     /**
@@ -636,5 +838,6 @@ export namespace Player {
         attributes: Attribute[];
         statPoints: number;
         prestigePoints: number;
+        prestigeAttributes: PrestigeAttribute[];
     }
 }

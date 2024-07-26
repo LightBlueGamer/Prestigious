@@ -1,7 +1,7 @@
 import { Item } from "./Item.js";
 
 /**
- * Represents an item that can be found in a lootbox.
- * This class extends the base `Item` class.
+ * A class representing a lootbox item, which extends the base {@link Item} class.
+ * This class can be used to create instances of lootbox items with specific properties.
  */
 export class LootboxItem extends Item {}

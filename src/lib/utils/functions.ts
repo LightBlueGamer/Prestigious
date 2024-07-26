@@ -3,6 +3,7 @@ import type { Item } from "../classes/Item.js";
 import type { Player } from "../classes/Player.js";
 import { backpacks } from "../resources/backpacks.js";
 import { Attribute } from "../library.js";
+import { PrestigeAttribute } from "../classes/PrestigeAttribute.js";
 
 /**
  * A function to generate the default player data.
@@ -28,6 +29,7 @@ export function generateData(): Player.Data {
         attributes: generateAttributes(),
         statPoints: 18,
         prestigePoints : 0,
+        prestigeAttributes: generatePrestigeAttributes(),
     };
 }
 
@@ -216,4 +218,24 @@ export function attributeBar(amount: number): string {
         ":blue_square:".repeat(amount) +
         ":black_large_square:".repeat(10 - amount)
     );
+}
+
+/**
+ * Generates an array of default prestige attributes for a player.
+ *
+ * @returns {PrestigeAttribute[]} - An array of PrestigeAttribute objects, each representing a default prestige attribute.
+ *                                  The attributes are: ExperienceBoost and MoneyBoost.
+ *                                  All attributes are initialized with a value of 0.
+ *
+ * @example
+ * ```typescript
+ * const prestigeAttributes = generatePrestigeAttributes();
+ * console.log(prestigeAttributes); // [PrestigeAttribute { name: 'ExperienceBoost', value: 0 }, PrestigeAttribute { name: 'MoneyBoost', value: 0 }]
+ * ```
+ */
+export function generatePrestigeAttributes(): PrestigeAttribute[] {
+    return [
+        new PrestigeAttribute("ExperienceBoost", 0),
+        new PrestigeAttribute("MoneyBoost", 0)
+    ];
 }
