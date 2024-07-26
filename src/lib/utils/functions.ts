@@ -4,6 +4,7 @@ import type { Player } from "../classes/Player.js";
 import { backpacks } from "../resources/backpacks.js";
 import { Attribute } from "../library.js";
 import { PrestigeAttribute } from "../classes/PrestigeAttribute.js";
+import { items as cItems } from "../resources/items.js";
 
 /**
  * A function to generate the default player data.
@@ -28,7 +29,7 @@ export function generateData(): Player.Data {
         class: null,
         attributes: generateAttributes(),
         statPoints: 18,
-        prestigePoints : 0,
+        prestigePoints: 0,
         prestigeAttributes: generatePrestigeAttributes(),
     };
 }
@@ -236,6 +237,77 @@ export function attributeBar(amount: number): string {
 export function generatePrestigeAttributes(): PrestigeAttribute[] {
     return [
         new PrestigeAttribute("ExperienceBoost", 0),
-        new PrestigeAttribute("MoneyBoost", 0)
+        new PrestigeAttribute("MoneyBoost", 0),
     ];
+}
+
+/**
+ * Calculates the chance of obtaining a specific item based on its weight compared to all items.
+ *
+ * @param itemName - The name of the item to calculate the chance for.
+ *
+ * @returns A number representing the chance of obtaining the specified item, or null if the item is not found.
+ *          The chance is calculated as the ratio of the item's weight to the total weight of all items,
+ *          multiplied by 100 to get a percentage.
+ *
+ * @example
+ * ```typescript
+ * const chance = calculateItemChance("Example Item");
+ * console.log(chance); // 25 (if Example Item has a weight of 1 and total weight of 4)
+ * ```
+ *
+ * @remarks
+ * If the specified item is not found in the `cItems` array, an error message is logged to the console,
+ * and the function returns null.
+ */
+export function calculateItemChance(itemName: string): number | null {
+    const items = Object.values(cItems);
+    const item = items.find(
+        (i) => i.name.toLowerCase() === itemName.toLowerCase()
+    );
+
+    if (!item) {
+        console.error(`Item "${itemName}" not found.`);
+        return null;
+    }
+
+    const totalWeight = items.reduce((sum, i) => sum + i.weight, 0);
+
+    return (item.weight / totalWeight) * 100;
+}
+
+/**
+ * Formats a number by converting it to a string with a specific number of decimal places.
+ * If the value is zero, it returns '0'.
+ *
+ * @param value - The number to format.
+ *
+ * @returns A string representation of the number with a specific number of decimal places.
+ *          If the value is zero, it returns '0'.
+ *
+ * @example
+ * ```typescript
+ * const formattedNumber = formatNumber(12345.6789);
+ * console.log(formattedNumber); // "12345.68"
+ * ```
+ *
+ * @remarks
+ * The function calculates the magnitude of the number using `Math.log10(Math.abs(value))`.
+ * If the magnitude is greater than or equal to zero, it sets the precision to 2 decimal places.
+ * Otherwise, it calculates the precision as `Math.max(0, -magnitude + 2)`.
+ * Finally, it uses `value.toFixed(precision)` to format the number and returns the result.
+ */
+export function formatNumber(value: number): string {
+    if (value === 0) return "0";
+
+    const magnitude = Math.floor(Math.log10(Math.abs(value)));
+    let precision: number;
+
+    if (magnitude >= 0) {
+        precision = 2;
+    } else {
+        precision = Math.max(0, -magnitude + 2);
+    }
+
+    return value.toFixed(precision);
 }

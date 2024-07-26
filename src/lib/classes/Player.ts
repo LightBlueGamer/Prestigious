@@ -54,7 +54,9 @@ export class Player {
      */
     increaseXP(minAmount: number, maxAmount: number): Player {
         const { expBoost } = this.getPrestigeBoosts();
-        const randomAmount = Math.floor(randomNumber(minAmount, maxAmount) * expBoost);
+        const randomAmount = Math.floor(
+            randomNumber(minAmount, maxAmount) * expBoost
+        );
         this.addStatistic("Experience earned", randomAmount);
         this.data.xp += randomAmount;
         return this;
@@ -75,7 +77,9 @@ export class Player {
      */
     increaseBalance(minAmount: number, maxAmount: number): Player {
         const { moneyBoost } = this.getPrestigeBoosts();
-        const randomAmount = Math.floor(randomNumber(minAmount, maxAmount) * moneyBoost);
+        const randomAmount = Math.floor(
+            randomNumber(minAmount, maxAmount) * moneyBoost
+        );
         this.addStatistic("Money earned", randomAmount);
         this.data.balance += randomAmount;
         return this;
@@ -142,7 +146,11 @@ export class Player {
      * // requiredXP === 143
      */
     xpRequired(): number {
-        return Math.floor(7 * (6 * Math.pow(this.data.level + 1, 3) - 3 * (this.data.level + 1)));
+        return Math.floor(
+            7 *
+                (6 * Math.pow(this.data.level + 1, 3) -
+                    3 * (this.data.level + 1))
+        );
     }
 
     /**
@@ -492,7 +500,7 @@ export class Player {
     reset(prestigeReset: boolean = false, fullReset: boolean = false) {
         if (fullReset) {
             this.data = generateData();
-        } else if(prestigeReset) { 
+        } else if (prestigeReset) {
             this.data.xp = 0;
             this.data.level = 0;
             this.data.balance = 0;
@@ -558,7 +566,7 @@ export class Player {
      */
     increaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
-        if(attribute.value === 10) return this;
+        if (attribute.value === 10) return this;
         if (attribute) attribute.value += amount;
         return this;
     }
@@ -576,7 +584,7 @@ export class Player {
      */
     decreaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
-        if(attribute.value === 0) return this;
+        if (attribute.value === 0) return this;
         if (attribute) attribute.value -= amount;
         return this;
     }
@@ -639,7 +647,10 @@ export class Player {
     getPrestigeBoosts() {
         const attributes = this.data.prestigeAttributes;
         const [experienceBoost, moneyBoost] = attributes;
-        return { expBoost: 1 + (experienceBoost.value / 10), moneyBoost: 1 + (moneyBoost.value / 10) };
+        return {
+            expBoost: 1 + experienceBoost.value / 10,
+            moneyBoost: 1 + moneyBoost.value / 10,
+        };
     }
 
     /**
@@ -679,7 +690,9 @@ export class Player {
      * // experienceBoostAttribute = { name: 'Experience Boost', value: 20 }
      */
     getPrestigeAttribute(name: string): PrestigeAttribute {
-        return this.getPrestigeAttributes().find((attribute) => attribute.name.toLowerCase() === name.toLowerCase())!;
+        return this.getPrestigeAttributes().find(
+            (attribute) => attribute.name.toLowerCase() === name.toLowerCase()
+        )!;
     }
 
     /**

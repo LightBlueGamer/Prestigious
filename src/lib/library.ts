@@ -16,4 +16,4 @@ export { emojis } from "./resources/emojis.js";
 export { items } from "./resources/items.js";
 export { lootboxes } from "./resources/lootboxes.js";
 export * from "./utils/functions.js";
-export { PrestigeAttribute } from './classes/PrestigeAttribute.js'
+export { PrestigeAttribute } from "./classes/PrestigeAttribute.js";

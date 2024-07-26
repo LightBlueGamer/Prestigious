@@ -1,5 +1,12 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { Modules, items, redEmbed, greenEmbed } from "../../lib/library.js";
+import {
+    Modules,
+    items,
+    redEmbed,
+    greenEmbed,
+    calculateItemChance,
+    formatNumber,
+} from "../../lib/library.js";
 
 export default {
     devMode: false,
@@ -33,6 +40,9 @@ export default {
 
         const embed = greenEmbed()
             .setTitle(item.name)
+            .setDescription(
+                `${formatNumber(calculateItemChance(item.name)!)}% to obtain through scavenging.`
+            )
             .addFields([
                 { name: "Size", value: `${item.size}`, inline: true },
                 { name: "Value", value: `$${item.value}`, inline: true },
