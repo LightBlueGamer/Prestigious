@@ -48,9 +48,9 @@ export default {
                 },
                 {
                     name: "Balance",
-                    value: "$"+player.data.balance.toString(),
+                    value: "$" + player.data.balance.toString(),
                     inline: true,
-                }
+                },
             ])
             .setDescription(
                 `${player.data.xp}/${player.xpRequired()} xp\n${player.generateBar()}\n\n**(${player.getBackpackContents().reduce((p, c) => p + c.amount * c.size, 0)}/${player.getBackpack().slots}) Backpack:**\n\`\`\`` +
