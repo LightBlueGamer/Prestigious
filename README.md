@@ -22,6 +22,9 @@ Scavenge for items & lost treasures to either sell or use to reach the top of th
 
 ## V-1.0.0
 
+### B-12
+-   Fixed bug with Scavenging see [Scavenging crashes with full backpack](https://github.com/LightBlueGamer/Prestigious/issues/1)
+
 ### B-6
 -   Minor change to Player class
 
