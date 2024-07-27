@@ -99,7 +99,7 @@ export default {
                 return interaction.reply({
                     content: `You can't increase an attribute with more stat points than you have!`,
                 });
-            if (!player.getAttributes().find((atr) => atr.name === attribute))
+            if (!attr)
                 return interaction.reply({
                     content: `${attribute} is not a valid attribute!`,
                 });
