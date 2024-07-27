@@ -569,7 +569,10 @@ export class Player {
     increaseAttribute(name: string, amount: number): Player {
         const attribute = this.getAttribute(name);
         if (attribute.value === 10) return this;
-        if (attribute) attribute.value += amount;
+        if (attribute) {
+            attribute.value += amount;
+            this.data.statPoints -= amount;
+        }
         return this;
     }
 
@@ -710,7 +713,10 @@ export class Player {
      */
     increasePrestigeAttribute(name: string, amount: number = 1): Player {
         const attribute = this.getPrestigeAttribute(name);
-        if (attribute) attribute.value += amount;
+        if (attribute) {
+            attribute.value += amount;
+            this.data.prestigePoints -= amount;
+        }
         return this;
     }
 
