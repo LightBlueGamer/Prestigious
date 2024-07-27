@@ -22,24 +22,35 @@ Scavenge for items & lost treasures to either sell or use to reach the top of th
 
 ## V-1.0.0
 
+### B-13
+
+-   Bot edits status when it's added to a new server
+
 ### B-12
+
 -   Fixed bug with Scavenging see [Scavenging crashes with full backpack](https://github.com/LightBlueGamer/Prestigious/issues/1)
 
 ### B-6
+
 -   Minor change to Player class
 
 ### B-5
+
 -   Fixed bug causing you to lose backpack slots when adding items to it.
 
 ### B-4
+
 -   Fixed error in deployment file
 
 ### B-3
+
 -   Moved the version handling to functions file
 -   Added botinfo command
 
 ### B-2
+
 -   Bug fixes
 
 ### B-1
+
 -   Public release of the bot!
