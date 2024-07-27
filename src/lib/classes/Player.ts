@@ -55,7 +55,7 @@ export class Player {
     increaseXP(minAmount: number, maxAmount: number): Player {
         const { expBoost } = this.getPrestigeBoosts();
         const randomAmount = Math.floor(
-            randomNumber(minAmount, maxAmount) * expBoost
+            randomNumber(minAmount, maxAmount) * (1 + (.0333 * this.getAttribute("int").value)) * expBoost
         );
         this.addStatistic("Experience earned", randomAmount);
         this.data.xp += randomAmount;
