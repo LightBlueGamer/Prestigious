@@ -28,7 +28,7 @@ export default {
                             { name: "Intelligence", value: "intelligence" },
                             { name: "Constitution", value: "constitution" },
                             { name: "Charisma", value: "charisma" },
-                            { name: "Wisdom", value: "wisom" },
+                            { name: "Wisdom", value: "wisdom" },
                         ])
                 )
                 .addNumberOption((option) =>
