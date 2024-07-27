@@ -74,19 +74,22 @@ export default {
         const attributes = player.getAttributes();
         const subcommand = options.getSubcommand();
 
-        const embed = randomEmbed()
-            .setTitle(`${user.username}'s attributes`)
-            .setDescription(
-                "\u200b" +
-                    attributes
-                        .map(
-                            (atr) => `${atr.name}:\n${attributeBar(atr.value)}`
-                        )
-                        .join("\n\n")
-            );
+        function generateEmbed() {
+            return randomEmbed()
+                .setTitle(`${user.username}'s attributes`)
+                .setDescription(
+                    "\u200b" +
+                        attributes
+                            .map(
+                                (atr) =>
+                                    `${atr.name}:\n${attributeBar(atr.value)}`
+                            )
+                            .join("\n\n")
+                );
+        }
 
         if (subcommand === "show")
-            return interaction.reply({ embeds: [embed] });
+            return interaction.reply({ embeds: [generateEmbed()] });
         else if (subcommand === "increase") {
             const attribute = options.getString("attribute", true);
             const amount = options.getNumber("amount") || 1;
@@ -106,7 +109,7 @@ export default {
             player.increaseAttribute(attribute, amount).save();
             return interaction.reply({
                 content: `Your ${attr.name} is now ${attr.value}!`,
-                embeds: [embed],
+                embeds: [generateEmbed()],
             });
         } else if (subcommand === "prestige") {
             const attribute = options.getString("attribute", true);
@@ -126,6 +129,6 @@ export default {
             return interaction.reply({
                 content: `Your ${player.getPrestigeAttribute(attribute).name} is now ${player.getPrestigeAttribute(attribute).value}!`,
             });
-        } else return interaction.reply({ embeds: [embed] });
+        } else return interaction.reply({ embeds: [generateEmbed()] });
     },
 };
