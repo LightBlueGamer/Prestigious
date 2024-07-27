@@ -22,6 +22,9 @@ Scavenge for items & lost treasures to either sell or use to reach the top of th
 
 ## V-1.0.0
 
+### B-4
+-   Fixed error in deployment file
+
 ### B-3
 -   Moved the version handling to functions file
 -   Added botinfo command
