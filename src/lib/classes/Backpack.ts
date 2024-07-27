@@ -63,7 +63,7 @@ export class Backpack {
             usedSlots += item.size;
         }
 
-        return (this.slots -= usedSlots);
+        return this.slots - usedSlots;
     }
 
     /**

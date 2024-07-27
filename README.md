@@ -22,6 +22,9 @@ Scavenge for items & lost treasures to either sell or use to reach the top of th
 
 ## V-1.0.0
 
+### B-5
+-   Fixed bug causing you to lose backpack slots when adding items to it.
+
 ### B-4
 -   Fixed error in deployment file
 
