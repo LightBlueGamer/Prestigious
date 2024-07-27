@@ -24,7 +24,11 @@ export default {
         const player = await Player.get(user.id, client);
         const backpack = player.getBackpack();
 
-        if(backpack.getFreeSpace() <= 0) return interaction.reply({content: "You can't scavenge because you have no free space in your backpack!"})
+        if (backpack.getFreeSpace() <= 0)
+            return interaction.reply({
+                content:
+                    "You can't scavenge because you have no free space in your backpack!",
+            });
 
         if (!cooldown.has(user.id)) {
             const itemList = scavenge.filter(
