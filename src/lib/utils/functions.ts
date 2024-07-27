@@ -5,6 +5,9 @@ import { backpacks } from "../resources/backpacks.js";
 import { Attribute } from "../library.js";
 import { PrestigeAttribute } from "../classes/PrestigeAttribute.js";
 import { items as cItems } from "../resources/items.js";
+import * as fs from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 /**
  * A function to generate the default player data.
@@ -310,4 +313,29 @@ export function formatNumber(value: number): string {
     }
 
     return value.toFixed(precision);
+}
+
+/**
+ * Retrieves the data from the project's package.json file.
+ *
+ * @returns {PackageJson} - The parsed JSON data from the package.json file.
+ *
+ * @remarks
+ * This function reads the package.json file located in the root directory of the project.
+ * It uses the `fs.readFileSync` method to read the file's content as a UTF-8 string.
+ * Then, it uses `JSON.parse` to parse the string into a JavaScript object, which is returned.
+ *
+ * @example
+ * ```typescript
+ * const packageData = getPackageJSONData();
+ * console.log(packageData.name); // "your-project-name"
+ * console.log(packageData.version); // "1.0.0"
+ * ```
+ */
+export function getPackageJSONData(): PackageJson {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const packageJsonPath = join(__dirname, "../../..", "package.json");
+    const data = fs.readFileSync(packageJsonPath, "utf-8");
+    return JSON.parse(data);
 }
