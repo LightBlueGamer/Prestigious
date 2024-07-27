@@ -16,7 +16,7 @@
       },
       "exec_mode": "fork",
       "max_memory_restart": "2G",
-      "pre-setup": "npm run build"
+      "pre-start": "npm run build"
     }
   ]
 }
