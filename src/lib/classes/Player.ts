@@ -549,7 +549,7 @@ export class Player {
      */
     getAttribute(name: string): Attribute {
         return this.getAttributes().find((attr) =>
-            attr.name.toLowerCase().startsWith(name)
+            attr.name.toLowerCase().startsWith(name.toLowerCase())
         )!;
     }
 
