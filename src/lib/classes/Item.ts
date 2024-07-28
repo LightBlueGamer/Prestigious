@@ -1,3 +1,7 @@
+import { recipes } from "../resources/recipes";
+import type { Recipe } from "./Recipe";
+import { RecipeResult } from "./RecipeResult";
+
 /**
  * Represents an item in the game.
  *
@@ -38,5 +42,28 @@ export class Item {
         this.sell = sell;
         this.canScavenge = canScavenge;
         this.inLootbox = inLootbox;
+    }
+
+    /**
+     * Checks if the current item can be crafted using any available recipe.
+     *
+     * @returns {boolean} - Returns `true` if the item can be crafted, `false` otherwise.
+     *
+     * @remarks
+     * This function iterates through all available recipes and checks if the item's name matches
+     * the result item's name (case-insensitive). It supports both `Item` and `RecipeResult` types as recipe results.
+     *
+     * @example
+     * ```typescript
+     * const item = new Item("Stone Hatchet", 1, 10, 5);
+     * console.log(item.isCraftable()); // Output: true (if there's a recipe that crafts a "Stone Hatchet")
+     * ```
+     */
+    isCraftable(): boolean {
+        return Object.values(recipes).some((recipe: Recipe) => {
+            if(recipe.result instanceof Item) return recipe.result.name.toLowerCase() === this.name.toLowerCase();
+            else if(recipe.result instanceof RecipeResult) return recipe.result.item.name.toLowerCase() === this.name.toLowerCase();
+            return false;
+        })
     }
 }
