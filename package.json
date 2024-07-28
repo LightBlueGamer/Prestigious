@@ -7,8 +7,8 @@
     "deploy": "npm run build && node --es-module-specifier-resolution=node dist/bot/deploy.js",
     "compile": "tsc --build --verbose",
     "prettier": "prettier src --write",
-    "build": "npm run prettier && npm run compile && npx typedoc --options typedoc.json",
-    "docs": "npm run build && npx http-server docs/"
+    "build": "npm run prettier && npm run compile",
+    "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server docs/"
   },
   "author": "Tim",
   "license": "ISC",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@mxssfd/typedoc-theme": "^1.1.6",
     "@sapphire/ts-config": "^4.0.1",
+    "@types/express": "^4.17.21",
     "prettier": "^3.3.3",
     "typedoc": "^0.26.5",
     "typedoc-plugin-markdown": "^4.2.3"
