@@ -1,6 +1,6 @@
 {
   "name": "prestigious",
-  "version": "1.0.0-16",
+  "version": "1.0.0-17",
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run build && node --es-module-specifier-resolution=node dist/index.js",
@@ -8,7 +8,7 @@
     "compile": "tsc --build --verbose",
     "prettier": "prettier src --write",
     "build": "npm run prettier && npm run compile",
-    "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server docs/"
+    "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server --port 3334 docs/"
   },
   "author": "Tim",
   "license": "ISC",
