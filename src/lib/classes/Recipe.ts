@@ -18,17 +18,17 @@ export class Recipe {
     /**
      * The list of ingredients required to create the recipe result.
      *
-     * @type {Ingredient[]}
+     * @type {(Ingredient | Item)[]}
      */
-    ingredients: Ingredient[];
+    ingredients: (Ingredient | Item)[];
 
     /**
      * Constructs a new instance of the Recipe class.
      *
      * @param {Item | RecipeResult} result - The item or recipe result that the recipe produces.
-     * @param {Ingredient[]} ingredients - The list of ingredients required to create the recipe result.
+     * @param {(Ingredient | Item)[]} ingredients - The list of ingredients required to create the recipe result.
      */
-    constructor(result: Item | RecipeResult, ingredients: Ingredient[]) {
+    constructor(result: Item | RecipeResult, ingredients: (Ingredient | Item)[]) {
         this.result = result;
         this.ingredients = ingredients;
     }

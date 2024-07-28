@@ -1,9 +1,13 @@
+import { CraftableItem } from "../classes/CraftableItem.js";
 import { Item } from "../classes/Item.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
 
 export const items = {
+    
+    // General Items
     Pebble: new Item("Pebble", 1, 1, 10000000),
     Twig: new Item("Twig", 1, 2, 9500000),
+    Stick: new Item("Stick", 1, 4, 9250000),
     Fibers: new Item("Fibers", 1, 3, 9500000),
     Bark: new Item("Bark", 1, 4, 9250000),
     Rock: new Item("Rock", 1, 5, 9250000),
@@ -19,9 +23,11 @@ export const items = {
     Femur: new Item("Femur", 2, 12, 5000000),
     Log: new Item("Log", 2, 16, 4300000),
 
+    // Treasures
     MinorGemstone: new Item("Minor Gemstone", 1, 1250, 22000, false),
     MajorGemstone: new Item("Major Gemstone", 2, 5000, 1000, false),
 
+    // Lootboxes
     CommonLootboxItem: new LootboxItem(
         "Common Lootbox",
         2,
@@ -32,4 +38,7 @@ export const items = {
         true,
         false
     ),
+
+    // Craftables
+    StoneHatchetItem: new CraftableItem("Stone Hatchet", 2, 225, 0),
 };
