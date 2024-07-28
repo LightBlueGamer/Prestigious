@@ -1,0 +1,35 @@
+import type { Ingredient } from "./Ingredient";
+import type { Item } from "./Item";
+import type { RecipeResult } from "./RecipeResult";
+
+/**
+ * Represents a recipe that can produce an item or a recipe result.
+ *
+ * @class Recipe
+ */
+export class Recipe {
+    /**
+     * The item or recipe result that the recipe produces.
+     *
+     * @type {Item | RecipeResult}
+     */
+    result: Item | RecipeResult;
+
+    /**
+     * The list of ingredients required to create the recipe result.
+     *
+     * @type {Ingredient[]}
+     */
+    ingredients: Ingredient[];
+
+    /**
+     * Constructs a new instance of the Recipe class.
+     *
+     * @param {Item | RecipeResult} result - The item or recipe result that the recipe produces.
+     * @param {Ingredient[]} ingredients - The list of ingredients required to create the recipe result.
+     */
+    constructor(result: Item | RecipeResult, ingredients: Ingredient[]) {
+        this.result = result;
+        this.ingredients = ingredients;
+    }
+}

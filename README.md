@@ -20,6 +20,16 @@ Find lootboxes while scavenging to get random rewards to help you reach the top 
 
 Scavenge for items & lost treasures to either sell or use to reach the top of the leaderboard
 
+### Crafting
+
+Craft new items with resources gained from scavenging
+
+## V-1.1.0
+
+### B-1
+
+-   Added Recipe, RecipeResult and Ingredient classes
+
 ## V-1.0.0
 
 ### B-13
