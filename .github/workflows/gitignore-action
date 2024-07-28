@@ -1,0 +1,3 @@
+# .github/workflows/gitignore-action
+# Ignore nothing (allow pushing docs/)
+!docs/
