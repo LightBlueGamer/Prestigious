@@ -26,6 +26,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-7
+
+-   Added Equipment and classes for different types of Equipment
+
 ### B-6
 
 -   Added craft command

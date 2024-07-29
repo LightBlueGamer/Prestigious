@@ -1,3 +1,4 @@
+import { recipes } from "../library.js";
 import { Item } from "./Item.js";
 
 /**
@@ -21,5 +22,7 @@ export class CraftableItem extends Item {
         sell: boolean = true
     ) {
         super(name, size, value, weight, false, sell, false, false);
+        const recipe = Object.values(recipes).find(r => r.getResultItem().name.toLowerCase() === name.toLowerCase())!;
+        this.value = recipe.getIngredients().reduce((acc, i) => acc + i.item.value, 0)
     }
 }
