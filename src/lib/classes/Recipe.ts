@@ -1,7 +1,7 @@
 import type { BackpackItem } from "./BackpackItem.js";
 import { Ingredient } from "./Ingredient.js";
 import { Item } from "./Item.js";
-import type { RecipeResult } from "./RecipeResult.js";
+import { RecipeResult } from "./RecipeResult.js";
 
 /**
  * Represents a recipe that can produce an item or a recipe result.
@@ -46,6 +46,17 @@ export class Recipe {
      */
     getResultItem() {
         return this.result instanceof Item ? this.result : this.result.item;
+    }
+
+    /**
+     * Retrieves the amount of the recipe result item that the recipe produces.
+     * If the recipe result is an instance of RecipeResult, the amount property of the result is returned.
+     * Otherwise, a default amount of 1 is returned.
+     *
+     * @returns {number} - The amount of the recipe result item that the recipe produces.
+     */
+    getResultAmount() {
+        return this.result instanceof RecipeResult ? this.result.amount : 1;
     }
 
     /**

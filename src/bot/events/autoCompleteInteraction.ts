@@ -1,6 +1,6 @@
 import type { AutocompleteInteraction } from "discord.js";
 import { commands } from "../../index.js";
-import { Item, Player, items, recipes } from "../../lib/library.js";
+import { Player, items, recipes } from "../../lib/library.js";
 
 export default {
     name: "autoCompleteInteraction",
@@ -77,10 +77,20 @@ export default {
             case "recipe":
                 {
                     choices = Object.values(recipes).map((recipe) => {
-                        const name =
-                            recipe.result instanceof Item
-                                ? recipe.result.name
-                                : recipe.result.item.name;
+                        const name = recipe.getResultItem().name;
+                        return {
+                            name,
+                            value: name,
+                        };
+                    });
+                }
+
+                break;
+
+            case "craft":
+                {
+                    choices = Object.values(recipes).map((recipe) => {
+                        const name = recipe.getResultItem().name;
                         return {
                             name,
                             value: name,

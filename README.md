@@ -26,6 +26,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-6
+
+-   Added craft command
+
 ### B-5
 
 -   Added recipe command

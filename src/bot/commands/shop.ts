@@ -69,7 +69,7 @@ export default {
 
         let embed: EmbedBuilder = greenEmbed();
 
-        if (player.getBackpack().slots < item.size * amount) {
+        if (player.getBackpack().getFreeSpace() < item.size * amount) {
             embed = redEmbed().setTitle(
                 "You don't have enough space in your backpack to buy this item!"
             );
