@@ -18,6 +18,12 @@ import type { Class } from "./Class.js";
 import type { Attribute } from "./Attribute.js";
 import { lootboxes } from "../resources/lootboxes.js";
 import type { PrestigeAttribute } from "./PrestigeAttribute.js";
+import type { Equipment } from "./Equipment.js";
+import type { Weapon } from "./Weapon.js";
+import type { Shield } from "./Shield.js";
+import type { Helmet } from "./Helmet.js";
+import type { Cuirass } from "./Cuirass.js";
+import type { LegArmor } from "./LegArmor.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -782,6 +788,130 @@ export class Player {
         return this.data.prestigePoints;
     }
 
+    /**
+     * Retrieves the equipment of the player.
+     * @returns The equipment of the player, which is an object containing the player's equipped items.
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const playerEquipment = player.getEquipment();
+     * // playerEquipment = {
+     * //     weapon: 'Sword',
+     * //     armor: 'Leather Armor',
+     * //     accessory: 'Ring of Protection',
+     * // }
+     */
+    getEquipment() {
+        return this.data.equipment;
+    }
+
+    /**
+     * Sets the equipped weapon of the player.
+     *
+     * @param weapon - The weapon to be equipped.
+     * @returns The updated Player instance with the equipped weapon.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const sword = new Weapon('Sword', 10);
+     * player.setWeapon(sword);
+     * // player.getEquipment().weapon is now the 'Sword' weapon.
+     */
+    setWeapon(weapon: Weapon) {
+        this.getEquipment().weapon = weapon;
+        return this;
+    }
+
+    /**
+     * Retrieves the equipped weapon of the player.
+     * @returns The equipped weapon of the player.
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const sword = new Weapon('Sword', 10);
+     * player.setWeapon(sword);
+     * // player.getWeapon() is now the 'Sword' weapon.
+     */
+    getWeapon() {
+        return this.getEquipment().weapon;
+    }
+
+    /**
+     * Sets the equipped shield of the player.
+     * @param shield - The shield to be equipped.
+     * @returns The updated Player instance with the equipped shield.
+     */
+    setShield(shield: Shield) {
+        this.getEquipment().shield = shield;
+        return this;
+    }
+
+    /**
+     * Retrieves the equipped shield of the player.
+     * @returns The equipped shield of the player.
+     */
+    getShield() {
+        return this.getEquipment().shield;
+    }
+
+    /**
+     * Sets the equipped helmet of the player.
+     *
+     * @param helmet - The helmet to be equipped.
+     * @returns The updated Player instance with the equipped helmet.
+     */
+    setHelmet(helmet: Helmet) {
+        this.getEquipment().helmet = helmet;
+        return this;
+    }
+
+    /**
+     * Retrieves the equipped helmet of the player.
+     *
+     * @returns The equipped helmet of the player.
+     */
+    getHelmet() {
+        return this.getEquipment().helmet;
+    }
+
+    /**
+     * Sets the equipped cuirass of the player.
+     *
+     * @param cuirass - The cuirass to be equipped.
+     * @returns The updated Player instance with the equipped cuirass.
+     */
+    setCuirass(cuirass: Cuirass) {
+        this.getEquipment().cuirass = cuirass;
+        return this;
+    }
+
+    /**
+     * Retrieves the equipped cuirass of the player.
+     *
+     * @returns The equipped cuirass of the player.
+     */
+    getCuirass() {
+        return this.getEquipment().cuirass;
+    }
+
+    /**
+     * Sets the equipped leg armor of the player.
+     *
+     * @param legArmor - The leg armor to be equipped.
+     * @returns The updated Player instance with the equipped leg armor.
+     */
+    setLegArmor(legArmor: LegArmor) {
+        this.getEquipment().legArmor = legArmor;
+        return this;
+    }
+
+    /**
+     * Retrieves the equipped leg armor of the player.
+     *
+     * @returns The equipped leg armor of the player.
+     */
+    getLegArmor() {
+        return this.getEquipment().legArmor;
+    }
+
     // !!!OBS!!! Internal Functions !!!OBS!!!
 
     /**
@@ -860,5 +990,6 @@ export namespace Player {
         statPoints: number;
         prestigePoints: number;
         prestigeAttributes: PrestigeAttribute[];
+        equipment: Equipment;
     }
 }

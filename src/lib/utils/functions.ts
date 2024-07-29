@@ -11,6 +11,7 @@ import { Attribute } from "../classes/Attribute.js";
 import type { Recipe } from "../classes/Recipe.js";
 import { recipes } from "../resources/recipes.js";
 import { RecipeResult } from "../classes/RecipeResult.js";
+import { Equipment } from "../library.js";
 
 /**
  * A function to generate the default player data.
@@ -37,6 +38,7 @@ export function generateData(): Player.Data {
         statPoints: 18,
         prestigePoints: 0,
         prestigeAttributes: generatePrestigeAttributes(),
+        equipment: new Equipment(),
     };
 }
 

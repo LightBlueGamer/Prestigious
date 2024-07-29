@@ -14,9 +14,9 @@ export class Helmet {
     defense: number;
     attributes: string[];
     constructor(
-        name: string, 
-        type: string[], 
-        defense: number, 
+        name: string,
+        type: string[],
+        defense: number,
         attributes: string[]
     ) {
         this.name = name;

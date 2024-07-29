@@ -8,11 +8,11 @@ import type { Weapon } from "./Weapon.js";
  * Represents a character's equipment.
  */
 export class Equipment {
-    weapon: Weapon;
-    shield: Shield;
-    helmet: Helmet;
-    cuirass: Cuirass;
-    legArmor: LegArmor;
+    weapon: Weapon | null;
+    shield: Shield | null;
+    helmet: Helmet | null;
+    cuirass: Cuirass | null;
+    legArmor: LegArmor | null;
 
     /**
      * Constructs a new instance of Equipment.
@@ -24,11 +24,11 @@ export class Equipment {
      * @param legArmor - The leg armor the character is wearing.
      */
     constructor(
-        weapon: Weapon,
-        shield: Shield,
-        helmet: Helmet,
-        cuirass: Cuirass,
-        legArmor: LegArmor
+        weapon: Weapon | null = null,
+        shield: Shield | null = null,
+        helmet: Helmet | null = null,
+        cuirass: Cuirass | null = null,
+        legArmor: LegArmor | null = null
     ) {
         this.weapon = weapon;
         this.shield = shield;
