@@ -1,4 +1,4 @@
-import type { Item } from "./Item";
+import type { Item } from "./Item.js";
 
 /**
  * Represents an ingredient in a recipe.

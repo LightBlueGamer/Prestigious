@@ -17,3 +17,8 @@ export { items } from "./resources/items.js";
 export { lootboxes } from "./resources/lootboxes.js";
 export * from "./utils/functions.js";
 export { PrestigeAttribute } from "./classes/PrestigeAttribute.js";
+export { CraftableItem } from "./classes/CraftableItem.js";
+export { Ingredient } from "./classes/Ingredient.js";
+export { Recipe } from "./classes/Recipe.js";
+export { RecipeResult } from "./classes/RecipeResult.js";
+export { recipes } from "./resources/recipes.js";

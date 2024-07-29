@@ -1,6 +1,6 @@
-import type { Ingredient } from "./Ingredient";
-import type { Item } from "./Item";
-import type { RecipeResult } from "./RecipeResult";
+import type { Ingredient } from "./Ingredient.js";
+import type { Item } from "./Item.js";
+import type { RecipeResult } from "./RecipeResult.js";
 
 /**
  * Represents a recipe that can produce an item or a recipe result.
@@ -28,7 +28,10 @@ export class Recipe {
      * @param {Item | RecipeResult} result - The item or recipe result that the recipe produces.
      * @param {(Ingredient | Item)[]} ingredients - The list of ingredients required to create the recipe result.
      */
-    constructor(result: Item | RecipeResult, ingredients: (Ingredient | Item)[]) {
+    constructor(
+        result: Item | RecipeResult,
+        ingredients: (Ingredient | Item)[]
+    ) {
         this.result = result;
         this.ingredients = ingredients;
     }

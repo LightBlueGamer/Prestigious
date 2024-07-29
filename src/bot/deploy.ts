@@ -11,6 +11,7 @@ const commands = new Collection<Command.Data.Name, Command>();
 const devCommands = new Collection<Command.Data.Name, Command>();
 
 for (const file of commandFiles) {
+    console.log(file);
     const command: Command = (await import(`./commands/${file}`)).default;
     if (command.devMode) {
         devCommands.set(command.data.name, command);

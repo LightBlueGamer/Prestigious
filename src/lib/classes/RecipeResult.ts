@@ -1,4 +1,4 @@
-import type { Item } from "./Item";
+import type { Item } from "./Item.js";
 
 /**
  * Represents the result of a recipe, containing an item and its amount.

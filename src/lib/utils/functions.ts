@@ -1,13 +1,16 @@
 import { emojis } from "../resources/emojis.js";
-import type { Item } from "../classes/Item.js";
+import { Item } from "../classes/Item.js";
 import type { Player } from "../classes/Player.js";
 import { backpacks } from "../resources/backpacks.js";
-import { Attribute } from "../library.js";
 import { PrestigeAttribute } from "../classes/PrestigeAttribute.js";
 import { items as cItems } from "../resources/items.js";
 import * as fs from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { Attribute } from "../classes/Attribute.js";
+import type { Recipe } from "../classes/Recipe.js";
+import { recipes } from "../resources/recipes.js";
+import { RecipeResult } from "../classes/RecipeResult.js";
 
 /**
  * A function to generate the default player data.
@@ -338,4 +341,40 @@ export function getPackageJSONData(): PackageJson {
     const packageJsonPath = join(__dirname, "../../..", "package.json");
     const data = fs.readFileSync(packageJsonPath, "utf-8");
     return JSON.parse(data);
+}
+
+/**
+ * Checks if a given item is craftable using the available recipes.
+ *
+ * @param item - The item to check for craftability.
+ *
+ * @returns A boolean indicating whether the item is craftable.
+ *          Returns `true` if the item can be crafted using at least one recipe,
+ *          otherwise returns `false`.
+ *
+ * @remarks
+ * This function iterates through all the recipes in the `recipes` object.
+ * For each recipe, it checks if the result item matches the given item.
+ * If the result item is an instance of `Item`, it compares the names in a case-insensitive manner.
+ * If the result item is an instance of `RecipeResult`, it compares the names of the result item and the item property in the `RecipeResult` object.
+ * If a match is found, the function returns `true`.
+ * If no match is found after checking all recipes, the function returns `false`.
+ *
+ * @example
+ * ```typescript
+ * const isCraftable = isCraftable(new Item("Example Item"));
+ * console.log(isCraftable); // true (if there is a recipe that results in "Example Item")
+ * ```
+ */
+export function isCraftable(item: Item): boolean {
+    return Object.values(recipes).some((recipe: Recipe) => {
+        if (recipe.result instanceof Item)
+            return recipe.result.name.toLowerCase() === item.name.toLowerCase();
+        else if (recipe.result instanceof RecipeResult)
+            return (
+                recipe.result.item.name.toLowerCase() ===
+                item.name.toLowerCase()
+            );
+        return false;
+    });
 }

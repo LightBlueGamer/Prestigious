@@ -1,9 +1,8 @@
-import { CraftableItem } from "../classes/CraftableItem.js";
 import { Item } from "../classes/Item.js";
+import { CraftableItem } from "../classes/CraftableItem.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
 
 export const items = {
-    
     // General Items
     Pebble: new Item("Pebble", 1, 1, 10000000),
     Twig: new Item("Twig", 1, 2, 9500000),
