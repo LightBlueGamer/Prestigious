@@ -378,3 +378,39 @@ export function isCraftable(item: Item): boolean {
         return false;
     });
 }
+
+/**
+ * Finds a recipe by its result item name.
+ *
+ * @param name - The name of the result item to search for in the recipes.
+ *
+ * @returns The first recipe found that has a result item with the specified name,
+ *          case-insensitive. If no matching recipe is found, returns `undefined`.
+ *
+ * @remarks
+ * This function iterates through all the recipes in the `recipes` object.
+ * For each recipe, it checks if the result item matches the given name.
+ * If the result item is an instance of `Item`, it compares the names in a case-insensitive manner.
+ * If the result item is an instance of `RecipeResult`, it compares the names of the result item and the item property in the `RecipeResult` object.
+ * If a match is found, the function returns the recipe.
+ * If no match is found after checking all recipes, the function returns `undefined`.
+ *
+ * @example
+ * ```typescript
+ * const foundRecipe = findRecipe("Example Item");
+ * if (foundRecipe) {
+ *     console.log(`Recipe found: ${foundRecipe.name}`);
+ * } else {
+ *     console.log("No matching recipe found.");
+ * }
+ * ```
+ */
+export function findRecipe(name: string): Recipe | undefined {
+    return Object.values(recipes).find((recipe) => {
+        if (recipe.result instanceof Item)
+            return recipe.result.name.toLowerCase() === name.toLowerCase();
+        else if (recipe.result instanceof RecipeResult)
+            return recipe.result.item.name.toLowerCase() === name.toLowerCase();
+        return false;
+    });
+}
