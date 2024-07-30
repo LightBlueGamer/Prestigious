@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { findRecipe, Modules, Player } from "../../lib/library.js";
+import { CraftableItem, findItem, Modules, Player } from "../../lib/library.js";
 
 export default {
     devMode: true,
@@ -20,8 +20,9 @@ export default {
         const { options, user, client } = interaction;
         const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
-        const recipe = findRecipe(itemName);
-        if (!recipe)
+        const item = findItem(itemName) as CraftableItem;
+        const recipe = item.recipe;
+        if (!item || !recipe)
             return interaction.reply({
                 content: `No recipe was found for the item ${itemName}`,
             });
@@ -37,7 +38,7 @@ export default {
                 recipe
                     .getIngredients()
                     .reduce((acc, item) => acc + item.amount, 0) <
-            recipe.getResultAmount()
+            recipe.amount
         )
             return interaction.reply({
                 content: `You don't have enough space in your backpack to craft this item!`,
@@ -46,10 +47,10 @@ export default {
         for (const ingredient of ingredients) {
             player.removeItem(ingredient.item, ingredient.amount);
         }
-        player.addItem(recipe.getResultItem(), recipe.getResultAmount()).save();
+        player.addItem(item, recipe.amount).save();
 
         return interaction.reply({
-            content: `You have crafted ${recipe.getResultAmount()}x ${recipe.getResultItem().name}`,
+            content: `You have crafted ${recipe.amount}x ${item.name}`,
         });
     },
 };

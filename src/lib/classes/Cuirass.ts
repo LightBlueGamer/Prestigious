@@ -1,30 +1,38 @@
+import { CraftableItem } from "./CraftableItem.js";
+import type { Recipe } from "./Recipe.js";
+
 /**
- * Represents a piece of armor in a fantasy game.
- *
- * @class Cuirass
- * @property {string} name - The name of the cuirass.
- * @property {string[]} type - The types of armor this cuirass belongs to.
- * @property {number} armor - The amount of armor points this cuirass provides.
- * @property {string[]} attributes - The attributes or effects this cuirass has.
- *
- * @constructor
- * @param {string} name - The name of the cuirass.
- * @param {string[]} type - The types of armor this cuirass belongs to.
- * @param {number} armor - The amount of armor points this cuirass provides.
- * @param {string[]} attributes - The attributes or effects this cuirass has.
+ * Represents a craftable cuirass item in a game.
+ * Extends the base `CraftableItem` class.
  */
-export class Cuirass {
-    name: string;
+export class Cuirass extends CraftableItem {
     type: string[];
     armor: number;
     attributes: string[];
+
+    /**
+     * Constructs a new instance of the `Cuirass` class.
+     *
+     * @param name - The name of the cuirass.
+     * @param size - The size of the cuirass.
+     * @param value - The value of the cuirass.
+     * @param weight - The weight of the cuirass.
+     * @param recipe - The recipe required to craft the cuirass.
+     * @param type - The type(s) of cuirass (e.g., "light", "heavy").
+     * @param armor - The armor rating of the cuirass.
+     * @param attributes - The attributes granted by the cuirass.
+     */
     constructor(
         name: string,
+        size: number,
+        value: number,
+        weight: number,
+        recipe: Recipe,
         type: string[],
         armor: number,
         attributes: string[]
     ) {
-        this.name = name;
+        super(name, size, value, weight, recipe);
         this.type = type;
         this.armor = armor;
         this.attributes = attributes;

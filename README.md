@@ -26,7 +26,11 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
-###
+### B-10
+
+-   Refactored recipe system
+
+### B-9
 
 -   Added equipment information to the user command
 

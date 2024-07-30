@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { findRecipe, Modules, Player, randomEmbed } from "../../lib/library.js";
+import { CraftableItem, findItem, Modules, Player, randomEmbed } from "../../lib/library.js";
 
 export default {
     devMode: true,
@@ -20,14 +20,14 @@ export default {
         const { options, user, client } = interaction;
         const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
-        const recipe = findRecipe(itemName);
-        if (!recipe)
+        const item = findItem(itemName) as CraftableItem;
+        const recipe = item.recipe;
+        if (!item || !recipe)
             return interaction.reply({
                 content: `${itemName} does not have a recipe`,
             });
-        const result = recipe.getResultItem();
         const embed = randomEmbed()
-            .setTitle(`${result.name}`)
+            .setTitle(`${item.name}`)
             .setDescription(
                 `**Ingredients:**\`\`\`${recipe
                     .getIngredients()
@@ -47,7 +47,7 @@ export default {
                                   )
                                   .join("\n")}\`\`\``
                     }
-                    **Result:** ${result.name}`
+                    **Result:** ${item.name}`
             );
 
         return interaction.reply({ embeds: [embed] });

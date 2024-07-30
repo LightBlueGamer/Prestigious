@@ -3,15 +3,12 @@ import { Item } from "../classes/Item.js";
 import type { Player } from "../classes/Player.js";
 import { backpacks } from "../resources/backpacks.js";
 import { PrestigeAttribute } from "../classes/PrestigeAttribute.js";
-import { items as cItems } from "../resources/items.js";
+import { items as cItems, items } from "../resources/items.js";
 import * as fs from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { Attribute } from "../classes/Attribute.js";
-import type { Recipe } from "../classes/Recipe.js";
-import { recipes } from "../resources/recipes.js";
-import { RecipeResult } from "../classes/RecipeResult.js";
-import { Equipment } from "../library.js";
+import { Equipment } from "../classes/Equipment.js";
 
 /**
  * A function to generate the default player data.
@@ -346,73 +343,31 @@ export function getPackageJSONData(): PackageJson {
 }
 
 /**
- * Checks if a given item is craftable using the available recipes.
+ * Finds an item in the `items` object by its name.
  *
- * @param item - The item to check for craftability.
+ * @param name - The name of the item to find. The search is case-insensitive.
  *
- * @returns A boolean indicating whether the item is craftable.
- *          Returns `true` if the item can be crafted using at least one recipe,
- *          otherwise returns `false`.
- *
- * @remarks
- * This function iterates through all the recipes in the `recipes` object.
- * For each recipe, it checks if the result item matches the given item.
- * If the result item is an instance of `Item`, it compares the names in a case-insensitive manner.
- * If the result item is an instance of `RecipeResult`, it compares the names of the result item and the item property in the `RecipeResult` object.
- * If a match is found, the function returns `true`.
- * If no match is found after checking all recipes, the function returns `false`.
+ * @returns The item object if found, or `undefined` if not found.
+ *          The function assumes that the `items` object has a structure where each item is a value of the object,
+ *          and each item has a `name` property (string).
  *
  * @example
  * ```typescript
- * const isCraftable = isCraftable(new Item("Example Item"));
- * console.log(isCraftable); // true (if there is a recipe that results in "Example Item")
- * ```
- */
-export function isCraftable(item: Item): boolean {
-    return Object.values(recipes).some((recipe: Recipe) => {
-        if (recipe.result instanceof Item)
-            return recipe.result.name.toLowerCase() === item.name.toLowerCase();
-        else if (recipe.result instanceof RecipeResult)
-            return (
-                recipe.result.item.name.toLowerCase() ===
-                item.name.toLowerCase()
-            );
-        return false;
-    });
-}
-
-/**
- * Finds a recipe by its result item name.
- *
- * @param name - The name of the result item to search for in the recipes.
- *
- * @returns The first recipe found that has a result item with the specified name,
- *          case-insensitive. If no matching recipe is found, returns `undefined`.
- *
- * @remarks
- * This function iterates through all the recipes in the `recipes` object.
- * For each recipe, it checks if the result item matches the given name.
- * If the result item is an instance of `Item`, it compares the names in a case-insensitive manner.
- * If the result item is an instance of `RecipeResult`, it compares the names of the result item and the item property in the `RecipeResult` object.
- * If a match is found, the function returns the recipe.
- * If no match is found after checking all recipes, the function returns `undefined`.
- *
- * @example
- * ```typescript
- * const foundRecipe = findRecipe("Example Item");
- * if (foundRecipe) {
- *     console.log(`Recipe found: ${foundRecipe.name}`);
+ * const foundItem = findItem("Example Item");
+ * if (foundItem) {
+ *     console.log(`Found item: ${foundItem.name}`);
  * } else {
- *     console.log("No matching recipe found.");
+ *     console.log("Item not found.");
  * }
  * ```
+ *
+ * @remarks
+ * The function uses the `Object.values` method to get an array of all item values.
+ * It then uses the `Array.prototype.find` method to find an item whose name matches the given name (case-insensitive).
+ * If an item is found, it is returned; otherwise, `undefined` is returned.
+ *
+ * @throws Will throw an error if the `items` object is not defined or if it does not have the expected structure.
  */
-export function findRecipe(name: string): Recipe | undefined {
-    return Object.values(recipes).find((recipe) => {
-        if (recipe.result instanceof Item)
-            return recipe.result.name.toLowerCase() === name.toLowerCase();
-        else if (recipe.result instanceof RecipeResult)
-            return recipe.result.item.name.toLowerCase() === name.toLowerCase();
-        return false;
-    });
+export function findItem(name: string) {
+    return Object.values(items).find(item => item.name.toLowerCase() === name.toLowerCase());
 }

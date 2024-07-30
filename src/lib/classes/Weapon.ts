@@ -1,34 +1,38 @@
+import { CraftableItem } from "./CraftableItem.js";
+import type { Recipe } from "./Recipe.js";
+
 /**
- * Represents a weapon in a game.
- *
- * @class Weapon
- * @property {string} name - The name of the weapon.
- * @property {string[]} type - The types of the weapon (e.g., sword, bow, staff).
- * @property {number} damage - The base damage of the weapon.
- * @property {string[]} attributes - The attributes of the weapon (e.g., magical, poison).
+ * Represents a craftable weapon item in a game.
+ * Extends the base `CraftableItem` class.
  */
-export class Weapon {
-    name: string;
+export class Weapon extends CraftableItem {
     type: string[];
     damage: number;
     attributes: string[];
 
     /**
-     * Creates an instance of Weapon.
+     * Constructs a new instance of the Weapon class.
      *
-     * @param {string} name - The name of the weapon.
-     * @param {string[]} type - The types of the weapon (e.g., sword, bow, staff).
-     * @param {number} damage - The base damage of the weapon.
-     * @param {string[]} attributes - The attributes of the weapon (e.g., magical, poison).
-     * @memberof Weapon
+     * @param name - The name of the weapon.
+     * @param size - The size of the weapon.
+     * @param value - The value of the weapon.
+     * @param weight - The weight of the weapon.
+     * @param recipe - The recipe required to craft the weapon.
+     * @param type - The type(s) of weapon (e.g., "leather", "chainmail").
+     * @param damage - The damage value of the weapon.
+     * @param attributes - The attributes granted by the weapon.
      */
     constructor(
         name: string,
+        size: number,
+        value: number,
+        weight: number,
+        recipe: Recipe,
         type: string[],
         damage: number,
         attributes: string[]
     ) {
-        this.name = name;
+        super(name, size, value, weight, recipe);
         this.type = type;
         this.damage = damage;
         this.attributes = attributes;

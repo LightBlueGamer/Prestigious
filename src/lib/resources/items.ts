@@ -1,8 +1,9 @@
 import { Item } from "../classes/Item.js";
-import { CraftableItem } from "../classes/CraftableItem.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
+import { Weapon } from "../classes/Weapon.js";
+import { recipes } from "./recipes.js";
 
-export const items = {
+export const items: { [key: string]: Item | LootboxItem | Weapon } = {
     // General Items
     Pebble: new Item("Pebble", 1, 1, 10000000),
     Twig: new Item("Twig", 1, 2, 9500000),
@@ -39,5 +40,14 @@ export const items = {
     ),
 
     // Craftables
-    StoneHatchetItem: new CraftableItem("Stone Hatchet", 2, 225, 0),
+    StoneHatchetItem: new Weapon(
+        "Stone Hatchet",
+        2,
+        225,
+        0,
+        recipes.StoneHatchet,
+        ["Simple", "Melee"],
+        2,
+        ["str"]
+    ),
 };

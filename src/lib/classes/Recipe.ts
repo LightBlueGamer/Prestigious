@@ -1,64 +1,27 @@
 import type { BackpackItem } from "./BackpackItem.js";
 import { Ingredient } from "./Ingredient.js";
 import { Item } from "./Item.js";
-import { RecipeResult } from "./RecipeResult.js";
 
 /**
- * Represents a recipe that can produce an item or a recipe result.
- *
- * @class Recipe
+ * Represents a recipe that can be crafted using ingredients.
  */
 export class Recipe {
-    /**
-     * The item or recipe result that the recipe produces.
-     *
-     * @type {Item | RecipeResult}
-     */
-    result: Item | RecipeResult;
-
-    /**
-     * The list of ingredients required to create the recipe result.
-     *
-     * @type {(Ingredient | Item)[]}
-     */
     ingredients: (Ingredient | Item)[];
+    amount: number;
 
     /**
-     * Constructs a new instance of the Recipe class.
+     * Constructs a new Recipe instance.
      *
-     * @param {Item | RecipeResult} result - The item or recipe result that the recipe produces.
-     * @param {(Ingredient | Item)[]} ingredients - The list of ingredients required to create the recipe result.
+     * @param ingredients - The list of ingredients required to craft the recipe.
+     * @param amount - The amount of the recipe to create (default is 1).
      */
     constructor(
-        result: Item | RecipeResult,
-        ingredients: (Ingredient | Item)[]
+        ingredients: (Ingredient | Item)[],
+        amount: number = 1,
     ) {
-        this.result = result;
         this.ingredients = ingredients;
+        this.amount = amount;
     }
-
-    /**
-     * Retrieves the item that the recipe produces.
-     * If the recipe result is an instance of RecipeResult, the item property of the result is returned.
-     * Otherwise, the recipe result itself is returned.
-     *
-     * @returns {Item} - The item that the recipe produces.
-     */
-    getResultItem() {
-        return this.result instanceof Item ? this.result : this.result.item;
-    }
-
-    /**
-     * Retrieves the amount of the recipe result item that the recipe produces.
-     * If the recipe result is an instance of RecipeResult, the amount property of the result is returned.
-     * Otherwise, a default amount of 1 is returned.
-     *
-     * @returns {number} - The amount of the recipe result item that the recipe produces.
-     */
-    getResultAmount() {
-        return this.result instanceof RecipeResult ? this.result.amount : 1;
-    }
-
     /**
      * Retrieves the list of ingredients required to create the recipe result.
      * If an ingredient is an instance of {@link Ingredient}, its item and amount are added to the list.
