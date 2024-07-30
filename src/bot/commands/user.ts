@@ -63,10 +63,62 @@ export default {
                     "\u200b```"
             );
 
+        const playerEq = player.getEquipment();
+
+        const equipment = randomEmbed()
+            .setTitle("Equipment")
+            .addFields([
+                {
+                    name: "\u200b",
+                    value: "\u200b",
+                    inline: true,
+                },
+                {
+                    name: "Helmet",
+                    value: `${playerEq.helmet ? playerEq.helmet.name : "None"}`,
+                    inline: true,
+                },
+                {
+                    name: "\u200b",
+                    value: "\u200b",
+                    inline: true,
+                },
+                {
+                    name: "Weapon",
+                    value: `${playerEq.weapon ? playerEq.weapon.name : "None"}`,
+                    inline: true,
+                },
+                {
+                    name: "Cuirass",
+                    value: `${playerEq.cuirass ? playerEq.cuirass.name : "None"}`,
+                    inline: true,
+                },
+                {
+                    name: "Shield",
+                    value: `${playerEq.shield ? playerEq.shield.name : "None"}`,
+                    inline: true,
+                },
+                {
+                    name: "\u200b",
+                    value: "\u200b",
+                    inline: true,
+                },
+                {
+                    name: "Leg Armor",
+                    value: `${playerEq.legArmor ? playerEq.legArmor.name : "None"}`,
+                    inline: true,
+                },
+                {
+                    name: "\u200b",
+                    value: "\u200b",
+                    inline: true,
+                },
+            ]);
+
         const content = player.hasStatPoints()
             ? `You have available statpoints you can use to improve your attributes! You can increase them with the /attributes command`
             : ``;
 
-        interaction.reply({ embeds: [embed], content });
+        interaction.reply({ embeds: [embed, equipment], content });
     },
 };
