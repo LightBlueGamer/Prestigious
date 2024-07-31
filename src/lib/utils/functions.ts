@@ -9,6 +9,11 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { Attribute } from "../classes/Attribute.js";
 import { Equipment } from "../classes/Equipment.js";
+import { LegArmor } from "../classes/LegArmor.js";
+import { Cuirass } from "../classes/Cuirass.js";
+import { Helmet } from "../classes/Helmet.js";
+import { Shield } from "../classes/Shield.js";
+import { Weapon } from "../classes/Weapon.js";
 
 /**
  * A function to generate the default player data.
@@ -371,5 +376,33 @@ export function getPackageJSONData(): PackageJson {
 export function findItem(name: string) {
     return Object.values(items).find(
         (item) => item.name.toLowerCase() === name.toLowerCase()
+    );
+}
+
+/**
+ * Checks if a given item is an instance of any equipment class.
+ *
+ * @param item - The item to check.
+ *
+ * @returns `true` if the item is an instance of any equipment class (Cuirass, Helmet, LegArmor, Shield, or Weapon),
+ *          `false` otherwise.
+ *
+ * @example
+ * ```typescript
+ * const isEquipment = itemIsEquipment(new Cuirass("Example Cuirass", 100, 5));
+ * console.log(isEquipment); // true
+ * ```
+ *
+ * @remarks
+ * This function uses the `instanceof` operator to check if the given item is an instance of any of the equipment classes.
+ * It returns `true` if the item is an instance of any of the equipment classes, and `false` otherwise.
+ */
+export function itemIsEquipment(item: Item) {
+    return (
+        item instanceof Cuirass ||
+        item instanceof Helmet ||
+        item instanceof LegArmor ||
+        item instanceof Shield ||
+        item instanceof Weapon
     );
 }

@@ -10,7 +10,7 @@ import {
 import { emojis } from "../resources/emojis.js";
 import type { Backpack } from "./Backpack.js";
 import type { BackpackItem } from "./BackpackItem.js";
-import type { Item } from "./Item.js";
+import { Item } from "./Item.js";
 import type { Lootbox } from "./Lootbox.js";
 import { LootboxItem } from "./LootboxItem.js";
 import { Statistic } from "./Statistic.js";
@@ -19,11 +19,11 @@ import type { Attribute } from "./Attribute.js";
 import { lootboxes } from "../resources/lootboxes.js";
 import type { PrestigeAttribute } from "./PrestigeAttribute.js";
 import type { Equipment } from "./Equipment.js";
-import type { Weapon } from "./Weapon.js";
-import type { Shield } from "./Shield.js";
-import type { Helmet } from "./Helmet.js";
-import type { Cuirass } from "./Cuirass.js";
-import type { LegArmor } from "./LegArmor.js";
+import { Weapon } from "./Weapon.js";
+import { Shield } from "./Shield.js";
+import { Helmet } from "./Helmet.js";
+import { Cuirass } from "./Cuirass.js";
+import { LegArmor } from "./LegArmor.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -816,7 +816,7 @@ export class Player {
      * player.setWeapon(sword);
      * // player.getEquipment().weapon is now the 'Sword' weapon.
      */
-    setWeapon(weapon: Weapon) {
+    setWeapon(weapon: Weapon | null) {
         this.getEquipment().weapon = weapon;
         return this;
     }
@@ -839,7 +839,7 @@ export class Player {
      * @param shield - The shield to be equipped.
      * @returns The updated Player instance with the equipped shield.
      */
-    setShield(shield: Shield) {
+    setShield(shield: Shield | null) {
         this.getEquipment().shield = shield;
         return this;
     }
@@ -858,7 +858,7 @@ export class Player {
      * @param helmet - The helmet to be equipped.
      * @returns The updated Player instance with the equipped helmet.
      */
-    setHelmet(helmet: Helmet) {
+    setHelmet(helmet: Helmet | null) {
         this.getEquipment().helmet = helmet;
         return this;
     }
@@ -878,7 +878,7 @@ export class Player {
      * @param cuirass - The cuirass to be equipped.
      * @returns The updated Player instance with the equipped cuirass.
      */
-    setCuirass(cuirass: Cuirass) {
+    setCuirass(cuirass: Cuirass | null) {
         this.getEquipment().cuirass = cuirass;
         return this;
     }
@@ -898,7 +898,7 @@ export class Player {
      * @param legArmor - The leg armor to be equipped.
      * @returns The updated Player instance with the equipped leg armor.
      */
-    setLegArmor(legArmor: LegArmor) {
+    setLegArmor(legArmor: LegArmor | null) {
         this.getEquipment().legArmor = legArmor;
         return this;
     }
@@ -910,6 +910,66 @@ export class Player {
      */
     getLegArmor() {
         return this.getEquipment().legArmor;
+    }
+
+    /**
+     * Removes the specified item from the player's equipment and adds it to the player's backpack.
+     *
+     * @param item - The item to be unequipped. It can be a Cuirass, Helmet, LegArmor, Shield, or Weapon.
+     * @returns The updated Player instance with the unequipped item added to the backpack.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const sword = new Weapon('Sword', 10);
+     * player.unequip(sword);
+     * // The 'Sword' weapon is now added to the player's backpack and removed from their equipment.
+     */
+    unequip(item: Cuirass | Helmet | LegArmor | Shield | Weapon) {
+        if (item instanceof Cuirass) this.addItem(item).setCuirass(null);
+        else if (item instanceof Helmet) this.addItem(item).setHelmet(null);
+        else if (item instanceof LegArmor) this.addItem(item).setLegArmor(null);
+        else if (item instanceof Shield) this.addItem(item).setShield(null);
+        else if (item instanceof Weapon) this.addItem(item).setWeapon(null);
+        return this;
+    }
+
+    /**
+     * Equips the specified item to the player's equipment.
+     * If the player is already equipping an item of the same type, it will be unequipped first.
+     *
+     * @param item - The item to be equipped. It can be a Cuirass, Helmet, LegArmor, Shield, or Weapon.
+     * @returns The updated Player instance with the equipped item.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const sword = new Weapon('Sword', 10);
+     * player.equip(sword);
+     * // The 'Sword' weapon is now equipped to the player's equipment.
+     */
+    equip(item: Cuirass | Helmet | LegArmor | Shield | Weapon) {
+        if (item instanceof Cuirass) {
+            if (this.getCuirass()) this.unequip(this.getCuirass()!);
+            this.removeItem(item).setCuirass(item);
+        } else if (item instanceof Helmet) {
+            if (this.getHelmet()) this.unequip(this.getHelmet()!);
+            this.removeItem(item).setHelmet(item);
+        } else if (item instanceof LegArmor) {
+            if (this.getLegArmor()) this.unequip(this.getLegArmor()!);
+            this.removeItem(item).setLegArmor(item);
+        } else if (item instanceof Shield) {
+            if (this.getShield()) this.unequip(this.getShield()!);
+            this.removeItem(item).setShield(item);
+        } else if (item instanceof Weapon) {
+            if (this.getWeapon()) this.unequip(this.getWeapon()!);
+            this.removeItem(item).setWeapon(item);
+        }
+        return this;
+    }
+
+    findItem(name: string) {
+        return this.getBackpackContents().find(
+            (item) => item.name.toLowerCase() === name.toLowerCase()
+        );
     }
 
     // !!!OBS!!! Internal Functions !!!OBS!!!

@@ -26,6 +26,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-12
+
+-   Added support for equipping items.
+
 ### B-11
 
 -   Fixed circular dependency error between recipes.ts and items.ts files

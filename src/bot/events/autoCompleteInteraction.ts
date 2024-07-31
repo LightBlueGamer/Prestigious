@@ -1,6 +1,11 @@
 import type { AutocompleteInteraction } from "discord.js";
 import { commands } from "../../index.js";
-import { CraftableItem, Player, items } from "../../lib/library.js";
+import {
+    CraftableItem,
+    Player,
+    itemIsEquipment,
+    items,
+} from "../../lib/library.js";
 
 export default {
     name: "autoCompleteInteraction",
@@ -83,6 +88,15 @@ export default {
                 {
                     choices = Object.values(items)
                         .filter((item) => item instanceof CraftableItem)
+                        .map((item) => ({ name: item.name, value: item.name }));
+                }
+
+                break;
+
+            case "equip":
+                {
+                    choices = Object.values(items)
+                        .filter((item) => itemIsEquipment(item))
                         .map((item) => ({ name: item.name, value: item.name }));
                 }
 

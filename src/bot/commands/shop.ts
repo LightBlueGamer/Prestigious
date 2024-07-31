@@ -101,8 +101,8 @@ export default {
             }
         } else if (subCmd === "sell") {
             if (
-                player.getBackpackContents().find((i) => i.name === item.name)!
-                    .amount < amount
+                !player.findItem(item.name) ||
+                player.findItem(item.name)!.amount < amount
             )
                 embed = redEmbed().setTitle(
                     "You don't have enough of that item to sell!"
