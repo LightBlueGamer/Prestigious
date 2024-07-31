@@ -1,3 +1,5 @@
+import "./resources/craftables.js";
+
 export { Attribute } from "./classes/Attribute.js";
 export { Backpack } from "./classes/Backpack.js";
 export { BackpackItem } from "./classes/BackpackItem.js";

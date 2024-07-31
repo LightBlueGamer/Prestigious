@@ -12,7 +12,7 @@ import {
 } from "../../lib/library.js";
 
 export default {
-    devMode: false,
+    devMode: true,
     module: Modules.Economy,
     data: new SlashCommandBuilder()
         .setName("shop")
@@ -22,19 +22,19 @@ export default {
             sbCmd
                 .setName("buy")
                 .setDescription("Buy an item from the shop")
-                .addNumberOption((option) =>
-                    option
-                        .setName("amount")
-                        .setDescription("The amount you want to buy")
-                        .setRequired(true)
-                        .setMinValue(1)
-                )
                 .addStringOption((option) =>
                     option
                         .setName("item")
                         .setDescription("The item you want to buy")
                         .setRequired(true)
                         .setAutocomplete(true)
+                )
+                .addNumberOption((option) =>
+                    option
+                        .setName("amount")
+                        .setDescription("The amount you want to buy")
+                        .setRequired(false)
+                        .setMinValue(1)
                 )
         )
         .addSubcommand((sbCmd) =>
@@ -64,7 +64,7 @@ export default {
         const item = Object.values(items).find(
             (item) => item.name === options.getString("item", true)
         )!;
-        const amount = options.getNumber("amount", true);
+        const amount = options.getNumber("amount") || 1;
         const buyPrice = Math.ceil(item.value * 1.3 * amount);
 
         let embed: EmbedBuilder = greenEmbed();

@@ -1,7 +1,6 @@
 import { Item } from "../classes/Item.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
 import { Weapon } from "../classes/Weapon.js";
-import { recipes } from "./recipes.js";
 
 export const items: { [key: string]: Item | LootboxItem | Weapon } = {
     // General Items
@@ -37,17 +36,5 @@ export const items: { [key: string]: Item | LootboxItem | Weapon } = {
         false,
         true,
         false
-    ),
-
-    // Craftables
-    StoneHatchetItem: new Weapon(
-        "Stone Hatchet",
-        2,
-        225,
-        0,
-        recipes.StoneHatchet,
-        ["Simple", "Melee"],
-        2,
-        ["str"]
     ),
 };

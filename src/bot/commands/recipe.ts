@@ -1,5 +1,11 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { CraftableItem, findItem, Modules, Player, randomEmbed } from "../../lib/library.js";
+import {
+    CraftableItem,
+    findItem,
+    Modules,
+    Player,
+    randomEmbed,
+} from "../../lib/library.js";
 
 export default {
     devMode: true,

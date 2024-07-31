@@ -369,5 +369,7 @@ export function getPackageJSONData(): PackageJson {
  * @throws Will throw an error if the `items` object is not defined or if it does not have the expected structure.
  */
 export function findItem(name: string) {
-    return Object.values(items).find(item => item.name.toLowerCase() === name.toLowerCase());
+    return Object.values(items).find(
+        (item) => item.name.toLowerCase() === name.toLowerCase()
+    );
 }

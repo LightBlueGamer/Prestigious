@@ -1,6 +1,6 @@
 import type { AutocompleteInteraction } from "discord.js";
 import { commands } from "../../index.js";
-import { Player, items, recipes } from "../../lib/library.js";
+import { CraftableItem, Player, items } from "../../lib/library.js";
 
 export default {
     name: "autoCompleteInteraction",
@@ -27,26 +27,22 @@ export default {
             case "shop":
                 {
                     const subCmd = interaction.options.getSubcommand();
-                    const amount = interaction.options.getNumber(
-                        "amount",
-                        true
-                    );
                     let filteredItems;
                     if (subCmd === "buy") {
                         filteredItems = Object.values(items).filter(
                             (item) =>
                                 item.buy &&
-                                Math.ceil(item.value * 1.3 * amount) <=
+                                Math.ceil(item.value * 1.3) <=
                                     player.getBalance()
                         );
                         choices = filteredItems.map((item) => ({
-                            name: `${amount}x ${item.name} for $${Math.ceil(item.value * 1.3 * amount)}`,
+                            name: ` ${item.name} for $${Math.ceil(item.value * 1.3)}/item`,
                             value: `${item.name}`,
                         }));
                     } else if (subCmd === "sell") {
                         filteredItems = player.getBackpackContents();
                         choices = filteredItems.map((item) => ({
-                            name: `${amount}x ${item.name} for $${item.value * amount}`,
+                            name: `${item.name} for $${item.value}/item`,
                             value: `${item.name}`,
                         }));
                     }
@@ -76,26 +72,18 @@ export default {
 
             case "recipe":
                 {
-                    choices = Object.values(recipes).map((recipe) => {
-                        const name = recipe.getResultItem().name;
-                        return {
-                            name,
-                            value: name,
-                        };
-                    });
+                    choices = Object.values(items)
+                        .filter((item) => item instanceof CraftableItem)
+                        .map((item) => ({ name: item.name, value: item.name }));
                 }
 
                 break;
 
             case "craft":
                 {
-                    choices = Object.values(recipes).map((recipe) => {
-                        const name = recipe.getResultItem().name;
-                        return {
-                            name,
-                            value: name,
-                        };
-                    });
+                    choices = Object.values(items)
+                        .filter((item) => item instanceof CraftableItem)
+                        .map((item) => ({ name: item.name, value: item.name }));
                 }
 
                 break;

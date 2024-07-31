@@ -15,10 +15,7 @@ export class Recipe {
      * @param ingredients - The list of ingredients required to craft the recipe.
      * @param amount - The amount of the recipe to create (default is 1).
      */
-    constructor(
-        ingredients: (Ingredient | Item)[],
-        amount: number = 1,
-    ) {
+    constructor(ingredients: (Ingredient | Item)[], amount: number = 1) {
         this.ingredients = ingredients;
         this.amount = amount;
     }
