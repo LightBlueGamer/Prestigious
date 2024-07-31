@@ -1,40 +1,45 @@
 import requests
 import matplotlib.pyplot as plt
 
-# Fetch LOC data from CodeTabs API
-repo_url = "LightBlueGamer/Prestigious"
-response = requests.get(f"https://api.codetabs.com/v1/loc?github={repo_url}")
+def fetch_loc_data(api_url):
+    response = requests.get(api_url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: Failed to fetch data from API (Status Code: {response.status_code})")
+        return None
 
-# Check if the request was successful
-if response.status_code != 200:
-    print(f"Failed to fetch data: {response.status_code}")
-    print(response.text)
-    exit(1)
+def generate_bar_chart(data):
+    # Extract languages and lines of code
+    try:
+        languages = [entry['language'] for entry in data if entry['language'] != 'Total']
+        lines_of_code = [entry['linesOfCode'] for entry in data if entry['language'] != 'Total']
+    except KeyError as e:
+        print(f"Error: Missing key in data - {e}")
+        return
 
-# Parse the JSON response
-loc_data = response.json()
+    # Sort data for better visualization
+    sorted_data = sorted(zip(languages, lines_of_code), key=lambda x: x[1], reverse=True)
+    sorted_languages, sorted_lines_of_code = zip(*sorted_data)
 
-# Print the response for debugging
-print(loc_data)
+    # Create a bar chart
+    plt.figure(figsize=(12, 8))
+    plt.barh(sorted_languages, sorted_lines_of_code, color='skyblue')
+    plt.xlabel('Lines of Code')
+    plt.title('Lines of Code by Language')
+    plt.gca().invert_yaxis()  # Highest values at the top
+    
+    # Save the chart to a file
+    plt.savefig('LOC_bar_chart.png', transparent=True, bbox_inches='tight')
+    plt.close()
+    print("Bar chart saved as LOC_bar_chart.png")
 
-# Extract data for plotting, excluding the "Total" entry
-languages = [entry['language'] for entry in loc_data if entry['language'] != 'Total']
-loc_counts = [entry['linesOfCode'] for entry in loc_data if entry['language'] != 'Total']
+def main():
+    api_url = "https://api.codetabs.com/v1/loc/?github=LightBlueGamer/Prestigious"  # Replace with your actual API URL
+    loc_data = fetch_loc_data(api_url)
+    
+    if loc_data:
+        generate_bar_chart(loc_data)
 
-# Create pie chart
-plt.figure(figsize=(10, 7))
-plt.pie(loc_counts, labels=languages, autopct='%1.1f%%', startangle=140)
-plt.title('Lines of Code by Language')
-plt.savefig('LOC_pie_chart.png')  # Ensure the path is correct
-
-# Update README.md
-with open('README.md', 'r') as file:
-    readme_content = file.read()
-
-updated_content = readme_content.replace(
-    '<!-- LOC_PIE_CHART -->',
-    '![](LOC_pie_chart.png)'
-)
-
-with open('README.md', 'w') as file:
-    file.write(updated_content)
+if __name__ == "__main__":
+    main()
