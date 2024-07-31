@@ -1,0 +1,36 @@
+name: Count Lines of Code
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    count-loc:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: "3.x"
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install requests matplotlib
+
+            - name: Fetch and Plot LOC
+              run: |
+                  python .github/scripts/count-loc.py
+
+            - name: Commit changes
+              run: |
+                  git config --global user.name 'github-actions'
+                  git config --global user.email 'github-actions@github.com'
+                  git add LOC_pie_chart.png README.md
+                  git commit -m 'Update LOC pie chart in README'
+                  git push

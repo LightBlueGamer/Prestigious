@@ -1,3 +1,7 @@
+# Github Stats
+
+<!-- LOC_PIE_CHART --> ![](LOC_pie_chart.png)
+
 # Prestigious
 
 Prestigious is an RPG/Adventure bot with hard-core leveling to keep you at the grind always! With features such as scavenging, levels, prestiges and more there will always be things to do!
@@ -25,6 +29,10 @@ Scavenge for items & lost treasures to either sell or use to reach the top of th
 Craft new items with resources gained from scavenging
 
 ## V-1.1.0
+
+### B-15
+
+-   Wiki page generated on bot start
 
 ### B-14
 
