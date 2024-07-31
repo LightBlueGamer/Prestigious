@@ -17,7 +17,7 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v2
               with:
-                  fetch-depth: 0 # Ensure that the entire history is fetched for proper rebase
+                  fetch-depth: 0 # Ensure full history for rebase
 
             # Documentation Generation Steps
             - name: Set up Node.js
@@ -59,37 +59,19 @@ jobs:
               run: |
                   python .github/scripts/count-loc.py
 
-            # Debug: List files to confirm presence of the bar chart
-            - name: List files for debugging
+            # Update README.md with new LOC chart
+            - name: Update README.md with new LOC chart
               run: |
-                  ls -R
-
-            # Debug: Verify if LOC_bar_chart.png is present
-            - name: Verify LOC_bar_chart.png existence
-              run: |
-                  if [ -f LOC_bar_chart.png ]; then echo "LOC_bar_chart.png exists"; else echo "LOC_bar_chart.png does not exist"; fi
-
-            # Handle unstaged changes before pull
-            - name: Stash unstaged changes
-              run: |
-                  git stash --include-untracked || true
-
-            - name: Pull latest changes
-              run: |
-                  git pull origin main --rebase
-
-            - name: Apply stashed changes
-              if: success()
-              run: |
-                  git stash pop || true
-
-            # Commit changes
-            - name: Commit changes
-              run: |
-                  git config --global user.name 'github-actions'
-                  git config --global user.email 'github-actions@github.com'
-                  git add LOC_bar_chart.png README.md
-                  git commit -m 'Update LOC bar chart in README' || echo "No changes to commit"
+                  # Assuming LOC_bar_chart.png is in the root directory
+                  if grep -q 'LOC_bar_chart.png' README.md; then
+                    echo "Updating existing image reference in README.md"
+                    sed -i 's|LOC_bar_chart.png|LOC_bar_chart.png|g' README.md
+                  else
+                    echo "Adding new image reference to README.md"
+                    echo "![Lines of Code by Language](LOC_bar_chart.png)" >> README.md
+                  fi
+                  git add README.md
+                  git commit -m 'Update README.md with new LOC bar chart' || echo "No changes to commit"
                   git push
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
