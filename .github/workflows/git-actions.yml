@@ -67,14 +67,23 @@ jobs:
             # Update README.md with new LOC chart
             - name: Update README.md with new LOC chart
               run: |
+                  # Ensure the image file is tracked
+                  git add LOC_bar_chart.png
+
+                  # Check if image reference is present in README.md
                   if grep -q 'LOC_bar_chart.png' README.md; then
                     echo "Image reference already exists in README.md"
                   else
                     echo "Adding new image reference to README.md"
-                    # Adding image reference at the end of README.md
                     echo "![Lines of Code by Language](LOC_bar_chart.png)" >> README.md
                   fi
+
+                  # Stage README.md changes
                   git add README.md
+
+                  # Commit and push changes
+                  git config --global user.name 'github-actions'
+                  git config --global user.email 'github-actions@github.com'
                   git commit -m 'Update README.md with new LOC bar chart' || echo "No changes to commit"
                   git push
               env:
