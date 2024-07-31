@@ -59,15 +59,19 @@ jobs:
               run: |
                   python .github/scripts/count-loc.py
 
+            # Verify the image file exists and list files for debugging
+            - name: List files for debugging
+              run: |
+                  ls -R
+
             # Update README.md with new LOC chart
             - name: Update README.md with new LOC chart
               run: |
-                  # Assuming LOC_bar_chart.png is in the root directory
                   if grep -q 'LOC_bar_chart.png' README.md; then
-                    echo "Updating existing image reference in README.md"
-                    sed -i 's|LOC_bar_chart.png|LOC_bar_chart.png|g' README.md
+                    echo "Image reference already exists in README.md"
                   else
                     echo "Adding new image reference to README.md"
+                    # Adding image reference at the end of README.md
                     echo "![Lines of Code by Language](LOC_bar_chart.png)" >> README.md
                   fi
                   git add README.md
