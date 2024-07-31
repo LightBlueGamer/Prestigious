@@ -1,6 +1,6 @@
 # Github Stats
 
-<!-- LOC_PIE_CHART --> ![](LOC_pie_chart.png)
+![](LOC_pie_chart.png) ![](LOC_pie_chart.png)
 
 # Prestigious
 
