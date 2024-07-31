@@ -1,4 +1,4 @@
-name: Generate Docs
+name: Generate Docs and Count Lines of Code
 
 on:
     push:
@@ -16,12 +16,13 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v2
 
+            # Documentation Generation Steps
             - name: Set up Node.js
               uses: actions/setup-node@v2
               with:
                   node-version: "21.6.2"
 
-            - name: Install dependencies
+            - name: Install dependencies for docs
               run: npm install
 
             - name: Generate docs
@@ -39,3 +40,30 @@ jobs:
                   git push origin main
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # Lines of Code Counting Steps
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: "3.x"
+
+            - name: Install dependencies for LOC
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install requests matplotlib
+
+            - name: Fetch and Plot LOC
+              run: |
+                  python .github/scripts/count-loc.py
+
+            - name: Pull latest changes
+              run: |
+                  git pull origin main --rebase
+
+            - name: Commit changes
+              run: |
+                  git config --global user.name 'github-actions'
+                  git config --global user.email 'github-actions@github.com'
+                  git add LOC_pie_chart.png README.md
+                  git commit -m 'Update LOC pie chart in README'
+                  git push
