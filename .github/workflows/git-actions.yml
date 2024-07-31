@@ -56,10 +56,15 @@ jobs:
               run: |
                   python .github/scripts/count-loc.py
 
-            # Debug: List files in the repository to check if the image is generated
+            # Debug: List files to confirm presence of the pie chart
             - name: List files for debugging
               run: |
                   ls -R
+
+            # Debug: Verify if LOC_pie_chart.png is present
+            - name: Verify LOC_pie_chart.png existence
+              run: |
+                  if [ -f LOC_pie_chart.png ]; then echo "LOC_pie_chart.png exists"; else echo "LOC_pie_chart.png does not exist"; fi
 
             # Handle unstaged changes before pull
             - name: Stash unstaged changes
@@ -71,10 +76,11 @@ jobs:
                   git pull origin main --rebase
 
             - name: Apply stashed changes
-              if: success() && steps.stash-outcome.outputs.stash-result == 'changes'
+              if: success()
               run: |
                   git stash pop
 
+            # Commit changes
             - name: Commit changes
               run: |
                   git config --global user.name 'github-actions'
