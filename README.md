@@ -26,6 +26,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-13
+
+-   Added wiki generation for items.
+
 ### B-12
 
 -   Added support for equipping items.
