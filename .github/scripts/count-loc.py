@@ -24,9 +24,9 @@ def generate_bar_chart(data):
 
     # Create a bar chart
     plt.figure(figsize=(12, 8))
-    plt.barh(sorted_languages, sorted_lines_of_code, color='skyblue')
-    plt.xlabel('Lines of Code')
-    plt.title('Lines of Code by Language')
+    plt.barh(sorted_languages, sorted_lines_of_code, color='skyblue', edgecolor='white')
+    plt.xlabel('Lines of Code', color='white')
+    plt.title('Lines of Code by Language', color='white')
     plt.gca().invert_yaxis()  # Highest values at the top
     
     # Save the chart to a file
