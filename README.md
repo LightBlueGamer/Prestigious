@@ -106,3 +106,4 @@ Craft new items with resources gained from scavenging
 ### B-1
 
 -   Public release of the bot!
+![Lines of Code by Language](LOC_bar_chart.png)
