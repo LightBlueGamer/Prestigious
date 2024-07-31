@@ -966,6 +966,19 @@ export class Player {
         return this;
     }
 
+    /**
+     * Finds an item in the player's backpack by its name.
+     *
+     * @param name - The name of the item to find.
+     * @returns The item with the matching name, or `undefined` if no item is found.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const sword = new Item('Sword', 10);
+     * player.addItem(sword);
+     * const foundItem = player.findItem('Sword');
+     * // foundItem = { name: 'Sword', value: 10 }
+     */
     findItem(name: string) {
         return this.getBackpackContents().find(
             (item) => item.name.toLowerCase() === name.toLowerCase()
