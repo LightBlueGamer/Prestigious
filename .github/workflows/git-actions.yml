@@ -56,9 +56,19 @@ jobs:
               run: |
                   python .github/scripts/count-loc.py
 
+            # Handle unstaged changes before pull
+            - name: Stash unstaged changes
+              run: |
+                  git stash --include-untracked
+
             - name: Pull latest changes
               run: |
                   git pull origin main --rebase
+
+            - name: Apply stashed changes
+              if: success() && steps.stash-outcome.outputs.stash-result == 'changes'
+              run: |
+                  git stash pop
 
             - name: Commit changes
               run: |
