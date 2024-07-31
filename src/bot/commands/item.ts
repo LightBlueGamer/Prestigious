@@ -39,31 +39,16 @@ export default {
         }
 
         const embed = greenEmbed()
-            .setTitle(item.name)
-            .setDescription(
-                `${formatNumber(calculateItemChance(item.name)!)}% to obtain through scavenging.`
+            .setTitle(`${item.name}`)
+            .setURL(
+                `https://prestigious-bot.xyz/wiki/items/${item.name.replace(/\s+/g, "-")}`
             )
             .addFields([
                 { name: "Size", value: `${item.size}`, inline: true },
                 { name: "Value", value: `$${item.value}`, inline: true },
                 {
-                    name: "Buyable",
-                    value: `${item.buy ? "Yes" : "No"}`,
-                    inline: true,
-                },
-                {
-                    name: "Sellable",
-                    value: `${item.sell ? "Yes" : "No"}`,
-                    inline: true,
-                },
-                {
-                    name: "Scavengable",
-                    value: `${item.canScavenge ? "Yes" : "No"}`,
-                    inline: true,
-                },
-                {
-                    name: "Found in lootboxes",
-                    value: `${item.inLootbox ? "Yes" : "No"}`,
+                    name: "Drop Chance",
+                    value: `${formatNumber(calculateItemChance(item.name)!)}%`,
                     inline: true,
                 },
             ]);

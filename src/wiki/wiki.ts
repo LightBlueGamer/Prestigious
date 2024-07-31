@@ -1,4 +1,4 @@
-import * as fs from "fs";
+import * as fs from "fs/promises";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import {
@@ -9,50 +9,58 @@ import {
     Helmet,
     Ingredient,
     LegArmor,
-    LootboxItem,
     Recipe,
     Shield,
     Weapon,
     Item,
     items,
 } from "../lib/library.js";
-import { marked } from 'marked';
+import { marked } from "marked";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-function generateRecipeMarkdown(recipe: Recipe): string {
-    const ingredientsMarkdown = recipe.ingredients
+function generateRecipeHTML(recipe: Recipe): string {
+    const ingredientsHTML = recipe.ingredients
         .map((ingredient) => {
             if (ingredient instanceof Ingredient) {
-                return `| ${ingredient.item.name} | ${ingredient.amount} |`;
+                return `<tr><td>${ingredient.item.name}</td><td>${ingredient.amount}</td></tr>`;
             } else if (ingredient instanceof Item) {
-                return `| ${ingredient.name} | 1 |`;
+                return `<tr><td>${ingredient.name}</td><td>1</td></tr>`;
             } else {
-                return `| Unknown | N/A |`;
+                return `<tr><td>Unknown</td><td>N/A</td></tr>`;
             }
         })
         .join("\n");
 
     return `
-### Recipe (${recipe.amount})
-
-| Ingredient       | Quantity |
-|------------------|----------|
-${ingredientsMarkdown}
+<h3>Recipe (outputs x${recipe.amount})</h3>
+<table class="table table-dark table-striped table-hover table-responsive">
+  <thead>
+    <tr>
+      <th>Ingredient</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${ingredientsHTML}
+  </tbody>
+</table>
 `;
 }
 
 function generateItemMD(item: Item): string {
     let markdown = `# ${item.name}\n\n`;
-    let type = "Resource";
-    if (item instanceof Cuirass) type = "Cuirass";
-    else if (item instanceof Helmet) type = "Helmet";
-    else if (item instanceof LegArmor) type = "Leg Armor";
-    else if (item instanceof Shield) type = "Shield";
-    else if (item instanceof Weapon) type = "Weapon";
-    else if (item instanceof CraftableItem) type = "Craftable";
-    else if (item instanceof LootboxItem) type = "Lootbox";
+    const typeMap: { [key: string]: string } = {
+        Cuirass: "Cuirass",
+        Helmet: "Helmet",
+        LegArmor: "Leg Armor",
+        Shield: "Shield",
+        Weapon: "Weapon",
+        CraftableItem: "Craftable",
+        LootboxItem: "Lootbox",
+    };
+
+    const type = typeMap[item.constructor.name] || "Resource";
     markdown += `- **Type**: ${type}\n`;
     markdown += `- **Size**: ${item.size}\n`;
     markdown += `- **Value**: $${item.value}\n`;
@@ -61,6 +69,7 @@ function generateItemMD(item: Item): string {
     markdown += `- **Sellable**: ${item.sell ? "Yes" : "No"}\n`;
     markdown += `- **Can Scavenge**: ${item.canScavenge ? "Yes" : "No"}\n`;
     markdown += `- **In Lootboxes**: ${item.inLootbox ? "Yes" : "No"}\n`;
+
     if (
         item instanceof Cuirass ||
         item instanceof Helmet ||
@@ -78,7 +87,7 @@ function generateItemMD(item: Item): string {
     }
 
     if (item instanceof CraftableItem) {
-        markdown += `${generateRecipeMarkdown(item.recipe)}`;
+        markdown += `${generateRecipeHTML(item.recipe)}`;
     }
 
     return markdown;
@@ -95,6 +104,7 @@ async function writeItemFile(item: Item) {
     <html>
     <head>
       <title>${item.name}</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/5.2.3/darkly/bootstrap.min.css">
       <style>
         body { background-color: #343a40; color: #f8f9fa; }
@@ -104,25 +114,33 @@ async function writeItemFile(item: Item) {
       </style>
     </head>
     <body>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
       <div class="container">
         ${htmlContent}
       </div>
     </body>
     </html>`;
 
-    const htmlFilePath = path.join(directoryPath, `${item.name.replace(/\s+/g, '-')}.html`);
+    const htmlFilePath = path.join(
+        directoryPath,
+        `${item.name.replace(/\s+/g, "-")}.html`
+    );
 
-    fs.writeFileSync(htmlFilePath, fullHTMLContent);
-
-    console.log(`HTML file for ${item.name} saved successfully.`);
+    try {
+        await fs.writeFile(htmlFilePath, fullHTMLContent);
+        console.log(`HTML file for ${item.name} saved successfully.`);
+    } catch (err) {
+        console.error(`Failed to save HTML file for ${item.name}:`, err);
+    }
 }
 
-function generateIndexHTML(items: any[]) {
+async function generateIndexHTML(items: Item[]) {
     let indexHTML = `
     <!DOCTYPE html>
     <html>
     <head>
       <title>Item Index</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/5.2.3/darkly/bootstrap.min.css">
       <style>
         body { background-color: #343a40; color: #f8f9fa; }
@@ -132,35 +150,40 @@ function generateIndexHTML(items: any[]) {
       </style>
     </head>
     <body>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
       <div class="container">
         <h1 class="my-4">Item Index</h1>
         <ul class="list-group">`;
 
-    items.sort((a: any, b: any) => a.name.localeCompare(b.name)).forEach(item => {
-        const itemName = item.name.replace(/\s+/g, '-');
-        indexHTML += `  <li class="list-group-item"><a href="items/${itemName}.html">${item.name}</a></li>\n`;
-    });
+    items
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach((item) => {
+            const itemName = item.name.replace(/\s+/g, "-");
+            indexHTML += `  <li class="list-group-item"><a href="items/${itemName}">${item.name}</a></li>\n`;
+        });
 
     indexHTML += `    </ul>
       </div>
     </body>
     </html>`;
 
-    const indexFilePath = path.join(__dirname, "../../wiki/", 'index.html');
+    const indexFilePath = path.join(__dirname, "../../wiki/", "index.html");
 
-    fs.writeFileSync(indexFilePath, indexHTML);
-    console.log('Index HTML file created successfully.');
-}
-
-function setup() {
-    const directoryPath = path.join(__dirname, "../../wiki/items/");
-    fs.mkdirSync(directoryPath, { recursive: true });
-
-    generateIndexHTML(Object.values(items));
-
-    for (const item of Object.values(items)) {
-        writeItemFile(item);
+    try {
+        await fs.writeFile(indexFilePath, indexHTML);
+        console.log("Index HTML file created successfully.");
+    } catch (err) {
+        console.error("Failed to create index HTML file:", err);
     }
 }
 
-setup();
+async function setup() {
+    const directoryPath = path.join(__dirname, "../../wiki/items/");
+    await fs.mkdir(directoryPath, { recursive: true });
+
+    await generateIndexHTML(Object.values(items));
+
+    await Promise.all(Object.values(items).map((item) => writeItemFile(item)));
+}
+
+setup().catch((err) => console.error("Setup failed:", err));
