@@ -2,8 +2,8 @@ import requests
 import matplotlib.pyplot as plt
 
 # Fetch LOC data from CodeTabs API
-repo_url = "LightBlueGamer/Prestigious"
-response = requests.get(f"https://api.codetabs.com/v1/loc?github={repo_url}")
+repo_url = "https://github.com/YOUR_USERNAME/YOUR_REPOSITORY"
+response = requests.get(f"https://api.codetabs.com/v1/loc?source={repo_url}")
 
 # Check if the request was successful
 if response.status_code != 200:
@@ -25,7 +25,7 @@ loc_counts = [entry['linesOfCode'] for entry in loc_data if entry['language'] !=
 plt.figure(figsize=(10, 7))
 plt.pie(loc_counts, labels=languages, autopct='%1.1f%%', startangle=140)
 plt.title('Lines of Code by Language')
-plt.savefig('LOC_pie_chart.png')
+plt.savefig('LOC_pie_chart.png')  # Ensure the path is correct
 
 # Update README.md
 with open('README.md', 'r') as file:

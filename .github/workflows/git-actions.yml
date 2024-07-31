@@ -56,6 +56,11 @@ jobs:
               run: |
                   python .github/scripts/count-loc.py
 
+            # Debug: List files in the repository to check if the image is generated
+            - name: List files for debugging
+              run: |
+                  ls -R
+
             # Handle unstaged changes before pull
             - name: Stash unstaged changes
               run: |
