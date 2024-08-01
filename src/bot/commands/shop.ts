@@ -69,15 +69,6 @@ export default {
 
         let embed: EmbedBuilder = greenEmbed();
 
-        if (player.getBackpack().getFreeSpace() < item.size * amount) {
-            embed = redEmbed().setTitle(
-                "You don't have enough space in your backpack to buy this item!"
-            );
-            return interaction.reply({
-                embeds: [embed],
-            });
-        }
-
         if (!item) {
             embed = redEmbed().setTitle("That item doesn't exist in the shop!");
             return interaction.reply({
@@ -86,6 +77,14 @@ export default {
         }
 
         if (subCmd === "buy") {
+            if (player.getBackpack().getFreeSpace() < item.size * amount) {
+                embed = redEmbed().setTitle(
+                    "You don't have enough space in your backpack to buy this item!"
+                );
+                return interaction.reply({
+                    embeds: [embed],
+                });
+            }
             if (player.getBalance() < buyPrice)
                 embed = redEmbed().setTitle(
                     "You don't have enough money to buy this item!"

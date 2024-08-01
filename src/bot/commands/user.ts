@@ -57,7 +57,7 @@ export default {
                 `${player.data.xp}/${player.xpRequired()} xp\n${player.generateBar()}\n\n**(${player.getBackpackContents().reduce((p, c) => p + c.amount * c.size, 0)}/${player.getBackpack().slots}) Backpack:**\n\`\`\`` +
                     player.data.backpack.contents
                         .map((item) => {
-                            return `\n${item.amount}x ${item.name}`;
+                            return `\n${item.size*item.amount} - ${item.amount}x ${item.name}`;
                         })
                         .join("\n") +
                     "\u200b```"

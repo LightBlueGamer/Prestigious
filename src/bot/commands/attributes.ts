@@ -76,7 +76,7 @@ export default {
 
         function generateEmbed() {
             return randomEmbed()
-                .setTitle(`${user.username}'s attributes`)
+                .setTitle(`${user.username}'s attributes (${player.data.statPoints} points)`)
                 .setDescription(
                     "\u200b" +
                         attributes

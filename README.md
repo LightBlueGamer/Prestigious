@@ -28,6 +28,12 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-17
+
+-   /user command now shows the slots items take up
+-   Fixed a bug causing you not to be able to sell items with a full backpack
+-   /attributes command now shows you the amount of stat points you have available to use
+
 ### B-16
 
 -   Added premium
