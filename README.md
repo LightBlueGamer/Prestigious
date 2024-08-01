@@ -28,6 +28,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-19
+
+-   Scavenging now shows the time left until you can scavenge again
+
 ### B-18
 
 -   Scavenging now gives the correct amount of xp

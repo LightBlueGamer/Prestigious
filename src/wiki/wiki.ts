@@ -186,4 +186,6 @@ async function setup() {
     await Promise.all(Object.values(items).map((item) => writeItemFile(item)));
 }
 
-setup().then(() => process.exit(0)).catch((err) => console.error("Setup failed:", err));
+setup()
+    .then(() => process.exit(0))
+    .catch((err) => console.error("Setup failed:", err));
