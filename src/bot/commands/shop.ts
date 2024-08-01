@@ -12,7 +12,7 @@ import {
 } from "../../lib/library.js";
 
 export default {
-    devMode: true,
+    devMode: false,
     module: Modules.Economy,
     data: new SlashCommandBuilder()
         .setName("shop")
