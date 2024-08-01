@@ -64,17 +64,18 @@ export default {
         const item = Object.values(items).find(
             (item) => item.name === options.getString("item", true)
         )!;
-        const amount = options.getNumber("amount") || 1;
-        const buyPrice = Math.ceil(item.value * 1.3 * amount);
-
+        
         let embed: EmbedBuilder = greenEmbed();
-
         if (!item) {
             embed = redEmbed().setTitle("That item doesn't exist in the shop!");
             return interaction.reply({
                 embeds: [embed],
             });
         }
+
+        const amount = options.getNumber("amount") || 1;
+        const buyPrice = Math.ceil(item.value * 1.3 * amount);
+
 
         if (subCmd === "buy") {
             if (!item.buy)

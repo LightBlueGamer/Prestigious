@@ -28,6 +28,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-22
+
+-   Fixed bug with /shop and /recipe commands
+
 ### B-21
 
 -   Fixed Ingredients list on wiki

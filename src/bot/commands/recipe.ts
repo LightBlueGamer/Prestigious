@@ -27,10 +27,14 @@ export default {
         const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
         const item = findItem(itemName) as CraftableItem;
-        const recipe = item.recipe;
-        if (!item || !recipe)
+        if (!item)
             return interaction.reply({
-                content: `${itemName} does not have a recipe`,
+                content: `${itemName} is not an item.`,
+            });
+        const recipe = item.recipe;
+        if (!recipe)
+            return interaction.reply({
+                content: `${itemName} does not have a recipe.`,
             });
         const embed = randomEmbed()
             .setTitle(`${item.name}`)
