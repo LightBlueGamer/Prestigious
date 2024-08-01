@@ -28,6 +28,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-16
+
+-   Added premium
+
 ### B-15
 
 -   Wiki page generated on bot start

@@ -41,6 +41,7 @@ export function generateData(): Player.Data {
         prestigePoints: 0,
         prestigeAttributes: generatePrestigeAttributes(),
         equipment: new Equipment(),
+        premium: false,
     };
 }
 

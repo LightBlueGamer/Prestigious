@@ -985,6 +985,28 @@ export class Player {
         );
     }
 
+    /**
+     * Sets the player's premium status to true.
+     * @returns The updated Player instance with the premium status set to true.
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.setPremium();
+     * // player.data.premium is now true.
+     */
+    setPremium() {
+        this.data.premium = true;
+        return this;
+    }
+
+    /**
+     * Removes the premium status of the player by setting the `premium` property to `false`.
+     * @returns The updated Player instance with the premium status set to `false`.
+     */
+    removePremium() {
+        this.data.premium = false;
+        return this;
+    }
+
     // !!!OBS!!! Internal Functions !!!OBS!!!
 
     /**
@@ -1064,5 +1086,6 @@ export namespace Player {
         prestigePoints: number;
         prestigeAttributes: PrestigeAttribute[];
         equipment: Equipment;
+        premium: boolean;
     }
 }
