@@ -26,9 +26,9 @@ function generateRecipeHTML(recipe: Recipe): string {
     const ingredientsHTML = recipe.ingredients
         .map((ingredient) => {
             if (ingredient instanceof Ingredient) {
-                return `<tr><td><a href="/items/${ingredient.item.name.replace(/\s+/g, "-")}" class="text-light">${ingredient.item.name}</a></td><td>${ingredient.amount}</td></tr>`;
+                return `<tr><td><a href="/wiki/items/${ingredient.item.name.replace(/\s+/g, "-")}" class="text-light">${ingredient.item.name}</a></td><td>${ingredient.amount}</td></tr>`;
             } else if (ingredient instanceof Item) {
-                return `<tr><td><a href="/items/${ingredient.name.replace(/\s+/g, "-")}" class="text-light">${ingredient.name}</a></td><td>1</td></tr>`;
+                return `<tr><td><a href="/wiki/items/${ingredient.name.replace(/\s+/g, "-")}" class="text-light">${ingredient.name}</a></td><td>1</td></tr>`;
             } else {
                 return `<tr><td>Unknown</td><td>N/A</td></tr>`;
             }
