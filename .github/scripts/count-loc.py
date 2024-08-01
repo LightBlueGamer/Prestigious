@@ -24,10 +24,10 @@ def generate_bar_chart(data):
 
     # Create a bar chart
     plt.figure(figsize=(12, 8))
-    plt.barh(sorted_languages, sorted_lines_of_code, color='skyblue', edgecolor='white')
+    plt.barh(sorted_languages, sorted_lines_of_code, color='brightgreen', edgecolor='white')
     plt.xlabel('Lines of Code', color='white')
     plt.title('Lines of Code by Language', color='white')
-    plt.gca().tick_params(axis='both', colors='white').invert_yaxis()  # Highest values at the top
+    plt.gca().invert_yaxis()  # Highest values at the top
     
     # Save the chart to a file
     plt.savefig('LOC_bar_chart.png', transparent=True, bbox_inches='tight')
