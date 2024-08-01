@@ -63,7 +63,7 @@ export class Player {
         const randomAmount = Math.floor(
             randomNumber(minAmount, maxAmount) *
                 (1 + 0.0333 * this.getAttribute("int").value) *
-                expBoost
+                expBoost * (this.data.premium ? 2 : 1)
         );
         this.addStatistic("Experience earned", randomAmount);
         this.data.xp += randomAmount;
@@ -86,7 +86,7 @@ export class Player {
     increaseBalance(minAmount: number, maxAmount: number): Player {
         const { moneyBoost } = this.getPrestigeBoosts();
         const randomAmount = Math.floor(
-            randomNumber(minAmount, maxAmount) * moneyBoost
+            randomNumber(minAmount, maxAmount) * moneyBoost * (this.data.premium ? 2 : 1)
         );
         this.addStatistic("Money earned", randomAmount);
         this.data.balance += randomAmount;
