@@ -27,7 +27,7 @@ export default {
         const { options } = interaction;
         const itemName = options.getString("item", true);
         const item = Object.values(items).find(
-            (item) => item.name === itemName
+            (item) => item.name.toLowerCase() === itemName.toLowerCase()
         );
 
         if (!item) {
