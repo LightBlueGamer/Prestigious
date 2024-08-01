@@ -28,6 +28,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-18
+
+-   Scavenging now gives the correct amount of xp
+
 ### B-17
 
 -   /user command now shows the slots items take up

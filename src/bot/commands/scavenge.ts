@@ -37,7 +37,7 @@ export default {
             const item = getRandomItemByWeight(itemList);
             const { expBoost } = player.getPrestigeBoosts();
             const xp = Math.floor(
-                randomNumber(item.value * 0.25, item.value * 2) * expBoost * (player.data.premium ? 2 : 1)
+                randomNumber(item.value * 0.25, item.value * 2) * (1 + 0.0333 * player.getAttribute("int").value) * expBoost * (player.data.premium ? 2 : 1)
             );
 
             player
