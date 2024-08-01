@@ -13,13 +13,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            # Checkout repository
             - name: Checkout repository
               uses: actions/checkout@v2
               with:
                   fetch-depth: 0 # Ensure full history for rebase
 
-            # Documentation Generation Steps
             - name: Set up Node.js
               uses: actions/setup-node@v2
               with:
@@ -44,7 +42,6 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            # Lines of Code Counting Steps
             - name: Set up Python
               uses: actions/setup-python@v2
               with:
@@ -59,12 +56,18 @@ jobs:
               run: |
                   python .github/scripts/count-loc.py
 
-            # Verify the image file exists and list files for debugging
             - name: List files for debugging
               run: |
                   ls -R
 
-            # Update README.md with new LOC chart
+            - name: Force update LOC_bar_chart.png
+              run: |
+                  git add LOC_bar_chart.png
+                  git commit -m 'Force update LOC_bar_chart.png'
+                  git push
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
             - name: Update README.md with new LOC chart
               run: |
                   # Ensure the image file is tracked
