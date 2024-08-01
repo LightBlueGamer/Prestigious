@@ -24,6 +24,8 @@ import { Shield } from "./Shield.js";
 import { Helmet } from "./Helmet.js";
 import { Cuirass } from "./Cuirass.js";
 import { LegArmor } from "./LegArmor.js";
+import { BackpackEquipment } from "./BackpackEquipment.js";
+import { items } from "../library.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -949,7 +951,9 @@ export class Player {
      * player.equip(sword);
      * // The 'Sword' weapon is now equipped to the player's equipment.
      */
-    equip(item: Cuirass | Helmet | LegArmor | Shield | Weapon) {
+    equip(
+        item: Cuirass | Helmet | LegArmor | Shield | Weapon | BackpackEquipment
+    ) {
         if (item instanceof Cuirass) {
             if (this.getCuirass()) this.unequip(this.getCuirass()!);
             this.removeItem(item).setCuirass(item);
@@ -965,7 +969,7 @@ export class Player {
         } else if (item instanceof Weapon) {
             if (this.getWeapon()) this.unequip(this.getWeapon()!);
             this.removeItem(item).setWeapon(item);
-        }
+        } else if (item instanceof BackpackEquipment) this.equipBackpack(item);
         return this;
     }
 
@@ -1007,6 +1011,26 @@ export class Player {
      */
     removePremium() {
         this.data.premium = false;
+        return this;
+    }
+
+    /**
+     * Equips the specified item as the player's backpack.
+     * If the backpack already contains an item with the same name, it will be replaced.
+     * If the player's backpack is full, the new item will not be added.
+     *
+     * @param item - The item to be equipped to the backpack.
+     * @returns The updated Player instance with the equipped item in the backpack.
+     */
+    equipBackpack(item: BackpackEquipment) {
+        item.backpack.contents = this.getBackpackContents();
+        const backpack = this.getBackpack();
+        const bpItem = Object.values(items).find(
+            (item) => item.name.toLowerCase() === backpack.name.toLowerCase()
+        );
+        if (bpItem) this.addItem(bpItem);
+        this.data.backpack = item.backpack;
+        this.removeItem(item);
         return this;
     }
 

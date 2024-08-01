@@ -1,8 +1,14 @@
+import { BackpackEquipment } from "../classes/BackpackEquipment.js";
+import { CraftableItem } from "../classes/CraftableItem.js";
+import { Ingredient } from "../classes/Ingredient.js";
 import { Item } from "../classes/Item.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
+import { Recipe } from "../classes/Recipe.js";
 import { Weapon } from "../classes/Weapon.js";
+import { backpacks } from "./backpacks.js";
 
-export const items: { [key: string]: Item | LootboxItem | Weapon } = {
+// Initialize items first
+const items: { [key: string]: Item } = {
     // General Items
     Pebble: new Item("Pebble", 1, 1, 10000000),
     Twig: new Item("Twig", 1, 2, 9500000),
@@ -65,7 +71,6 @@ export const items: { [key: string]: Item | LootboxItem | Weapon } = {
     Hay: new Item("Hay", 1, 5, 9400000),
     Wheat: new Item("Wheat", 1, 8, 9250000),
     LeafBundle: new Item("Leaf Bundle", 1, 10, 9100000),
-    TreeBark: new Item("Tree Bark", 1, 4, 9250000),
     Resin: new Item("Resin", 1, 5, 9200000),
     StoneFragment: new Item("Stone Fragment", 1, 7, 9050000),
     WoodChip: new Item("Wood Chip", 1, 3, 9450000),
@@ -133,3 +138,46 @@ export const items: { [key: string]: Item | LootboxItem | Weapon } = {
         false
     ),
 };
+
+// Define recipes after items
+const recipes: { [key: string]: Recipe } = {
+    StoneHatchet: new Recipe([items.Rock, items.Fibers, items.Stick]),
+    LeatherStrap: new Recipe([new Ingredient(items.Leather, 2), items.Resin]),
+};
+
+// Initialize craftables after recipes are defined
+items.StoneHatchetItem = new Weapon(
+    "Stone Hatchet",
+    2,
+    15,
+    0,
+    recipes.StoneHatchet,
+    ["Simple", "Melee"],
+    2,
+    ["str"]
+);
+
+items.LeatherStrap = new CraftableItem(
+    "Leather Strap",
+    1,
+    20,
+    0,
+    recipes.LeatherStrap
+);
+
+recipes.Satchel = new Recipe([
+    new Ingredient(items.LeatherStrap, 2),
+    new Ingredient(items.Resin, 2),
+    items.Leather,
+]);
+
+items.Satchel = new BackpackEquipment(
+    "Satchel",
+    1,
+    50,
+    0,
+    recipes.Satchel,
+    backpacks.Satchel
+);
+
+export { items, recipes };

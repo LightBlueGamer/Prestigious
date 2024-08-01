@@ -25,7 +25,7 @@ export class Item {
         size: number,
         value: number,
         weight: number,
-        buy: boolean = true,
+        buy: boolean = false,
         sell: boolean = true,
         canScavenge: boolean = true,
         inLootbox: boolean = true

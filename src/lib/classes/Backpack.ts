@@ -60,7 +60,7 @@ export class Backpack {
         let usedSlots: number = 0;
 
         for (let item of this.contents) {
-            usedSlots += item.size;
+            usedSlots += item.size * item.amount;
         }
 
         return this.slots - usedSlots;

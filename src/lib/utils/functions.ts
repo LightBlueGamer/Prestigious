@@ -14,6 +14,8 @@ import { Cuirass } from "../classes/Cuirass.js";
 import { Helmet } from "../classes/Helmet.js";
 import { Shield } from "../classes/Shield.js";
 import { Weapon } from "../classes/Weapon.js";
+import type { EmbedField } from "discord.js";
+import { BackpackEquipment } from "../classes/BackpackEquipment.js";
 
 /**
  * A function to generate the default player data.
@@ -404,6 +406,59 @@ export function itemIsEquipment(item: Item) {
         item instanceof Helmet ||
         item instanceof LegArmor ||
         item instanceof Shield ||
-        item instanceof Weapon
+        item instanceof Weapon ||
+        item instanceof BackpackEquipment
+    );
+}
+
+export function generateLeaderboardFields(
+    sorted: Player[],
+    user: any,
+    type: string,
+    page: number
+): EmbedField[] {
+    const fields: EmbedField[] = [];
+
+    sorted.slice((page - 1) * 10, (page - 1) * 10 + 10).forEach((player, i) => {
+        const rank = i + (page - 1) * 10 + 1;
+        const name =
+            player.id === user.id
+                ? `#${rank} ${player.name} (You)`
+                : `#${rank} ${player.name}`;
+        const value =
+            type === "balance"
+                ? `Balance: ${player.data.balance}\nPrestige: ${player.data.prestige}\nLevel: ${player.data.level}\nXP: ${player.data.xp}`
+                : `Prestige: ${player.data.prestige}\nLevel: ${player.data.level}\nXP: ${player.data.xp}\nBalance: ${player.data.balance}`;
+
+        if (i % 2 === 0) {
+            fields.push({
+                name,
+                value,
+                inline: true,
+            });
+        } else {
+            fields.push({
+                name: `\u200b`,
+                value: `\u200b`,
+                inline: true,
+            });
+            fields.push({
+                name,
+                value,
+                inline: true,
+            });
+        }
+    });
+
+    return fields;
+}
+
+export function calculateGeneralRanking(playerList: Player[]): Player[] {
+    return playerList.sort(
+        (a, b) =>
+            b.data.prestige - a.data.prestige ||
+            b.data.level - a.data.level ||
+            b.data.xp - a.data.xp ||
+            b.data.balance - a.data.balance
     );
 }

@@ -28,6 +28,14 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-20
+
+-   Added new backpack **Satchel**.
+-   Made leaderboard load faster.
+-   Wiki now have ingredients link to the item page.
+-   Items can no longer be bought by default.
+-   CraftableItems, Recipes, and Items are now combined into one singular file.
+
 ### B-19
 
 -   Scavenging now shows the time left until you can scavenge again

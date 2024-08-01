@@ -81,8 +81,8 @@ export default {
                     inline: true,
                 },
                 {
-                    name: "\u200b",
-                    value: "\u200b",
+                    name: "Backpack",
+                    value: `${player.getBackpack().name}`,
                     inline: true,
                 },
             ]);

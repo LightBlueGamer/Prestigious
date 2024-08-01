@@ -22,13 +22,25 @@ const __dirname = path.dirname(__filename);
 function generateRecipeHTML(recipe: Recipe): string {
     const ingredientsHTML = recipe.ingredients
         .map((ingredient) => {
+            let itemName: string;
             if (ingredient instanceof Ingredient) {
-                return `<tr><td>${ingredient.item.name}</td><td>${ingredient.amount}</td></tr>`;
+                itemName = ingredient.item.name;
             } else if (ingredient instanceof Item) {
-                return `<tr><td>${ingredient.name}</td><td>1</td></tr>`;
+                itemName = ingredient.name;
             } else {
-                return `<tr><td>Unknown</td><td>N/A</td></tr>`;
+                itemName = "Unknown";
             }
+
+            // URL-encode the item name to handle spaces and special characters
+            const encodedName = encodeURIComponent(itemName);
+            const itemLink = `/wiki/items/${encodedName}`;
+
+            // Generate table row with clickable item name
+            return `
+            <tr>
+              <td><a href="${itemLink}" class="text-light">${itemName}</a></td>
+              <td>${ingredient instanceof Ingredient || ingredient instanceof Item ? "1" : "N/A"}</td>
+            </tr>`;
         })
         .join("\n");
 
@@ -58,6 +70,7 @@ function generateItemMD(item: Item): string {
         Weapon: "Weapon",
         CraftableItem: "Craftable",
         LootboxItem: "Lootbox",
+        BackpackEquipment: "Backpack",
     };
 
     const type = typeMap[item.constructor.name] || "Resource";

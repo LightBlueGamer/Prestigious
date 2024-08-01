@@ -1,6 +1,6 @@
 {
   "name": "prestigious",
-  "version": "1.1.0-19",
+  "version": "1.1.0-20",
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run build && node --es-module-specifier-resolution=node dist/index.js",

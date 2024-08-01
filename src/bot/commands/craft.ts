@@ -34,11 +34,14 @@ export default {
                     .join("\n")}\`\`\``,
             });
         if (
-            player.getBackpack().getFreeSpace() -
+            player.getBackpack().getFreeSpace() +
                 recipe
                     .getIngredients()
-                    .reduce((acc, item) => acc + item.amount, 0) <
-            recipe.amount
+                    .reduce(
+                        (acc, item) => acc + item.amount * item.item.size,
+                        0
+                    ) <
+            recipe.amount * item.size
         )
             return interaction.reply({
                 content: `You don't have enough space in your backpack to craft this item!`,
