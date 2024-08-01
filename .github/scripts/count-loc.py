@@ -23,36 +23,44 @@ def generate_bar_chart(data):
     sorted_languages, sorted_lines_of_code = zip(*sorted_data)
 
     # Create a bar chart
-    plt.figure(figsize=(12, 8))
-    bars = plt.barh(sorted_languages, sorted_lines_of_code, color='#01ff07', edgecolor='#01ff07')
+    fig, ax = plt.subplots(figsize=(12, 8), facecolor='none')  # Set figure background color to none
+
+    # Set a background rectangle with 70% opacity for the entire figure
+    fig.patch.set_facecolor('black')
+    fig.patch.set_alpha(0.7)
+
+    # Set the background color of the axes (plot area) to black
+    ax.set_facecolor((0, 0, 0, 0.7))  # Black with 70% opacity
+
+    bars = ax.barh(sorted_languages, sorted_lines_of_code, color='#01ff07', edgecolor='#01ff07')
 
     # Set text color to white for labels and title
-    plt.xlabel('Lines of Code', color='white')
-    plt.title('Lines of Code by Language', color='white')
+    ax.set_xlabel('Lines of Code', color='white')
+    ax.set_title('Lines of Code by Language', color='white')
 
     # Set the color of the ticks and labels
-    plt.gca().tick_params(axis='both', colors='white')
-    plt.gca().xaxis.set_tick_params(labelcolor='white')
-    plt.gca().yaxis.set_tick_params(labelcolor='white')
+    ax.tick_params(axis='both', colors='white')
+    ax.xaxis.set_tick_params(labelcolor='white')
+    ax.yaxis.set_tick_params(labelcolor='white')
 
     # Add text labels to each bar with white color
     for bar in bars:
         width = bar.get_width()
-        plt.text(width, bar.get_y() + bar.get_height()/2, f'{int(width)}', 
-                 va='center', ha='left', color='white')
+        ax.text(width, bar.get_y() + bar.get_height()/2, f'{int(width)}', 
+                va='center', ha='left', color='white')
 
-    plt.gca().invert_yaxis()  # Highest values at the top
+    ax.invert_yaxis()  # Highest values at the top
 
     # Remove extra padding and borders
     plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
-    plt.margins(x=0, y=0)
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    plt.gca().spines['left'].set_visible(False)
-    plt.gca().spines['bottom'].set_visible(False)
+    ax.margins(x=0, y=0)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
 
-    # Save the chart to a file
-    plt.savefig('LOC_bar_chart.png', transparent=True, bbox_inches='tight', pad_inches=0)
+    # Save the chart to a file with black background and 70% transparency
+    plt.savefig('LOC_bar_chart.png', facecolor=fig.get_facecolor(), transparent=True, bbox_inches='tight', pad_inches=0)
     plt.close()
     print("Bar chart saved as LOC_bar_chart.png")
 
