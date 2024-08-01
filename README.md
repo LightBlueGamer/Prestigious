@@ -28,6 +28,11 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-21
+
+-   Fixed Ingredients list on wiki
+-   Lootbox can no longer be bought
+
 ### B-20
 
 -   Added new backpack **Satchel**.

@@ -17,45 +17,36 @@ import {
 } from "../lib/library.js";
 import { marked } from "marked";
 
+marked.setOptions({});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 function generateRecipeHTML(recipe: Recipe): string {
     const ingredientsHTML = recipe.ingredients
         .map((ingredient) => {
-            let itemName: string;
             if (ingredient instanceof Ingredient) {
-                itemName = ingredient.item.name;
+                return `<tr><td><a href="/items/${ingredient.item.name.replace(/\s+/g, "-")}" class="text-light">${ingredient.item.name}</a></td><td>${ingredient.amount}</td></tr>`;
             } else if (ingredient instanceof Item) {
-                itemName = ingredient.name;
+                return `<tr><td><a href="/items/${ingredient.name.replace(/\s+/g, "-")}" class="text-light">${ingredient.name}</a></td><td>1</td></tr>`;
             } else {
-                itemName = "Unknown";
+                return `<tr><td>Unknown</td><td>N/A</td></tr>`;
             }
-
-            // URL-encode the item name to handle spaces and special characters
-            const encodedName = encodeURIComponent(itemName);
-            const itemLink = `/wiki/items/${encodedName}`;
-
-            // Generate table row with clickable item name
-            return `
-            <tr>
-              <td><a href="${itemLink}" class="text-light">${itemName}</a></td>
-              <td>${ingredient instanceof Ingredient || ingredient instanceof Item ? "1" : "N/A"}</td>
-            </tr>`;
         })
         .join("\n");
 
     return `
 <h3>Recipe (outputs x${recipe.amount})</h3>
 <table class="table table-dark table-striped table-hover table-responsive">
-  <thead>
-    <tr>
-      <th>Ingredient</th>
-      <th>Quantity</th>
-    </tr>
-  </thead>
-  <tbody>
-    ${ingredientsHTML}
-  </tbody>
+<thead>
+  <tr>
+    <th>Ingredient</th>
+    <th>Quantity</th>
+  </tr>
+</thead>
+<tbody>
+  ${ingredientsHTML}
+</tbody>
 </table>
 `;
 }

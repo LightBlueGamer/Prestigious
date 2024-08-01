@@ -132,7 +132,7 @@ const items: { [key: string]: Item } = {
         2,
         5000,
         1200,
-        true,
+        false,
         false,
         true,
         false
