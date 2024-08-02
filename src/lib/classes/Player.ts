@@ -1034,6 +1034,73 @@ export class Player {
         return this;
     }
 
+    /**
+     * Calculates and returns the total damage the player can deal based on their equipped weapons and attributes.
+     *
+     * @returns The total damage the player can deal.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const sword = new Weapon('Sword', 10);
+     * player.setWeapon(sword);
+     * const strAttribute = new Attribute('str', 15);
+     * player.addAttribute(strAttribute);
+     * console.log(player.getDamage()); // Output: 16.5 (10 damage from the sword + 1.5 damage from the str attribute)
+     */
+    getDamage() {
+        return (
+            Array.from(this.getEquipment()).reduce((acc, item) => {
+                if (item === null) return acc;
+                return acc + (item instanceof Weapon ? item.damage || 0 : 0);
+            }, 0) *
+            (1 + this.getAttribute("str").value / 20)
+        );
+    }
+
+    /**
+     * Calculates and returns the total armor the player can defend against physical attacks based on their equipped armor and attributes.
+     *
+     * @returns The total armor the player can defend against physical attacks.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const cuirass = new Cuirass('Steel Cuirass', 10);
+     * player.setCuirass(cuirass);
+     * const dexAttribute = new Attribute('dex', 15);
+     * player.addAttribute(dexAttribute);
+     * console.log(player.getArmor()); // Output: 11.5 (10 armor from the cuirass + 1.5 armor from the dex attribute)
+     */
+    getArmor() {
+        return (
+            Array.from(this.getEquipment()).reduce((acc, item) => {
+                if (item === null) return acc;
+                return acc + (item instanceof Weapon ? 0 : item.armor || 0);
+            }, 0) *
+            (1 + this.getAttribute("dex").value / 10)
+        );
+    }
+
+    /**
+     * Calculates and returns the total health points the player can have based on their level, prestige, and constitution attribute.
+     *
+     * @returns The total health points the player can have, rounded to the nearest whole number.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.data.level = 10;
+     * player.data.prestige = 5;
+     * player.addAttribute(new Attribute('con', 18));
+     * console.log(player.getHealth()); // Output: 150 (7 + (7 * 10 + 10) + (1.33 * 5) + (2.5 * 18))
+     */
+    getHealth() {
+        return Math.round(
+            7 +
+                (7 * this.data.level + this.data.level) +
+                1.33 * this.data.prestige +
+                2.5 * this.getAttribute("con").value
+        );
+    }
+
     // !!!OBS!!! Internal Functions !!!OBS!!!
 
     /**

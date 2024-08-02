@@ -64,9 +64,11 @@ export default {
             );
 
         const playerEq = player.getEquipment();
-
         const equipment = randomEmbed()
             .setTitle("Equipment")
+            .setDescription(
+                `Health: ${player.getHealth()}\nDamage: ${player.getDamage()} — Armor: ${player.getArmor()}`
+            )
             .addFields([
                 {
                     name: "\u200b",

@@ -28,6 +28,10 @@ Craft new items with resources gained from scavenging
 
 ## V-1.1.0
 
+### B-23
+
+-   Added health, damage and armor stats
+
 ### B-22
 
 -   Fixed bug with /shop and /recipe commands
