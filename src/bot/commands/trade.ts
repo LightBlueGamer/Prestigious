@@ -1,10 +1,12 @@
 import {
     ActionRowBuilder,
     ButtonBuilder,
+    ButtonInteraction,
     ButtonStyle,
     ChatInputCommandInteraction,
     ComponentType,
     ModalBuilder,
+    ModalSubmitInteraction,
     SlashCommandBuilder,
     TextInputBuilder,
     TextInputStyle,
@@ -103,12 +105,13 @@ export default {
                 tradeOffer.stop();
 
                 const tradeEdit = tradeMsg.createMessageComponentCollector({
-                    filter: (int) => [user.id, target.id].includes(int.user.id),
+                    filter: (int: ButtonInteraction) =>
+                        [user.id, target.id].includes(int.user.id),
                     componentType: ComponentType.Button,
                     time: 3_600_000,
                 });
 
-                tradeEdit.on("collect", async (int) => {
+                tradeEdit.on("collect", async (int: ButtonInteraction) => {
                     switch (int.customId) {
                         case "set_money": {
                             const input = new ModalBuilder()
@@ -127,7 +130,8 @@ export default {
 
                             await int.showModal(input);
                             const modalSubmit = await int.awaitModalSubmit({
-                                filter: (m) => m.customId === "money_amount",
+                                filter: (m: ModalSubmitInteraction) =>
+                                    m.customId === "money_amount",
                                 time: 3_600_000,
                             });
                             const amount = Math.floor(
@@ -196,7 +200,8 @@ export default {
 
                             await int.showModal(input);
                             const modalSubmit = await int.awaitModalSubmit({
-                                filter: (m) => m.customId === "items_input",
+                                filter: (m: ModalSubmitInteraction) =>
+                                    m.customId === "items_input",
                                 time: 3_600_000,
                             });
 
@@ -375,7 +380,8 @@ export default {
 
                             await int.showModal(input);
                             const modalSubmit = await int.awaitModalSubmit({
-                                filter: (m) => m.customId === "items_input",
+                                filter: (m: ModalSubmitInteraction) =>
+                                    m.customId === "items_input",
                                 time: 3_600_000,
                             });
 
@@ -520,7 +526,8 @@ export default {
 
                             await int.showModal(input);
                             const modalSubmit = await int.awaitModalSubmit({
-                                filter: (m) => m.customId === "confirmation",
+                                filter: (m: ModalSubmitInteraction) =>
+                                    m.customId === "confirmation",
                                 time: 3_600_000,
                             });
 
@@ -566,7 +573,8 @@ export default {
 
                             await int.showModal(input);
                             const modalSubmit = await int.awaitModalSubmit({
-                                filter: (m) => m.customId === "confirmation",
+                                filter: (m: ModalSubmitInteraction) =>
+                                    m.customId === "confirmation",
                                 time: 3_600_000,
                             });
 
