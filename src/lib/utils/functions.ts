@@ -14,8 +14,16 @@ import { Cuirass } from "../classes/Cuirass.js";
 import { Helmet } from "../classes/Helmet.js";
 import { Shield } from "../classes/Shield.js";
 import { Weapon } from "../classes/Weapon.js";
-import type { EmbedField } from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    EmbedBuilder,
+    type EmbedField,
+    type User,
+} from "discord.js";
 import { BackpackEquipment } from "../classes/BackpackEquipment.js";
+import { blueEmbed } from "../resources/embeds.js";
 
 /**
  * A function to generate the default player data.
@@ -411,9 +419,25 @@ export function itemIsEquipment(item: Item) {
     );
 }
 
+/**
+ * Generates an array of Discord embed fields for a leaderboard.
+ *
+ * @param sorted - An array of players sorted by their ranking criteria.
+ * @param user - The Discord user for whom the leaderboard is being generated.
+ * @param type - The type of leaderboard to generate. Can be either 'balance' or 'prestige'.
+ * @param page - The page number of the leaderboard to generate.
+ *
+ * @returns An array of Discord embed fields representing the leaderboard.
+ *
+ * @remarks
+ * The function generates leaderboard fields for a given page of players,
+ * highlighting the user's position in the leaderboard.
+ * Each field contains the player's rank, name, and relevant statistics (balance or prestige).
+ * The fields are formatted for inline display.
+ */
 export function generateLeaderboardFields(
     sorted: Player[],
-    user: any,
+    user: User,
     type: string,
     page: number
 ): EmbedField[] {
@@ -453,6 +477,21 @@ export function generateLeaderboardFields(
     return fields;
 }
 
+/**
+ * Calculates the general ranking of players based on prestige, level, XP, and balance.
+ *
+ * @param playerList - An array of players to calculate the ranking for.
+ *
+ * @returns A new array of players sorted by their general ranking.
+ *          Players with higher prestige points are ranked higher.
+ *          If prestige points are equal, players with higher levels are ranked higher.
+ *          If prestige points and levels are equal, players with higher XP are ranked higher.
+ *          If prestige points, levels, and XP are equal, players with higher balances are ranked higher.
+ *
+ * @example
+ * const sortedPlayers = calculateGeneralRanking(playerList);
+ * console.log(sortedPlayers[0].name); // "Player with highest prestige"
+ */
 export function calculateGeneralRanking(playerList: Player[]): Player[] {
     return playerList.sort(
         (a, b) =>
@@ -461,4 +500,131 @@ export function calculateGeneralRanking(playerList: Player[]): Player[] {
             b.data.xp - a.data.xp ||
             b.data.balance - a.data.balance
     );
+}
+
+/**
+ * Generates an embed for a trade between two players.
+ *
+ * @param trade - The trade object containing the details of the trade.
+ * @returns An EmbedBuilder object representing the trade embed.
+ *
+ * @remarks
+ * The function takes a trade object as input, extracts the details of the two players involved in the trade,
+ * and constructs an embed using the blueEmbed function. The embed title is set to indicate the trade between the two players' names.
+ * Two fields are added to the embed, one for each player, displaying their money and items involved in the trade.
+ * The money is displayed in parentheses, and the items are displayed in a code block with their quantities and names.
+ * The function returns the constructed EmbedBuilder object.
+ */
+export function generateTradeEmbed(trade: TradeObject): EmbedBuilder {
+    const { p1, p2 } = trade;
+    return blueEmbed()
+        .setTitle(`Trade between ${p1.name} and ${p2.name}`)
+        .addFields([
+            {
+                name: `${p1.accepted ? "✅" : "❌"} ${p1.name} ($${p1.money}) — ${p1.accepted ? "Accepted" : "Trading"}`,
+                value: `\`\`\`\u200b${p1.items.map((item) => `${item.quantity}x ${item.name}`).join("\n")}\`\`\``,
+            },
+            {
+                name: `${p2.accepted ? "✅" : "❌"} ${p2.name} ($${p2.money}) — ${p2.accepted ? "Accepted" : "Trading"}`,
+                value: `\`\`\`\u200b${p2.items.map((item) => `${item.quantity}x ${item.name}`).join("\n")}\`\`\``,
+            },
+        ]);
+}
+
+/**
+ * Generates a Discord action row with buttons for a trade interface.
+ * Each button has a custom ID and a style, and their labels are set accordingly.
+ *
+ * @returns A new ActionRowBuilder object with the trade interface buttons added as components.
+ */
+export function generateTradeButtons() {
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
+            .setCustomId("set_money")
+            .setStyle(ButtonStyle.Primary)
+            .setLabel("Set Money"),
+        new ButtonBuilder()
+            .setCustomId("add_item")
+            .setStyle(ButtonStyle.Primary)
+            .setLabel("Add Item"),
+        new ButtonBuilder()
+            .setCustomId("remove_item")
+            .setStyle(ButtonStyle.Danger)
+            .setLabel("Remove Item")
+    );
+}
+
+/**
+ * Generates a Discord action row with buttons for a trade interface.
+ * Each button has a custom ID and a style, and their labels are set accordingly.
+ *
+ * @returns A new ActionRowBuilder object with the trade interface buttons added as components.
+ *
+ * @remarks
+ * The function creates two buttons: one with the custom ID "accept_trade", style ButtonStyle.Success, and label "Accept Trade",
+ * and another with the custom ID "cancel_trade", style ButtonStyle.Danger, and label "Cancel Trade".
+ * These buttons are then added to a new ActionRowBuilder object and returned.
+ */
+export function generateTradeAccCanButtons() {
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
+            .setCustomId("accept_trade")
+            .setStyle(ButtonStyle.Success)
+            .setLabel("Accept Trade"),
+        new ButtonBuilder()
+            .setCustomId("cancel_trade")
+            .setStyle(ButtonStyle.Danger)
+            .setLabel("Cancel Trade")
+    );
+}
+
+/**
+ * Extracts all numbers from a given string, sums them up, and removes the numbers from the string.
+ *
+ * @param str - The input string from which to extract and sum numbers.
+ *
+ * @returns An object containing the sum of all numbers and the string without the numbers.
+ *
+ * @example
+ * ```typescript
+ * const result = extractAndSumNumbersAndText("Hello, I have 12 apples and 5 oranges.");
+ * console.log(result.sum); // 17 (12 + 5)
+ * console.log(result.text); // "Hello, I have  apples and  oranges."
+ * ```
+ */
+export function extractAndSumNumbersAndText(str: string) {
+    let numbers = str.match(/\d+/g);
+    let sum = numbers ? numbers.map(Number).reduce((a, b) => a + b, 0) : 1;
+    let text = str.replace(/\d+/g, "").trim();
+    return {
+        sum,
+        text,
+    };
+}
+
+/**
+ * Adjusts the quantities of items in the target array based on the quantities in the source array.
+ *
+ * @param source - An array of TradeItem objects representing the source of items to adjust quantities from.
+ * @param target - An array of TradeItem objects representing the target of items to adjust quantities in.
+ *
+ * @returns A new array of TradeItem objects representing the adjusted quantities in the target array.
+ *          The returned array only includes items with a quantity greater than 0.
+ *
+ * @remarks
+ * This function iterates through each item in the source array and finds a corresponding item in the target array.
+ * If a corresponding item is found, the quantity of the target item is adjusted by subtracting the quantity of the source item.
+ * Finally, the function filters out any items in the target array with a quantity less than or equal to 0 and returns the adjusted array.
+ */
+export function adjustQuantities(source: TradeItem[], target: TradeItem[]) {
+    for (const srcItem of source) {
+        const targetItem = target.find(
+            (tItem) => tItem.name.toLowerCase() === srcItem.name.toLowerCase()
+        );
+        if (targetItem) {
+            targetItem.quantity -= srcItem.quantity;
+        }
+    }
+
+    return target.filter((item) => item.quantity > 0);
 }

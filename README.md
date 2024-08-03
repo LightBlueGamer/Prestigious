@@ -26,6 +26,16 @@ Scavenge for items & lost treasures to either sell or use to reach the top of th
 
 Craft new items with resources gained from scavenging
 
+### Trading
+
+Trade with other players!
+
+## V-1.2.0
+
+### B-1
+
+-   Added player trading.
+
 ## V-1.1.0
 
 ### B-23
