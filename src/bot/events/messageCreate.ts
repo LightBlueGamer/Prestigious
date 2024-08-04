@@ -22,9 +22,9 @@ export default {
                 player.levelUp();
                 let content;
                 if (player.data.level >= 20)
-                    content = `Congratulations, ${player.name}! You've reached level ${player.data.level} and can now prestige to P${player.data.prestige + 1} using the /prestige command!`;
+                    content = `Congratulations, ${player.name}! You've reached level ${player.data.level} and have gained 1 attribute point, you can see your attributes with the /attributes command or you can prestige to P${player.data.prestige + 1} using the /prestige command!`;
                 else
-                    (content = `Congratulations, ${player.name}! You've reached level ${player.data.level}!`),
+                    (content = `Congratulations, ${player.name}! You've reached level ${player.data.level} and have gained 1 attribute point, you can see your attributes with the /attributes command!`),
                         message.channel.send({
                             content,
                         });
