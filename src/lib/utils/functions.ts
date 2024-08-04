@@ -24,6 +24,7 @@ import {
 } from "discord.js";
 import { BackpackEquipment } from "../classes/BackpackEquipment.js";
 import { blueEmbed } from "../resources/embeds.js";
+import type { PityItem } from "../interfaces/PityItem.js";
 
 /**
  * A function to generate the default player data.
@@ -52,6 +53,7 @@ export function generateData(): Player.Data {
         prestigeAttributes: generatePrestigeAttributes(),
         equipment: new Equipment(),
         premium: false,
+        pity: generatePityData(),
     };
 }
 
@@ -153,13 +155,23 @@ export function numberToWord(number: number): string {
  * const randomItem = getRandomItemByWeight();
  * console.log(randomItem.name); // "Example Item"
  */
-export function getRandomItemByWeight(items: Item[]): Item {
-    const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
+export function getRandomItemByWeight(items: Item[], pity: PityItem[]): Item {
+    const totalWeight = items.reduce((sum, item) => {
+        const pityWeight =
+            pity.find(
+                (i) => i.item.name.toLowerCase() === item.name.toLowerCase()
+            )?.pity || 0;
+        return sum + (item.weight + pityWeight);
+    }, 0);
 
     let random = Math.random() * totalWeight;
 
     for (const item of items) {
-        random -= item.weight;
+        const pityWeight =
+            pity.find(
+                (i) => i.item.name.toLowerCase() === item.name.toLowerCase()
+            )?.pity || 0;
+        random -= item.weight + pityWeight;
         if (random <= 0) {
             return item;
         }
@@ -295,6 +307,39 @@ export function calculateItemChance(itemName: string): number | null {
     const totalWeight = items.reduce((sum, i) => sum + i.weight, 0);
 
     return (item.weight / totalWeight) * 100;
+}
+
+/**
+ * Calculates the pity chance for a specific item based on its pity count and the total weight of all items.
+ *
+ * @param itemName - The name of the item for which to calculate the pity chance.
+ * @param pityItems - An array of PityItem objects, where each object contains an item and its pity count.
+ *
+ * @returns The pity chance for the specified item as a number between 0 and 100, or null if the item is not found.
+ *
+ * @remarks
+ * This function finds the PityItem object for the specified item name and calculates the pity chance based on its pity count and the total weight of all items.
+ * If the item is not found, it logs an error message and returns null.
+ */
+export function calculateItemPityChance(
+    itemName: string,
+    pityItems: PityItem[]
+): number | null {
+    const item = pityItems.find(
+        (i) => i.item.name.toLowerCase() === itemName.toLowerCase()
+    );
+
+    if (!item) {
+        console.error(`Item "${itemName}" not found.`);
+        return null;
+    }
+
+    const totalWeight = Object.values(items).reduce(
+        (sum, i) => sum + (i.weight + item.pity),
+        0
+    );
+
+    return (item.pity / totalWeight) * 100;
 }
 
 /**
@@ -627,4 +672,22 @@ export function adjustQuantities(source: TradeItem[], target: TradeItem[]) {
     }
 
     return target.filter((item) => item.quantity > 0);
+}
+
+/**
+ * Generates an array of PityItem objects, where each object represents an item and its corresponding pity count.
+ * The pity count is initially set to 0 for all items.
+ *
+ * @returns An array of PityItem objects, where each object contains an item and its pity count.
+ *
+ * @remarks
+ * This function iterates through each item in the `items` object and creates a new PityItem object for each item.
+ * The pity count is set to 0 for all items. The function then returns the array of PityItem objects.
+ */
+export function generatePityData() {
+    const pity: PityItem[] = [];
+    for (const item of Object.values(items)) {
+        pity.push({ item, pity: 0 });
+    }
+    return pity;
 }

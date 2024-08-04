@@ -26,6 +26,7 @@ import { Cuirass } from "./Cuirass.js";
 import { LegArmor } from "./LegArmor.js";
 import { BackpackEquipment } from "./BackpackEquipment.js";
 import { items } from "../library.js";
+import type { PityItem } from "../interfaces/PityItem.js";
 
 /**
  * The base Player class with the ID, Name and Data of the player.
@@ -1101,6 +1102,145 @@ export class Player {
         );
     }
 
+    /**
+     * Retrieves the pity points for a specific item from the player's pity list.
+     * If the item is not found in the pity list, it returns 0.
+     *
+     * @param name - The name of the item to retrieve the pity points for.
+     * @returns The pity points for the specified item, or 0 if the item is not found in the pity list.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const pityPoints = player.getPity('Sword');
+     * // pityPoints will be the pity points for the 'Sword' item, or 0 if the item is not found in the pity list.
+     */
+    getPity(name: string) {
+        const pity = this.data.pity.find(
+            (p) => p.item.name.toLowerCase() === name.toLowerCase()
+        );
+        return pity ? pity.pity : 0;
+    }
+
+    /**
+     * Increases the pity points for a specific item in the player's pity list.
+     * If the item is not found in the pity list, a new entry will be created with the provided amount.
+     *
+     * @param name - The name of the item to increase the pity points for.
+     * @param amount - The amount to increase the pity points by.
+     *
+     * @returns The updated Player instance with the increased pity points.
+     *
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * player.increasePity('Sword', 10);
+     * // The pity points for the 'Sword' item in the player's pity list will be increased by 10.
+     */
+    increasePity(name: string, amount: number) {
+        const pity = this.data.pity.find(
+            (p) => p.item.name.toLowerCase() === name.toLowerCase()
+        );
+        const item = Object.values(items).find(
+            (i) => i.name.toLowerCase() === name.toLowerCase()
+        );
+        if (!item) return this;
+        if (pity) pity.pity += amount;
+        else this.data.pity.push({ item, pity: amount });
+        return this;
+    }
+
+    /**
+     * Increases the pity points for all items in the player's pity list by the specified amount.
+     *
+     * @param amount - The amount to increase the pity points by.
+     *
+     * @returns The updated Player instance with the increased pity points.
+     */
+    increasePities(amount: number) {
+        for (const pity of this.data.pity) {
+            pity.pity += amount;
+        }
+        return this;
+    }
+
+    /**
+     * Increases the pity points for all items in the player's pity list by the specified amount,
+     * except for the item with the provided name.
+     *
+     * @param name - The name of the item to exclude from the pity points increase.
+     * @param amount - The amount to increase the pity points by.
+     *
+     * @returns The updated Player instance with the increased pity points.
+     */
+    increasePitiesExcept(name: string, amount: number) {
+        for (const pity of this.data.pity) {
+            if (pity.item.name.toLowerCase() === name.toLowerCase()) continue;
+            pity.pity += amount;
+        }
+        return this;
+    }
+
+    /**
+     * Resets the pity points for a specific item in the player's pity list to 0.
+     * If the item is not found in the pity list, the function returns the player instance without making any changes.
+     *
+     * @param name - The name of the item to reset the pity points for.
+     * @returns The updated Player instance with the reset pity points.
+     */
+    resetPity(name: string) {
+        const pity = this.data.pity.find((p) => p.item.name.toLowerCase() === name.toLowerCase());
+        if (!pity) return this;
+        pity.pity = 0;
+        return this;
+    }
+
+    /**
+     * Decreases the pity points for a specific item in the player's pity list by the specified amount.
+     * If the item is not found in the pity list, a new entry will be created with a negative pity value.
+     *
+     * @param name - The name of the item to decrease the pity points for.
+     * @param amount - The amount to decrease the pity points by.
+     *
+     * @returns The updated Player instance with the decreased pity points.
+     */
+    decreasePity(name: string, amount: number) {
+        const pity = this.data.pity.find(
+            (p) => p.item.name.toLowerCase() === name.toLowerCase()
+        );
+        const item = Object.values(items).find(
+            (i) => i.name.toLowerCase() === name.toLowerCase()
+        );
+        if (!item) return this;
+        if (pity) pity.pity -= amount;
+        else this.data.pity.push({ item, pity: -amount });
+        return this;
+    }
+
+    /**
+     * Decreases the pity points for all items in the player's pity list by the specified amount.
+     *
+     * @param amount - The amount to decrease the pity points by.
+     *
+     * @returns The updated Player instance with the decreased pity points.
+     */
+    decreasePities(amount: number) {
+        for (const pity of this.data.pity) {
+            pity.pity -= amount;
+        }
+        return this;
+    }
+
+    /**
+     * Retrieves the pity items for all items in the player's pity list.
+     * @returns An array of PityItem objects, each containing the item and its corresponding pity points.
+     * @example
+     * const player = new Player('1234567890', 'John Doe');
+     * const pityItems = player.pities;
+     * // pityItems will be an array of PityItem objects, each containing the item and its corresponding pity points.
+     */
+    get pities() {
+        return this.data.pity;
+    }
+
     // !!!OBS!!! Internal Functions !!!OBS!!!
 
     /**
@@ -1181,5 +1321,6 @@ export namespace Player {
         prestigeAttributes: PrestigeAttribute[];
         equipment: Equipment;
         premium: boolean;
+        pity: PityItem[];
     }
 }

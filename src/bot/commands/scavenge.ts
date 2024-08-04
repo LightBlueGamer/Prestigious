@@ -46,7 +46,7 @@ export default {
         const itemList = scavenge.filter(
             (item) => item.size <= player.getBackpack().getFreeSpace()
         );
-        const item = getRandomItemByWeight(itemList);
+        const item = getRandomItemByWeight(itemList, player.pities);
         const { expBoost } = player.getPrestigeBoosts();
         const xp = Math.floor(
             randomNumber(item.value * 0.25, item.value * 2) *
@@ -59,6 +59,8 @@ export default {
             .addStatistic("Times scavenged")
             .addItem(item)
             .modifyXp(Math.floor(xp))
+            .increasePitiesExcept(item.name, 100)
+            .resetPity(item.name)
             .save();
 
         const embed = greenEmbed()

@@ -1,6 +1,6 @@
 {
   "name": "prestigious",
-  "version": "1.2.0-1",
+  "version": "1.2.0-2",
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run build && node --es-module-specifier-resolution=node dist/index.js",
@@ -9,7 +9,8 @@
     "prettier": "prettier src --write",
     "build": "npm run prettier && npm run compile",
     "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server --port 3334 docs/",
-    "wiki": "node --es-module-specifier-resolution=node dist/wiki/wiki.js"
+    "wiki": "node --es-module-specifier-resolution=node dist/wiki/wiki.js",
+    "loc": "python .github/scripts/count-loc.py"
   },
   "author": "Tim",
   "license": "ISC",

@@ -6,6 +6,8 @@ import {
     greenEmbed,
     calculateItemChance,
     formatNumber,
+    calculateItemPityChance,
+    Player,
 } from "../../lib/library.js";
 
 export default {
@@ -24,7 +26,8 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        const { options } = interaction;
+        const { options, user, client } = interaction;
+        const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
         const item = Object.values(items).find(
             (item) => item.name.toLowerCase() === itemName.toLowerCase()
@@ -48,7 +51,7 @@ export default {
                 { name: "Value", value: `$${item.value}`, inline: true },
                 {
                     name: "Drop Chance",
-                    value: `${formatNumber(calculateItemChance(item.name)!)}%`,
+                    value: `${formatNumber(calculateItemChance(item.name)!)}% (${formatNumber(calculateItemChance(item.name)! + calculateItemPityChance(item.name, player.pities)!)}% pity)`,
                     inline: true,
                 },
             ]);

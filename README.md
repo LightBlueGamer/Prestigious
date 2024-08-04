@@ -32,6 +32,8 @@ Trade with other players!
 
 ## V-1.2.0
 
+-   Added a pity system, increases the chance to get items you haven't received yet resetting when you get the item.
+
 ### B-1
 
 -   Added player trading.
