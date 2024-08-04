@@ -691,3 +691,24 @@ export function generatePityData() {
     }
     return pity;
 }
+
+/**
+ * Calculates the increase in pity number for a specific item based on its weight and the current pity count.
+ *
+ * @param item - The item for which to calculate the pity number increase.
+ * @param pityItems - An array of PityItem objects, where each object contains an item and its pity count.
+ *
+ * @returns The increase in pity number as a rounded integer.
+ *
+ * @remarks
+ * This function finds the PityItem object for the specified item and calculates the increase in pity number based on its weight and the current pity count.
+ * The increase is calculated as the sum of the item's weight and the current pity count divided by 1000, and then rounded to the nearest integer.
+ * If the item is not found in the pityItems array, the function assumes a pity count of 0 and calculates the increase accordingly.
+ */
+export function getPityNumberIncrease(item: Item, pityItems: PityItem[]) {
+    const pity =
+        pityItems.find(
+            (i) => i.item.name.toLowerCase() === item.name.toLowerCase()
+        )?.pity || 0;
+    return Math.round((item.weight + pity) / 10);
+}

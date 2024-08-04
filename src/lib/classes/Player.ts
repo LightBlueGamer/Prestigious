@@ -4,6 +4,7 @@ import {
     generateAttributes,
     generateData,
     generatePrestigeAttributes,
+    getPityNumberIncrease,
     numberToWord,
     randomNumber,
 } from "../utils/functions.js";
@@ -1171,10 +1172,10 @@ export class Player {
      *
      * @returns The updated Player instance with the increased pity points.
      */
-    increasePitiesExcept(name: string, amount: number) {
-        for (const pity of this.data.pity) {
+    increasePitiesExcept(name: string) {
+        for (const pity of this.pities) {
             if (pity.item.name.toLowerCase() === name.toLowerCase()) continue;
-            pity.pity += amount;
+            pity.pity += getPityNumberIncrease(pity.item, this.pities);
         }
         return this;
     }
@@ -1187,7 +1188,9 @@ export class Player {
      * @returns The updated Player instance with the reset pity points.
      */
     resetPity(name: string) {
-        const pity = this.data.pity.find((p) => p.item.name.toLowerCase() === name.toLowerCase());
+        const pity = this.data.pity.find(
+            (p) => p.item.name.toLowerCase() === name.toLowerCase()
+        );
         if (!pity) return this;
         pity.pity = 0;
         return this;

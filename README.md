@@ -32,6 +32,12 @@ Trade with other players!
 
 ## V-1.2.0
 
+### B-3
+
+-   Changed the pity system to use a formula for adding pity rather than a set number
+
+### B-2
+
 -   Added a pity system, increases the chance to get items you haven't received yet resetting when you get the item.
 
 ### B-1

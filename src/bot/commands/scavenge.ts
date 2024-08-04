@@ -59,7 +59,7 @@ export default {
             .addStatistic("Times scavenged")
             .addItem(item)
             .modifyXp(Math.floor(xp))
-            .increasePitiesExcept(item.name, 100)
+            .increasePitiesExcept(item.name)
             .resetPity(item.name)
             .save();
 
