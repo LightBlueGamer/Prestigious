@@ -32,6 +32,19 @@ Trade with other players!
 
 ## V-1.2.0
 
+### B-4
+
+-   Changed prices of items
+-   All craftable items now have the combined price of all ingredients
+-   The wiki is now fully dynamic and shows your pity
+-   The API system has been merged to include the server-side
+-   The wiki has been changed to be served from the public/ folder
+-   Added a function to get a existing player from the ID without the client
+-   Added API for fetching all existing items
+-   Added API for fetching a singular item
+-   Added API for fetching a players pity %
+-   The /item command now links to the new wiki page
+
 ### B-3
 
 -   Changed the pity system to use a formula for adding pity rather than a set number

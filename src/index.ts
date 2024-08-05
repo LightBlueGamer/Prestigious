@@ -29,7 +29,7 @@ export const commands = new Collection<Command.Data.Name, Command>();
 
 (async () => {
     await startDB();
-    await import("./api/api.js");
+    await import("./server/server.js");
 
     for (const file of commandFiles) {
         const command = (await import(`./bot/commands/${file}`)).default;

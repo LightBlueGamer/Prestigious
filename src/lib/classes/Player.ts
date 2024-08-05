@@ -1262,6 +1262,24 @@ export class Player {
     }
 
     /**
+     * Static method to create a new Player instance from a database ID.
+     * If the player does not exist in the database, a new Player instance is created with the provided ID and a default name.
+     *
+     * @param id - The ID of the player to retrieve from the database.
+     * @returns A new Player instance if the player does not exist in the database, otherwise, the Player instance fetched from the database.
+     *
+     * @example
+     * const player = await Player.getFromID('1234567890');
+     * // If the player with ID '1234567890' exists in the database, the fetched player instance is returned.
+     * // If the player does not exist, a new player instance with ID '1234567890' and default name 'Unknown' is returned.
+     */
+    static async getFromID(id: string) {
+        const player = await db.get(id);
+        if (!player) return new Player(id, "Unknown");
+        else return Player.fromJSON(player);
+    }
+
+    /**
      * Static method to create a new Player instance from a JSON object.
      * @param object The JSON object to create a Player instance from.
      * @returns A new Player instance with the provided JSON object's properties.
