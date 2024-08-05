@@ -98,7 +98,7 @@
                     amount.innerHTML = ingredient.amount;
                 } else {
                     const link = document.createElement("a");
-                    link.href = `wiki//item?item=${ingredient.name}&user=${user}`;
+                    link.href = `/wiki/item?item=${ingredient.name}&user=${user}`;
                     link.className = "text-light";
 
                     link.innerHTML = ingredient.name;
