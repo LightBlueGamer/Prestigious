@@ -93,7 +93,7 @@
                     link.href = `/item?item=${ingredient.item.name}&user=${user}`;
                     link.className = "text-light";
 
-                    inName.innerHTML = ingredient.item.name;
+                    link.innerHTML = ingredient.item.name;
                     inName.appendChild(link);
                     amount.innerHTML = ingredient.amount;
                 } else {
@@ -101,7 +101,7 @@
                     link.href = `/item?item=${ingredient.name}&user=${user}`;
                     link.className = "text-light";
 
-                    inName.innerHTML = ingredient.name;
+                    link.innerHTML = ingredient.name;
                     inName.appendChild(link);
                     amount.innerHTML = "1";
                 }
