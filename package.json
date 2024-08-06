@@ -9,7 +9,7 @@
     "prettier": "prettier src --write",
     "build": "npm run prettier && npm run compile",
     "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server --port 3334 docs/",
-    "loc": "python scripts/count-loc.py",
+    "loc": "python3 scripts/count-loc.py",
     "server": "npm run build && node --es-module-specifier-resolution=node dist/server/server.js"
   },
   "author": "Tim",
