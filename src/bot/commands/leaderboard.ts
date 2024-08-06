@@ -2,9 +2,9 @@ import {
     ChatInputCommandInteraction,
     EmbedBuilder,
     SlashCommandBuilder,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
+    //ActionRowBuilder,
+    //ButtonBuilder,
+    //ButtonStyle,
     ComponentType,
 } from "discord.js";
 import {
@@ -79,7 +79,7 @@ async function generateAndSendLeaderboard(
     const sorted = sortPlayers(playerList, type);
 
     const userRank = sorted.findIndex((p) => p.name === user.username) + 1;
-    const userPage = Math.ceil(userRank / 10);
+    //const userPage = Math.ceil(userRank / 10);
 
     const embedFields = generateLeaderboardFields(sorted, user, type, page);
 
@@ -94,12 +94,12 @@ async function generateAndSendLeaderboard(
         .addFields(embedFields)
         .setColor("Random");
 
-    const actionRow = createActionRow(page, totalPages, userPage);
+    //const actionRow = createActionRow(page, totalPages, userPage);
 
     const msg = await interaction.editReply({
         content: "",
         embeds: [embed],
-        components: [actionRow],
+        components: [],
     });
 
     const collector = msg.createMessageComponentCollector({
@@ -146,7 +146,7 @@ function sortPlayers(playerList: Player[], type: string): Player[] {
     }
 }
 
-function createActionRow(page: number, totalPages: number, userPage: number) {
+/*function createActionRow(page: number, totalPages: number, userPage: number) {
     return new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
             .setCustomId(`leaderboard_prev_${Math.max(1, page - 1)}`)
@@ -164,4 +164,4 @@ function createActionRow(page: number, totalPages: number, userPage: number) {
             .setStyle(ButtonStyle.Secondary)
             .setDisabled(userPage === page)
     );
-}
+}*/
