@@ -24,19 +24,20 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { user, client, options } = interaction;
+        await interaction.deferReply();
         const equipment = options.getString("equipment", true);
         const item = findItem(equipment);
         if (!item)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `The item ${equipment} does not exist.`,
             });
         if (!itemIsEquipment(item))
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${item.name} is not an equippable item.`,
             });
         const player = await Player.get(user.id, client);
         player.equip(item).save();
-        const playerEq = player.getEquipment();
+        const playerEq = player.equipment;
         const eqEmbed = randomEmbed()
             .setTitle("Equipment")
             .addFields([
@@ -82,11 +83,11 @@ export default {
                 },
                 {
                     name: "Backpack",
-                    value: `${player.getBackpack().name}`,
+                    value: `${player.backpack.name}`,
                     inline: true,
                 },
             ]);
-        return interaction.reply({
+        return interaction.editReply({
             content: `You have equipped ${item.name}`,
             embeds: [eqEmbed],
         });

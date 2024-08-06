@@ -1,5 +1,6 @@
 import requests
 import matplotlib.pyplot as plt
+import os
 
 def fetch_loc_data(api_url):
     response = requests.get(api_url)
@@ -59,8 +60,11 @@ def generate_bar_chart(data):
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-    # Save the chart to a file with black background and 70% transparency
-    plt.savefig('LOC_bar_chart.png', facecolor=fig.get_facecolor(), transparent=True, bbox_inches='tight', pad_inches=0)
+    output_dir = "./public/assets"
+    output_path = os.path.join(output_dir, "code-stats.png")
+
+    os.makedirs(output_dir, exist_ok=True)
+    plt.savefig(output_path, facecolor=fig.get_facecolor(), transparent=True, bbox_inches='tight', pad_inches=0)
     plt.close()
     print("Bar chart saved as LOC_bar_chart.png")
 

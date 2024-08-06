@@ -16,7 +16,6 @@ export const client = new Client({
 });
 
 import "dotenv/config";
-import { startDB } from "./db/index.js";
 
 const eventFiles = readdirSync(`${__dirname}/bot/events`).filter((x) =>
     x.endsWith(".js")
@@ -28,7 +27,7 @@ export const events = new Collection();
 export const commands = new Collection<Command.Data.Name, Command>();
 
 (async () => {
-    await startDB();
+    await import("./db/index.js");
     await import("./server/server.js");
 
     for (const file of commandFiles) {

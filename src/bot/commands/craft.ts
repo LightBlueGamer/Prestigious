@@ -18,23 +18,24 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { options, user, client } = interaction;
+        await interaction.deferReply();
         const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
         const item = findItem(itemName) as CraftableItem;
         const recipe = item.recipe;
         if (!item || !recipe)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `No recipe was found for the item ${itemName}`,
             });
-        if (!recipe.canCraft(player.getBackpackContents()))
-            return interaction.reply({
+        if (!recipe.canCraft(player.backpackContent))
+            return interaction.editReply({
                 content: `You don't have the necessary resources to craft this item\n\`\`\`${recipe
-                    .missingItems(player.getBackpackContents())
+                    .missingItems(player.backpackContent)
                     .map((item) => `${item.item.name} x ${item.amountMissing}`)
                     .join("\n")}\`\`\``,
             });
         if (
-            player.getBackpack().getFreeSpace() +
+            player.backpack.getFreeSpace() +
                 recipe
                     .getIngredients()
                     .reduce(
@@ -43,7 +44,7 @@ export default {
                     ) <
             recipe.amount * item.size
         )
-            return interaction.reply({
+            return interaction.editReply({
                 content: `You don't have enough space in your backpack to craft this item!`,
             });
         const ingredients = recipe.getIngredients();
@@ -52,7 +53,7 @@ export default {
         }
         player.addItem(item, recipe.amount).save();
 
-        return interaction.reply({
+        return interaction.editReply({
             content: `You have crafted ${recipe.amount}x ${item.name}`,
         });
     },

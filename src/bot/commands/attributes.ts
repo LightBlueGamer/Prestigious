@@ -70,8 +70,9 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { user, client, options } = interaction;
+        await interaction.deferReply();
         const player = await Player.get(user.id, client);
-        const attributes = player.getAttributes();
+        const attributes = player.attributes;
         const subcommand = options.getSubcommand();
 
         function generateEmbed() {
@@ -91,46 +92,47 @@ export default {
         }
 
         if (subcommand === "show")
-            return interaction.reply({ embeds: [generateEmbed()] });
+            return interaction.editReply({ embeds: [generateEmbed()] });
         else if (subcommand === "increase") {
             const attribute = options.getString("attribute", true);
             const amount = options.getNumber("amount") || 1;
             const attr = player.getAttribute(attribute);
+            if (!attr)
+                return interaction.editReply({
+                    content: `${attribute} is not a valid attribute`,
+                });
             if (attr.value >= 10 || attr.value + amount > 10)
-                return interaction.reply({
+                return interaction.editReply({
                     content: `You can't increase an attribute past 10!`,
                 });
-            if (player.getStatPoints() < amount)
-                return interaction.reply({
+            if (player.statPoints < amount)
+                return interaction.editReply({
                     content: `You can't increase an attribute with more stat points than you have!`,
                 });
             if (!attr)
-                return interaction.reply({
+                return interaction.editReply({
                     content: `${attribute} is not a valid attribute!`,
                 });
             player.increaseAttribute(attribute, amount).save();
-            return interaction.reply({
+            return interaction.editReply({
                 content: `Your ${attr.name} is now ${attr.value}!`,
                 embeds: [generateEmbed()],
             });
         } else if (subcommand === "prestige") {
             const attribute = options.getString("attribute", true);
-            if (player.getPrestigePoints() <= 0)
-                return interaction.reply({
+            const preAttr = player.getPrestigeAttribute(attribute);
+            if (player.prestigePoints <= 0)
+                return interaction.editReply({
                     content: `You need at least 1 prestige point to increase a prestige attribute`,
                 });
-            if (
-                !player
-                    .getPrestigeAttributes()
-                    .find((atr) => atr.name === attribute)
-            )
-                return interaction.reply({
+            if (!preAttr)
+                return interaction.editReply({
                     content: `${attribute} is not a valid attribute!`,
                 });
             player.increasePrestigeAttribute(attribute).save();
-            return interaction.reply({
-                content: `Your ${player.getPrestigeAttribute(attribute).name} is now ${player.getPrestigeAttribute(attribute).value}!`,
+            return interaction.editReply({
+                content: `Your ${preAttr.name} is now ${preAttr.value}!`,
             });
-        } else return interaction.reply({ embeds: [generateEmbed()] });
+        } else return interaction.editReply({ embeds: [generateEmbed()] });
     },
 };

@@ -2,6 +2,10 @@ import {
     ChatInputCommandInteraction,
     EmbedBuilder,
     SlashCommandBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ComponentType,
 } from "discord.js";
 import {
     calculateGeneralRanking,
@@ -36,49 +40,128 @@ export default {
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.reply({ content: "Fetching leaderboard..." });
 
-        let page = interaction.options.getNumber("page") || 1;
+        const page = Math.max(interaction.options.getNumber("page") || 1, 1);
         const type = interaction.options.getString("type") || "levels";
         const user = interaction.user;
-        const keys = await players.keys;
-        const playerList: Player[] = await Promise.all(
-            keys.map(async (key) => Player.fromJSON(await players.get(key)))
-        );
 
-        if (page <= 0) page = 1;
+        const playerList = await fetchPlayerList();
+
         const totalPages = Math.ceil(playerList.length / 10);
-        if (page > totalPages) page = totalPages;
 
-        let sorted: Player[];
-        if (type === "levels") {
-            sorted = [...playerList].sort(
-                (a, b) =>
-                    b.data.prestige - a.data.prestige ||
-                    b.data.level - a.data.level ||
-                    b.data.xp - a.data.xp
-            );
-        } else if (type === "balance") {
-            sorted = [...playerList].sort(
-                (a, b) => b.data.balance - a.data.balance
-            );
-        } else {
-            sorted = calculateGeneralRanking(playerList);
-        }
+        const clampedPage = Math.min(page, totalPages);
 
-        const embedFields = generateLeaderboardFields(sorted, user, type, page);
-
-        const embed = new EmbedBuilder()
-            .setTitle(
-                `Top ${(page - 1) * 10 + sorted.slice((page - 1) * 10, (page - 1) * 10 + 10).length} players`
-            )
-            .setDescription(
-                `You are #${sorted.findIndex((p) => p.name === user.username) + 1}`
-            )
-            .setFooter({
-                text: `Page ${page}/${totalPages}`,
-            })
-            .addFields(embedFields)
-            .setColor("Random");
-
-        return interaction.editReply({ content: "", embeds: [embed] });
+        await generateAndSendLeaderboard(
+            interaction,
+            playerList,
+            clampedPage,
+            type,
+            user,
+            totalPages
+        );
     },
 };
+
+async function fetchPlayerList(): Promise<Player[]> {
+    const keys = await players.keys;
+    return Promise.all(
+        keys.map(async (key) => Player.fromJSON(await players.get(key)))
+    );
+}
+
+async function generateAndSendLeaderboard(
+    interaction: ChatInputCommandInteraction,
+    playerList: Player[],
+    page: number,
+    type: string,
+    user: any,
+    totalPages: number
+) {
+    const sorted = sortPlayers(playerList, type);
+
+    const userRank = sorted.findIndex((p) => p.name === user.username) + 1;
+    const userPage = Math.ceil(userRank / 10);
+
+    const embedFields = generateLeaderboardFields(sorted, user, type, page);
+
+    const embed = new EmbedBuilder()
+        .setTitle(
+            `Top ${(page - 1) * 10 + sorted.slice((page - 1) * 10, (page - 1) * 10 + 10).length} players`
+        )
+        .setDescription(`You are #${userRank}`)
+        .setFooter({
+            text: `Page ${page}/${totalPages}`,
+        })
+        .addFields(embedFields)
+        .setColor("Random");
+
+    const actionRow = createActionRow(page, totalPages, userPage);
+
+    const msg = await interaction.editReply({
+        content: "",
+        embeds: [embed],
+        components: [actionRow],
+    });
+
+    const collector = msg.createMessageComponentCollector({
+        componentType: ComponentType.Button,
+        time: 60000,
+    });
+
+    collector.on("collect", async (btnInteraction) => {
+        if (btnInteraction.user.id !== user.id) return;
+        if (!btnInteraction.isButton()) return;
+
+        const [_, targetPage] = btnInteraction.customId.split("_");
+        const newPage = parseInt(targetPage, 10);
+
+        await btnInteraction.deferUpdate();
+
+        await generateAndSendLeaderboard(
+            interaction,
+            playerList,
+            newPage,
+            type,
+            user,
+            totalPages
+        );
+    });
+
+    collector.on("end", () => {
+        interaction.editReply({ components: [] });
+    });
+}
+
+function sortPlayers(playerList: Player[], type: string): Player[] {
+    if (type === "levels") {
+        return playerList.sort(
+            (a, b) =>
+                b.data.prestige - a.data.prestige ||
+                b.data.level - a.data.level ||
+                b.data.xp - a.data.xp
+        );
+    } else if (type === "balance") {
+        return playerList.sort((a, b) => b.data.balance - a.data.balance);
+    } else {
+        return calculateGeneralRanking(playerList);
+    }
+}
+
+function createActionRow(page: number, totalPages: number, userPage: number) {
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
+            .setCustomId(`leaderboard_prev_${Math.max(1, page - 1)}`)
+            .setLabel("Previous Page")
+            .setStyle(ButtonStyle.Primary)
+            .setDisabled(page === 1),
+        new ButtonBuilder()
+            .setCustomId(`leaderboard_next_${Math.min(totalPages, page + 1)}`)
+            .setLabel("Next Page")
+            .setStyle(ButtonStyle.Primary)
+            .setDisabled(page === totalPages),
+        new ButtonBuilder()
+            .setCustomId(`leaderboard_user_${userPage}`)
+            .setLabel(`Your Page`)
+            .setStyle(ButtonStyle.Secondary)
+            .setDisabled(userPage === page)
+    );
+}

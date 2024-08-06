@@ -24,16 +24,17 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { options, user, client } = interaction;
+        await interaction.deferReply();
         const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
         const item = findItem(itemName) as CraftableItem;
         if (!item)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${itemName} is not an item.`,
             });
         const recipe = item.recipe;
         if (!recipe)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${itemName} does not have a recipe.`,
             });
         const embed = randomEmbed()
@@ -47,10 +48,10 @@ export default {
                     )
                     .join("\n")}\`\`\`
                     ${
-                        recipe.canCraft(player.getBackpackContents())
+                        recipe.canCraft(player.backpackContent)
                             ? "**Craftable:** ✅"
                             : `**Missing Items:**\n\`\`\`${recipe
-                                  .missingItems(player.getBackpackContents())
+                                  .missingItems(player.backpackContent)
                                   .map(
                                       (item) =>
                                           `${item.item.name} x ${item.amountMissing}`
@@ -60,6 +61,6 @@ export default {
                     **Result:** ${item.name}`
             );
 
-        return interaction.reply({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed] });
     },
 };

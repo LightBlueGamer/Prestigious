@@ -24,19 +24,19 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { options, user, client } = interaction;
-
+        await interaction.deferReply();
         const lootboxName = options.getString("lootbox", true)!;
         const player = await Player.get(user.id, client);
-        const lootbox: Lootbox | undefined = player
-            .getLootboxes()
-            .find((box) => box.name === lootboxName);
+        const lootbox: Lootbox | undefined = player.lootboxes.find(
+            (box) => box.name === lootboxName
+        );
 
         if (!lootbox) {
             const embed = redEmbed().setTitle(
                 `You don't have a ${lootboxName} lootbox!`
             );
 
-            return interaction.reply({
+            return interaction.editReply({
                 embeds: [embed],
             });
         }
@@ -49,7 +49,7 @@ export default {
             .setTitle(`You opened a ${lootbox.name} lootbox!`)
             .setDescription(`You got a ${item.name}!`);
 
-        return interaction.reply({
+        return interaction.editReply({
             embeds: [embed],
         });
     },

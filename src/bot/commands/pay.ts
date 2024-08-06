@@ -23,34 +23,34 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { options, user, client } = interaction;
-
+        await interaction.deferReply();
         const toPay = options.getUser("user")!;
         const amount = options.getNumber("amount")!;
 
         if (amount < 1)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `You must pay a minimum of $1!`,
             });
 
         if (toPay?.bot)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `You can't pay a bot money!`,
             });
 
         if (toPay.id === user.id)
-            return interaction.reply({
+            return interaction.editReply({
                 content: `You can't pay yourself money!`,
             });
 
         const playerToPay = await Player.get(toPay.id, client);
         const player = await Player.get(user.id, client);
 
-        if (player.getBalance() < amount)
-            return interaction.reply({
+        if (player.balance < amount)
+            return interaction.editReply({
                 content: `You don't have enough money to pay ${toPay.displayName} $${amount}!`,
             });
 
-        player.payToUser(playerToPay, amount).save();
+        player.payUser(playerToPay, amount).save();
 
         const embed = greenEmbed()
             .setTitle("Transfer successful!")
@@ -60,12 +60,12 @@ export default {
             .addFields([
                 {
                     name: "New Balance",
-                    value: `$${player.getBalance()}`,
+                    value: `$${player.balance}`,
                     inline: true,
                 },
             ]);
 
-        return interaction.reply({
+        return interaction.editReply({
             embeds: [embed],
         });
     },

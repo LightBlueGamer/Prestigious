@@ -23,8 +23,9 @@ import {
     type User,
 } from "discord.js";
 import { BackpackEquipment } from "../classes/BackpackEquipment.js";
-import { blueEmbed } from "../resources/embeds.js";
+import { blueEmbed, randomEmbed } from "../resources/embeds.js";
 import type { PityItem } from "../interfaces/PityItem.js";
+import type { Backpack } from "../classes/Backpack.js";
 
 /**
  * A function to generate the default player data.
@@ -711,4 +712,46 @@ export function getPityNumberIncrease(item: Item, pityItems: PityItem[]) {
             (i) => i.item.name.toLowerCase() === item.name.toLowerCase()
         )?.pity || 0;
     return Math.round((item.weight + pity) / 10);
+}
+
+/**
+ * Generates an embed for displaying the contents of a player's backpack.
+ *
+ * @param items - An array of BackpackItem objects representing the items in the backpack.
+ * @param page - The page number of the backpack to display.
+ *
+ * @returns A Discord EmbedBuilder object with the backpack contents formatted for display.
+ *          The embed title is set to "Backpack", the description displays the items in the backpack,
+ *          and the footer shows the current page number.
+ *
+ * @remarks
+ * The function slices the items array to display only a portion of the items per page.
+ * It then constructs a Discord embed using the randomEmbed function, setting the title, description,
+ * and footer with the appropriate information.
+ */
+export function backpackEmbed(backpack: Backpack, page: number) {
+    const sliced = backpack
+        .getContents()
+        .slice((page - 1) * 10, (page - 1) * 10 + 10);
+    const embed = randomEmbed()
+        .setTitle(
+            `Backpack ${backpack.getContents().reduce((acc, item) => acc + item.size * item.amount, 0)}/${backpack.slots}`
+        )
+        .setDescription(
+            sliced.length > 0
+                ? "```\n" +
+                      sliced
+                          .map(
+                              (item) =>
+                                  `${item.size * item.amount} — ${item.amount}x ${item.name}`
+                          )
+                          .join("\n") +
+                      "```"
+                : "The backpack is empty"
+        )
+        .setFooter({
+            text: `Page ${page}/${Math.ceil(backpack.getContents().length / 10)}`,
+        });
+
+    return embed;
 }

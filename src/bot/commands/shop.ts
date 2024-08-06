@@ -59,6 +59,7 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { user, client, options } = interaction;
+        await interaction.deferReply();
         const subCmd = options.getSubcommand(true);
         const player = await Player.get(user.id, client);
         const item = Object.values(items).find(
@@ -68,7 +69,7 @@ export default {
         let embed: EmbedBuilder = greenEmbed();
         if (!item) {
             embed = redEmbed().setTitle("That item doesn't exist in the shop!");
-            return interaction.reply({
+            return interaction.editReply({
                 embeds: [embed],
             });
         }
@@ -78,25 +79,25 @@ export default {
 
         if (subCmd === "buy") {
             if (!item.buy)
-                return interaction.reply({
+                return interaction.editReply({
                     content: "This item cannot be bought!",
                 });
-            if (player.getBackpack().getFreeSpace() < item.size * amount) {
+            if (player.backpack.getFreeSpace() < item.size * amount) {
                 embed = redEmbed().setTitle(
                     "You don't have enough space in your backpack to buy this item!"
                 );
-                return interaction.reply({
+                return interaction.editReply({
                     embeds: [embed],
                 });
             }
-            if (player.getBalance() < buyPrice)
+            if (player.balance < buyPrice)
                 embed = redEmbed().setTitle(
                     "You don't have enough money to buy this item!"
                 );
             else {
                 player
                     .addItem(item, amount)
-                    .removeBalance(buyPrice)
+                    .decreaseBalance(buyPrice)
                     .addStatistic("Items bought", amount);
                 embed = greenEmbed().setTitle(
                     `You bought ${amount}x ${item.name} for $${buyPrice}!`
@@ -123,7 +124,7 @@ export default {
 
         player.save();
 
-        return interaction.reply({
+        return interaction.editReply({
             embeds: [embed],
         });
     },

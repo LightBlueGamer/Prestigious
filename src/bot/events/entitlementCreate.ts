@@ -8,7 +8,7 @@ export default {
         const { skuId, client, userId } = entitlement;
         if (skuId === "1268382692685119649") {
             const player = await Player.get(userId, client);
-            player.setPremium().save();
+            player.setPremium(true).save();
         }
     },
 };

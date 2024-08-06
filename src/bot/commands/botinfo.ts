@@ -12,6 +12,7 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { client } = interaction;
+        await interaction.deferReply();
         const { version } = getPackageJSONData();
         const embed = randomEmbed()
             .setTitle(client.user.username)
@@ -38,6 +39,6 @@ export default {
             .setThumbnail(client.user.avatarURL())
             .setFooter({ text: `Bot Version V${version}` });
 
-        return interaction.reply({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed] });
     },
 };

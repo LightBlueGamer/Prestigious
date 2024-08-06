@@ -3,7 +3,12 @@ import {
     GuildMember,
     SlashCommandBuilder,
 } from "discord.js";
-import { Modules, Player, randomEmbed } from "../../lib/library.js";
+import {
+    backpackEmbed,
+    Modules,
+    Player,
+    randomEmbed,
+} from "../../lib/library.js";
 
 export default {
     devMode: false,
@@ -21,6 +26,7 @@ export default {
         )
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
+        await interaction.deferReply();
         const user = interaction.options.getUser("user") || interaction.user;
 
         const player = await Player.get(user.id, interaction.client);
@@ -54,20 +60,14 @@ export default {
                 },
             ])
             .setDescription(
-                `${player.data.xp}/${player.xpRequired()} xp\n${player.generateBar()}\n\n**(${player.getBackpackContents().reduce((p, c) => p + c.amount * c.size, 0)}/${player.getBackpack().slots}) Backpack:**\n\`\`\`` +
-                    player.data.backpack.contents
-                        .map((item) => {
-                            return `\n${item.size * item.amount} - ${item.amount}x ${item.name}`;
-                        })
-                        .join("\n") +
-                    "\u200b```"
+                `${player.data.xp}/${player.requiredXp} xp\n${player.generateBar()}`
             );
 
-        const playerEq = player.getEquipment();
+        const playerEq = player.equipment;
         const equipment = randomEmbed()
             .setTitle("Equipment")
             .setDescription(
-                `Health: ${player.getHealth()}\nDamage: ${player.getDamage()} — Armor: ${player.getArmor()}`
+                `Health: ${player.health}\nDamage: ${player.damage} — Armor: ${player.armor}`
             )
             .addFields([
                 {
@@ -112,15 +112,18 @@ export default {
                 },
                 {
                     name: "Backpack",
-                    value: `${player.getBackpack().name}`,
+                    value: `${player.backpack.name}`,
                     inline: true,
                 },
             ]);
 
-        const content = player.hasStatPoints()
+        const content = player.hasStatPoints
             ? `You have available statpoints you can use to improve your attributes! You can increase them with the /attributes command`
             : ``;
 
-        interaction.reply({ embeds: [embed, equipment], content });
+        interaction.editReply({
+            embeds: [embed, equipment, backpackEmbed(player.backpack, 1)],
+            content,
+        });
     },
 };

@@ -27,6 +27,7 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { options, user, client } = interaction;
+        await interaction.deferReply();
         const player = await Player.get(user.id, client);
         const itemName = options.getString("item", true);
         const item = Object.values(items).find(
@@ -38,7 +39,7 @@ export default {
                 `There is no item called ${itemName}`
             );
 
-            return interaction.reply({ embeds: [embed] });
+            return interaction.editReply({ embeds: [embed] });
         }
 
         const embed = greenEmbed()
@@ -51,11 +52,11 @@ export default {
                 { name: "Value", value: `$${item.value}`, inline: true },
                 {
                     name: "Drop Chance",
-                    value: `${formatNumber(calculateItemChance(item.name)!)}% (${formatNumber(calculateItemChance(item.name)! + calculateItemPityChance(item.name, player.pities)!)}% pity)`,
+                    value: `${formatNumber(calculateItemChance(item.name)!)}% (${formatNumber(calculateItemChance(item.name)! + calculateItemPityChance(item.name, player.pity)!)}% pity)`,
                     inline: true,
                 },
             ]);
 
-        return interaction.reply({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed] });
     },
 };

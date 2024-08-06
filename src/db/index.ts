@@ -13,5 +13,3 @@ export const db = new Josh<Player.JSON>({
         url: uri,
     },
 });
-
-export async function startDB() {}

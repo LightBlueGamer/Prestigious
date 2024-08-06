@@ -13,16 +13,17 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { user, client } = interaction;
+        await interaction.deferReply();
         const player = await Player.get(user.id, client);
 
-        if (player.canPrestige()) {
-            player.prestige();
-            await interaction.reply({
-                content: `You have prestiged to P${player.data.prestige}!`,
+        if (player.canPrestige) {
+            player.increasePrestige().save();
+            await interaction.editReply({
+                content: `You have prestiged to P${player.prestige}!`,
             });
         } else {
-            await interaction.reply({
-                content: `You cannot prestige yet, you need ${20 - player.data.level} more levels to prestige!`,
+            await interaction.editReply({
+                content: `You cannot prestige yet, you need ${20 - player.level} more levels to prestige!`,
             });
         }
     },

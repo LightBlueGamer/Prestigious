@@ -134,6 +134,9 @@ export default {
                                     m.customId === "money_amount",
                                 time: 3_600_000,
                             });
+
+                            await modalSubmit.deferReply({ ephemeral: true });
+
                             const amount = Math.floor(
                                 parseInt(
                                     modalSubmit.fields.getTextInputValue(
@@ -143,33 +146,28 @@ export default {
                             );
                             if (modalSubmit.user.id === user.id) {
                                 if (amount > player.data.balance)
-                                    return modalSubmit.reply({
+                                    return modalSubmit.editReply({
                                         content: `You can't trade $${amount} you only have ${player.data.balance}`,
-                                        ephemeral: true,
                                     });
                                 if (amount < 0)
-                                    return modalSubmit.reply({
+                                    return modalSubmit.editReply({
                                         content: `You must trade a minimum of $1`,
-                                        ephemeral: true,
                                     });
                                 trade.p1.money = amount;
                             } else if (modalSubmit.user.id === target.id) {
                                 if (amount > oPlayer.data.balance)
-                                    return modalSubmit.reply({
+                                    return modalSubmit.editReply({
                                         content: `${target}, you can't trade $${amount} you only have ${oPlayer.data.balance}`,
-                                        ephemeral: true,
                                     });
                                 if (amount < 0)
-                                    return modalSubmit.reply({
+                                    return modalSubmit.editReply({
                                         content: `${target}, you must trade a minimum of $1`,
-                                        ephemeral: true,
                                     });
                                 trade.p2.money = amount;
                             }
 
-                            await modalSubmit.reply({
+                            await modalSubmit.editReply({
                                 content: `You have added $${amount} to the trade.`,
-                                ephemeral: true,
                             });
 
                             trade.p1.accepted = false;
@@ -205,6 +203,8 @@ export default {
                                 time: 3_600_000,
                             });
 
+                            await modalSubmit.deferReply({ ephemeral: true });
+
                             const items: TradeItem[] = modalSubmit.fields
                                 .getTextInputValue("items")
                                 .replace(/,/gim, "\n")
@@ -215,9 +215,8 @@ export default {
                                     if (sum <= 0) return null;
 
                                     if (modalSubmit.user.id === user.id) {
-                                        const item = player
-                                            .getBackpackContents()
-                                            .find(
+                                        const item =
+                                            player.backpackContent.find(
                                                 (itemSearch) =>
                                                     itemSearch.name.toLowerCase() ===
                                                     text.toLowerCase()
@@ -235,9 +234,8 @@ export default {
                                     } else if (
                                         modalSubmit.user.id === target.id
                                     ) {
-                                        const item = oPlayer
-                                            .getBackpackContents()
-                                            .find(
+                                        const item =
+                                            oPlayer.backpackContent.find(
                                                 (itemSearch) =>
                                                     itemSearch.name.toLowerCase() ===
                                                     text.toLowerCase()
@@ -287,20 +285,16 @@ export default {
                                 if (existingItem) {
                                     const playerItem =
                                         modalSubmit.user.id === user.id
-                                            ? player
-                                                  .getBackpackContents()
-                                                  .find(
-                                                      (item) =>
-                                                          item.name.toLowerCase() ===
-                                                          newItem.name.toLowerCase()
-                                                  )
-                                            : oPlayer
-                                                  .getBackpackContents()
-                                                  .find(
-                                                      (item) =>
-                                                          item.name.toLowerCase() ===
-                                                          newItem.name.toLowerCase()
-                                                  );
+                                            ? player.backpackContent.find(
+                                                  (item) =>
+                                                      item.name.toLowerCase() ===
+                                                      newItem.name.toLowerCase()
+                                              )
+                                            : oPlayer.backpackContent.find(
+                                                  (item) =>
+                                                      item.name.toLowerCase() ===
+                                                      newItem.name.toLowerCase()
+                                              );
                                     if (playerItem) {
                                         const availableQuantity =
                                             playerItem.amount -
@@ -317,20 +311,16 @@ export default {
                                 } else {
                                     const playerItem =
                                         modalSubmit.user.id === user.id
-                                            ? player
-                                                  .getBackpackContents()
-                                                  .find(
-                                                      (item) =>
-                                                          item.name.toLowerCase() ===
-                                                          newItem.name.toLowerCase()
-                                                  )
-                                            : oPlayer
-                                                  .getBackpackContents()
-                                                  .find(
-                                                      (item) =>
-                                                          item.name.toLowerCase() ===
-                                                          newItem.name.toLowerCase()
-                                                  );
+                                            ? player.backpackContent.find(
+                                                  (item) =>
+                                                      item.name.toLowerCase() ===
+                                                      newItem.name.toLowerCase()
+                                              )
+                                            : oPlayer.backpackContent.find(
+                                                  (item) =>
+                                                      item.name.toLowerCase() ===
+                                                      newItem.name.toLowerCase()
+                                              );
                                     if (playerItem) {
                                         const maxQuantity = Math.min(
                                             newItem.quantity,
@@ -346,9 +336,8 @@ export default {
                                 }
                             });
 
-                            await modalSubmit.reply({
+                            await modalSubmit.editReply({
                                 content: `You have added ${items.length} items to the trade. If some items you added do not show up, it probably means you don't have that item in your backpack.`,
-                                ephemeral: true,
                             });
 
                             trade.p1.accepted = false;
@@ -385,6 +374,8 @@ export default {
                                 time: 3_600_000,
                             });
 
+                            await modalSubmit.deferReply({ ephemeral: true });
+
                             const items: TradeItem[] = modalSubmit.fields
                                 .getTextInputValue("items")
                                 .replace(/,/gim, "\n")
@@ -393,9 +384,8 @@ export default {
                                 .map((itm) => {
                                     const { sum, text } = itm;
                                     if (modalSubmit.user.id === user.id) {
-                                        const item = player
-                                            .getBackpackContents()
-                                            .find(
+                                        const item =
+                                            player.backpackContent.find(
                                                 (itemSearch) =>
                                                     itemSearch.name.toLowerCase() ===
                                                     text.toLowerCase()
@@ -416,9 +406,8 @@ export default {
                                     } else if (
                                         modalSubmit.user.id === target.id
                                     ) {
-                                        const item = oPlayer
-                                            .getBackpackContents()
-                                            .find(
+                                        const item =
+                                            oPlayer.backpackContent.find(
                                                 (itemSearch) =>
                                                     itemSearch.name.toLowerCase() ===
                                                     text.toLowerCase()
@@ -465,9 +454,8 @@ export default {
                                     trade.p2.items
                                 );
 
-                            await modalSubmit.reply({
+                            await modalSubmit.editReply({
                                 content: `You have removed items from the trade successfully!`,
-                                ephemeral: true,
                             });
 
                             trade.p1.accepted = false;
@@ -531,14 +519,15 @@ export default {
                                 time: 3_600_000,
                             });
 
+                            await interaction.deferReply({ ephemeral: true });
+
                             if (
                                 modalSubmit.fields
                                     .getTextInputValue("confirm")
                                     .toLowerCase() === "confirm"
                             ) {
-                                modalSubmit.reply({
+                                modalSubmit.editReply({
                                     content: `You have cancelled the trade.`,
-                                    ephemeral: true,
                                 });
                                 i.editReply({
                                     content: `${modalSubmit.user.username} cancelled the trade.`,
@@ -547,9 +536,8 @@ export default {
                                 });
                                 tradeEdit.stop();
                             } else
-                                modalSubmit.reply({
+                                modalSubmit.editReply({
                                     content: `Trade cancelation was cancelled.`,
-                                    ephemeral: true,
                                 });
 
                             break;
@@ -578,14 +566,15 @@ export default {
                                 time: 3_600_000,
                             });
 
+                            await modalSubmit.deferReply({ ephemeral: true });
+
                             if (
                                 modalSubmit.fields
                                     .getTextInputValue("confirm")
                                     .toLowerCase() === "confirm"
                             ) {
-                                modalSubmit.reply({
+                                modalSubmit.editReply({
                                     content: `You have cancelled the trade.`,
-                                    ephemeral: true,
                                 });
                                 i.editReply({
                                     content: `${modalSubmit.user.username} cancelled the trade.`,
@@ -594,16 +583,15 @@ export default {
                                 });
                                 tradeEdit.stop();
                             } else
-                                modalSubmit.reply({
+                                modalSubmit.editReply({
                                     content: `Trade cancelation was cancelled.`,
-                                    ephemeral: true,
                                 });
                             break;
                     }
                     return;
                 });
             } else {
-                await i.reply({
+                await i.editReply({
                     components: [],
                     content: `${user}, ${target} has declined your offer to trade.`,
                 });
@@ -625,12 +613,12 @@ export default {
                 0
             );
 
-            if (player.getBackpack().getFreeSpace() + amountP1 < amountP2)
+            if (player.backpack.getFreeSpace() + amountP1 < amountP2)
                 return interaction.editReply({
                     content: `${user} does not have enough free space in their backpack to trade all items.`,
                 });
 
-            if (oPlayer.getBackpack().getFreeSpace() + amountP2 < amountP1)
+            if (oPlayer.backpack.getFreeSpace() + amountP2 < amountP1)
                 return interaction.editReply({
                     content: `${target} does not have enough free space in their backpack to trade all items.`,
                 });
@@ -653,8 +641,8 @@ export default {
                 player.addItem(item, quantity);
             }
 
-            player.removeBalance(p1.money).modifyBalance(p2.money).save();
-            oPlayer.removeBalance(p2.money).modifyBalance(p1.money).save();
+            player.decreaseBalance(p1.money).modifyBalance(p2.money).save();
+            oPlayer.decreaseBalance(p2.money).modifyBalance(p1.money).save();
             return;
         }
 

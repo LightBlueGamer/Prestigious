@@ -14,17 +14,17 @@ export default {
             const player = await Player.get(member.id, client);
 
             player
-                .increaseXP(10, 75)
+                .increaseXp(10, 75)
                 .increaseBalance(15, 50)
                 .addStatistic("Messages sent");
 
-            if (player.data.xp >= player.xpRequired()) {
+            if (player.data.xp >= player.requiredXp) {
                 player.levelUp();
                 let content;
                 if (player.data.level >= 20)
-                    content = `Congratulations, ${player.name}! You've reached level ${player.data.level} and have gained 1 attribute point, you can see your attributes with the /attributes command or you can prestige to P${player.data.prestige + 1} using the /prestige command!`;
+                    content = `Congratulations, ${player.name}! You've reached level ${player.level} and have gained 1 attribute point, you can see your attributes with the /attributes command or you can prestige to P${player.prestige + 1} using the /prestige command!`;
                 else
-                    (content = `Congratulations, ${player.name}! You've reached level ${player.data.level} and have gained 1 attribute point, you can see your attributes with the /attributes command!`),
+                    (content = `Congratulations, ${player.name}! You've reached level ${player.level} and have gained 1 attribute point, you can see your attributes with the /attributes command!`),
                         message.channel.send({
                             content,
                         });

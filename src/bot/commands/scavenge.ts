@@ -21,11 +21,12 @@ export default {
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
         const { user, client } = interaction;
+        await interaction.deferReply();
         const player = await Player.get(user.id, client);
-        const backpack = player.getBackpack();
+        const backpack = player.backpack;
 
         if (backpack.getFreeSpace() <= 0)
-            return interaction.reply({
+            return interaction.editReply({
                 content:
                     "You can't scavenge because you have no free space in your backpack!",
             });
@@ -38,19 +39,19 @@ export default {
             const timeLeft = expirationTime - now;
             const minutes = Math.floor(timeLeft / 60000);
             const seconds = Math.floor((timeLeft % 60000) / 1000);
-            return interaction.reply({
+            return interaction.editReply({
                 content: `You can't scavenge again just yet! Try again in ${minutes}m ${seconds}s.`,
             });
         }
 
         const itemList = scavenge.filter(
-            (item) => item.size <= player.getBackpack().getFreeSpace()
+            (item) => item.size <= player.backpack.getFreeSpace()
         );
-        const item = getRandomItemByWeight(itemList, player.pities);
-        const { expBoost } = player.getPrestigeBoosts();
+        const item = getRandomItemByWeight(itemList, player.pity);
+        const expBoost = player.expBoost;
         const xp = Math.floor(
             randomNumber(item.value * 0.25, item.value * 2) *
-                (1 + 0.0333 * player.getAttribute("int").value) *
+                (1 + 0.0333 * player.intelligence) *
                 expBoost *
                 (player.data.premium ? 2 : 1)
         );
@@ -59,7 +60,7 @@ export default {
             .addStatistic("Times scavenged")
             .addItem(item)
             .modifyXp(Math.floor(xp))
-            .increasePitiesExcept(item.name)
+            .increasePities(item.name)
             .resetPity(item.name)
             .save();
 
@@ -67,7 +68,7 @@ export default {
             .setTitle(`You found an item and got ${xp} xp!`)
             .setDescription(`1x ${item.name}`);
 
-        interaction.reply({
+        interaction.editReply({
             embeds: [embed],
         });
 

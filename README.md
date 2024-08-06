@@ -1,4 +1,4 @@
-![Lines of Code by Language](LOC_bar_chart.png)
+![Lines of Code by Language](https://prestigious-bot.xyz/assets/count-loc.png)
 
 # Prestigious
 
@@ -29,6 +29,21 @@ Craft new items with resources gained from scavenging
 ### Trading
 
 Trade with other players!
+
+## V-1.3.0
+
+### B-1
+
+-   Massive overhaul of the Player class for more efficiency.
+-   Backpack in the /user command now only displays 10 items.
+-   Bot now uses a save queue system to discourage duplicate players.
+-   Leaderboard now has buttons to go to next, previous, and the page with yourself on it.
+-   Improved /trade command.
+-   Damage and Armor now shows correct values.
+-   Player.get() now gets from cache if existing before fetching from database.
+-   Documentation is now hosted [here](https://prestigious-bot.xyz/docs).
+-   Bot now automatically deploys commands on startup to update commands.
+-   Added /backpack command to view your entire backpack
 
 ## V-1.2.0
 

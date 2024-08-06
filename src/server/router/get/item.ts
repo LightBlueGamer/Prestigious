@@ -3,6 +3,32 @@ import { items } from "../../../lib/resources/items.js";
 
 const item = express.Router();
 
+/**
+ * GET /item
+ *
+ * Fetches information about a specific item from the items collection based on the provided item name.
+ *
+ * @param req - The Express request object containing query parameters.
+ * @param req.query.item - The name of the item to fetch.
+ * @param res - The Express response object used to return data or errors.
+ *
+ * @returns {void} The route handler returns a JSON response.
+ *
+ * @example
+ * // Example request: GET /item?item=sword
+ * // Example response:
+ * // {
+ * //   "name": "Sword",
+ * //   "description": "A sharp blade for cutting.",
+ * //   "damage": 15,
+ * //   "weight": 3,
+ * //   "value": 100
+ * // }
+ *
+ * @error {400} Bad Request - Item parameter is required.
+ * @error {404} Not Found - Item not found.
+ * @error {500} Internal Server Error - Unexpected error occurred.
+ */
 item.get("/item", async (req, res) => {
     try {
         const itemName = req.query.item;

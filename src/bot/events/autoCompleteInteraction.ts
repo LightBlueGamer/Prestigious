@@ -14,7 +14,7 @@ export default {
         const { user, client } = interaction;
         if (user.bot) return;
         const player = await Player.get(user.id, client);
-        const boxes = player.getLootboxes();
+        const boxes = player.lootboxes;
 
         const focusedValue = interaction.options.getFocused();
         let choices: { name: string; value: string }[] = [];
@@ -37,15 +37,14 @@ export default {
                         filteredItems = Object.values(items).filter(
                             (item) =>
                                 item.buy &&
-                                Math.ceil(item.value * 1.3) <=
-                                    player.getBalance()
+                                Math.ceil(item.value * 1.3) <= player.balance
                         );
                         choices = filteredItems.map((item) => ({
                             name: ` ${item.name} for $${Math.ceil(item.value * 1.3)}/item`,
                             value: `${item.name}`,
                         }));
                     } else if (subCmd === "sell") {
-                        filteredItems = player.getBackpackContents();
+                        filteredItems = player.backpackContent;
                         choices = filteredItems.map((item) => ({
                             name: `${item.name} for $${item.value}/item`,
                             value: `${item.name}`,
