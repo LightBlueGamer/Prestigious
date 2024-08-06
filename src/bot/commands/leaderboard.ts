@@ -111,8 +111,8 @@ async function generateAndSendLeaderboard(
         if (btnInteraction.user.id !== user.id) return;
         if (!btnInteraction.isButton()) return;
 
-        const [_, targetPage] = btnInteraction.customId.split("_");
-        const newPage = parseInt(targetPage, 10);
+        const targetPage = btnInteraction.customId.split("_");
+        const newPage = parseInt(targetPage[2], 10);
 
         await btnInteraction.deferUpdate();
 

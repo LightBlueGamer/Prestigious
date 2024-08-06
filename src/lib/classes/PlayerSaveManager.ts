@@ -3,7 +3,7 @@ import type { Player } from "./Player.js";
 export class PlayerSaveManager {
     private static instance: PlayerSaveManager;
     private saveQueue: Map<string, Player> = new Map();
-    private debounceDelay: number = 5000;
+    private debounceDelay: number = 1000 * 60;
     private debounceTimer: NodeJS.Timeout | null = null;
     private playerCache: Map<string, Player> = new Map();
 
