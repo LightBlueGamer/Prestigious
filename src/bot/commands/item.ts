@@ -45,7 +45,7 @@ export default {
         const embed = greenEmbed()
             .setTitle(`${item.name}`)
             .setURL(
-                `https://prestigious-bot.xyz/wiki/item?item=${item.name}&user=${user.id}`
+                `https://prestigious-bot.xyz/wiki/item?item=${encodeURIComponent(item.name)}&user=${user.id}`
             )
             .addFields([
                 { name: "Size", value: `${item.size}`, inline: true },
