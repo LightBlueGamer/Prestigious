@@ -324,8 +324,8 @@ export class Player {
      */
     public levelUp() {
         if (this.xp >= this.requiredXp) {
-            this.level++;
             this.xp -= this.requiredXp;
+            this.level++;
             this.addStatistic("Level ups");
         }
         return this;
