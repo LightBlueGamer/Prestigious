@@ -8,5 +8,5 @@ npm run loc
 npx typedoc --options typedoc.json
 
 # Start the application with PM2
-node --es-module-specifier-resolution=node dist/bot/deploy.js"
+node --es-module-specifier-resolution=node dist/bot/deploy.js
 node --es-module-specifier-resolution=node dist/index.js
