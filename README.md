@@ -1,4 +1,4 @@
-![Lines of Code by Language](https://prestigious-bot.xyz/assets/count-loc.png)
+![Lines of Code by Language](https://prestigious-bot.xyz/assets/code-stats.png)
 
 # Prestigious
 
