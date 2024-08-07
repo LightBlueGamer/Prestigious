@@ -30,6 +30,10 @@ Craft new items with resources gained from scavenging
 
 Trade with other players!
 
+## V-1.4.2
+
+-   Fixed infinite money glitch with sell command
+
 ## V-1.4.1
 
 -   Fixed an issue causing all items without a weight to get pity

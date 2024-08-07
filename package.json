@@ -1,6 +1,6 @@
 {
   "name": "prestigious",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run build && npm run loc && npm run docs && node --es-module-specifier-resolution=node dist/index.js",
