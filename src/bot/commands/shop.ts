@@ -75,7 +75,7 @@ export default {
 
         let amount = options.getNumber("amount") || 1;
 
-        if(amount < 1) amount = 1;
+        if (amount < 1) amount = 1;
 
         const buyPrice = Math.ceil(item.value * 1.3 * amount);
 

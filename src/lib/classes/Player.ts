@@ -1012,9 +1012,11 @@ export class Player {
      */
     public increasePities(name: string) {
         for (const pity of this.pity) {
-            const item = Object.values(items).find(i => i.name.toLowerCase() === pity.item.name.toLowerCase());
+            const item = Object.values(items).find(
+                (i) => i.name.toLowerCase() === pity.item.name.toLowerCase()
+            );
             if (pity.item.name.toLowerCase() === name.toLowerCase()) continue;
-            if(item && item.weight <= 0) continue;
+            if (item && item.weight <= 0) continue;
             pity.pity += getPityNumberIncrease(pity.item, this.pity);
         }
         return this;

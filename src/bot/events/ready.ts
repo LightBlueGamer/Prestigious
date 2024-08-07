@@ -1,5 +1,14 @@
 import { Client, ActivityType } from "discord.js";
-import { getPackageJSONData } from "../../lib/library.js";
+import {
+    getPackageJSONData,
+    setupGracefulShutdown,
+} from "../../lib/library.js";
+import { writeFileSync, readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default {
     name: "ready",
@@ -8,7 +17,19 @@ export default {
         if (!client.user) return console.error(`No client user was found.`);
         const { version } = getPackageJSONData();
 
-        setTimeout(() => {
+        if (getStartJSON().rewrite) {
+            const date: StartJson = {
+                time: client.readyAt!.getTime(),
+                rewrite: false,
+            };
+
+            writeFileSync(
+                join(__dirname, "../startDate.json"),
+                JSON.stringify(date)
+            );
+        }
+
+        setInterval(() => {
             client.user?.setPresence({
                 status: "online",
                 activities: [
@@ -19,7 +40,22 @@ export default {
                     },
                 ],
             });
-        }, 5000);
+        }, 1000 * 15);
+        setupGracefulShutdown(client);
         console.log(`Bot is running as ${client.user.username}.`);
     },
 };
+
+function getStartJSON(): StartJson {
+    const packageJsonPath = join(__dirname, "../startDate.json");
+    try {
+        const data = readFileSync(packageJsonPath, "utf-8");
+        return JSON.parse(data);
+    } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+            return { time: Date.now(), rewrite: true };
+        } else {
+            throw error;
+        }
+    }
+}

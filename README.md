@@ -30,6 +30,11 @@ Craft new items with resources gained from scavenging
 
 Trade with other players!
 
+## V-1.4.3
+
+-   Leaderboard now loads faster
+-   /ping now works as intended
+
 ## V-1.4.2
 
 -   Fixed infinite money glitch with sell command

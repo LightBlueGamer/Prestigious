@@ -3,7 +3,6 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
 } from "discord.js";
-import prettyMilliseconds from "pretty-ms";
 import {
     greenEmbed,
     Modules,
@@ -16,32 +15,35 @@ export default {
     module: Modules.Information,
     data: new SlashCommandBuilder()
         .setName("ping")
-        .setDescription("Checks bot ping. ")
+        .setDescription("Checks bot ping.")
         .setDMPermission(true)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .toJSON(),
     async execute(interaction: ChatInputCommandInteraction) {
-        const action = await interaction.reply({
+        const startTimestamp = Date.now();
+
+        await interaction.reply({
             content: `Pinging...`,
         });
 
-        const botLatency = prettyMilliseconds(
-            action.createdTimestamp - interaction.createdTimestamp
-        );
-        const apiLatency = prettyMilliseconds(interaction.client.ws.ping);
+        const botLatency = Date.now() - startTimestamp;
+        const apiLatency = interaction.client.ws.ping;
+
         let embed;
-        if (Number(botLatency) < 150 && Number(apiLatency) < 150)
+        if (botLatency < 150 && apiLatency < 150) {
             embed = greenEmbed();
-        else if (
-            (Number(botLatency) < 150 && Number(apiLatency) > 150) ||
-            (Number(botLatency) > 150 && Number(apiLatency) < 150)
-        )
+        } else if (
+            (botLatency < 150 && apiLatency > 150) ||
+            (botLatency > 150 && apiLatency < 150)
+        ) {
             embed = orangeEmbed();
-        else embed = redEmbed();
+        } else {
+            embed = redEmbed();
+        }
 
         embed.setTitle("Pong!").setFields([
-            { name: "Bot Latency", value: botLatency, inline: true },
-            { name: "API Latency", value: apiLatency, inline: true },
+            { name: "Bot Latency", value: `${botLatency}ms`, inline: true },
+            { name: "API Latency", value: `${apiLatency}ms`, inline: true },
         ]);
 
         return interaction.editReply({ embeds: [embed] });

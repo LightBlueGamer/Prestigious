@@ -18,6 +18,7 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
+    Client,
     EmbedBuilder,
     type EmbedField,
     type User,
@@ -27,6 +28,7 @@ import { blueEmbed, randomEmbed } from "../resources/embeds.js";
 import type { PityItem } from "../interfaces/PityItem.js";
 import type { Backpack } from "../classes/Backpack.js";
 import { PlayerSaveManager } from "../classes/PlayerSaveManager.js";
+import { writeFileSync } from "fs";
 
 /**
  * A function to generate the default player data.
@@ -757,7 +759,7 @@ export function backpackEmbed(backpack: Backpack, page: number) {
     return embed;
 }
 
-export function setupGracefulShutdown() {
+export function setupGracefulShutdown(client: Client) {
     const saveManager = PlayerSaveManager.getInstance();
 
     async function handleShutdown(signal: string) {
@@ -767,6 +769,15 @@ export function setupGracefulShutdown() {
             console.log("Shutdown complete, exiting process.");
             process.exit(0);
         } catch (error) {
+            const date: StartJson = {
+                time: client.readyAt!.getTime(),
+                rewrite: true,
+            };
+
+            writeFileSync(
+                join(__dirname, "../startDate.json"),
+                JSON.stringify(date)
+            );
             console.error("Error during shutdown:", error);
             process.exit(1);
         }

@@ -1,39 +1,55 @@
 import {
     ChatInputCommandInteraction,
-    EmbedBuilder,
     SlashCommandBuilder,
-    //ActionRowBuilder,
-    //ButtonBuilder,
-    //ButtonStyle,
-    ComponentType,
+    EmbedBuilder,
 } from "discord.js";
-import {
-    calculateGeneralRanking,
-    generateLeaderboardFields,
-    Modules,
-    Player,
-} from "../../lib/library.js";
-import { db as players } from "../../db/index.js";
+import { Modules } from "../../lib/library.js";
+import { Collection, Db, MongoClient, ServerApiVersion } from "mongodb";
+import "dotenv/config";
+import type { PlayerDocument } from "../../lib/interfaces/PlayerDocument.js";
+
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.bjnb7xh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+const collectionName = "Prestigious";
+
+let client: MongoClient;
+let db: Db;
+let collection: Collection<PlayerDocument>;
+
+async function connectToMongoDB() {
+    if (!client) {
+        client = new MongoClient(uri, {
+            serverApi: {
+                version: ServerApiVersion.v1,
+                strict: true,
+                deprecationErrors: true,
+            },
+        });
+        await client.connect();
+        db = client.db("josh");
+        collection = db.collection(collectionName.toLowerCase());
+    }
+}
 
 export default {
     devMode: false,
-    module: Modules.Economy,
+    module: Modules.Fun,
     data: new SlashCommandBuilder()
         .setName("leaderboard")
         .setDescription("Shows the leaderboard on the specified page.")
+        .addNumberOption((option) =>
+            option.setName("page").setDescription("The page to show.")
+        )
         .addStringOption((option) =>
             option
                 .setName("type")
-                .setDescription("The type of leaderboard to show.")
-                .addChoices(
-                    { name: "levels", value: "levels" },
-                    { name: "balance", value: "balance" },
-                    { name: "general", value: "general" }
+                .setDescription(
+                    "Whether to show the Experience or Balance leaderboard. Defaults to XP"
                 )
-                .setRequired(false)
-        )
-        .addNumberOption((option) =>
-            option.setName("page").setDescription("The page to show.")
+                .addChoices(
+                    { name: "Experience", value: "experience" },
+                    { name: "Balance", value: "balance" }
+                )
         )
         .setDMPermission(false)
         .toJSON(),
@@ -41,127 +57,120 @@ export default {
         await interaction.reply({ content: "Fetching leaderboard..." });
 
         const page = Math.max(interaction.options.getNumber("page") || 1, 1);
-        const type = interaction.options.getString("type") || "levels";
-        const user = interaction.user;
+        const type = interaction.options.getString("type") || "experience";
 
-        const playerList = await fetchPlayerList();
+        await connectToMongoDB();
 
-        const totalPages = Math.ceil(playerList.length / 10);
+        const sortCriteria =
+            type === "experience"
+                ? {
+                      "value.data.prestige": -1,
+                      "value.data.level": -1,
+                      "value.data.xp": -1,
+                  }
+                : { "value.data.balance": -1 };
+        const pageSize = 10;
 
-        const clampedPage = Math.min(page, totalPages);
+        console.log(await collection.countDocuments());
+
+        const totalPlayers = await collection.countDocuments();
+        const totalPages = Math.ceil(totalPlayers / pageSize);
+
+        const clampedPage = Math.max(Math.min(page, totalPages), 1);
+
+        const players = await fetchPlayerList(
+            clampedPage,
+            pageSize,
+            sortCriteria
+        );
 
         await generateAndSendLeaderboard(
             interaction,
-            playerList,
+            players,
             clampedPage,
             type,
-            user,
             totalPages
         );
     },
 };
 
-async function fetchPlayerList(): Promise<Player[]> {
-    const keys = await players.keys;
-    return Promise.all(
-        keys.map(async (key) => Player.fromJSON(await players.get(key)))
-    );
+async function fetchPlayerList(
+    page: number,
+    pageSize: number,
+    sortCriteria: any
+): Promise<LeaderboardPlayer[]> {
+    const skip = (page - 1) * pageSize;
+    const playersCursor = collection
+        .find({})
+        .sort(sortCriteria)
+        .skip(skip)
+        .limit(pageSize);
+
+    const playersArray: PlayerDocument[] = await playersCursor.toArray();
+
+    return playersArray.map((playerData) => {
+        return {
+            username: playerData.value.name,
+            xp: playerData.value.data.xp,
+            balance: playerData.value.data.balance,
+            level: playerData.value.data.level,
+            prestige: playerData.value.data.prestige,
+            id: playerData.key,
+        };
+    });
 }
 
 async function generateAndSendLeaderboard(
     interaction: ChatInputCommandInteraction,
-    playerList: Player[],
+    players: LeaderboardPlayer[],
     page: number,
     type: string,
-    user: any,
     totalPages: number
 ) {
-    const sorted = sortPlayers(playerList, type);
+    const embedFields = players.flatMap((player, index) => {
+        const rank = index + (page - 1) * 10 + 1;
+        const name =
+            player.id === interaction.user.id
+                ? `#${rank} ${player.username} (You)`
+                : `#${rank} ${player.username}`;
+        const value =
+            type === "experience"
+                ? `Prestige: ${player.prestige}\nLevel: ${player.level}\nExp: ${player.xp}`
+                : `Balance: ${player.balance}`;
 
-    const userRank = sorted.findIndex((p) => p.name === user.username) + 1;
-    //const userPage = Math.ceil(userRank / 10);
-
-    const embedFields = generateLeaderboardFields(sorted, user, type, page);
+        if (index % 2 === 0) {
+            return [
+                {
+                    name,
+                    value,
+                    inline: true,
+                },
+            ];
+        } else {
+            return [
+                {
+                    name: "\u200b",
+                    value: "\u200b",
+                    inline: true,
+                },
+                {
+                    name,
+                    value,
+                    inline: true,
+                },
+            ];
+        }
+    });
 
     const embed = new EmbedBuilder()
-        .setTitle(
-            `Top ${(page - 1) * 10 + sorted.slice((page - 1) * 10, (page - 1) * 10 + 10).length} players`
-        )
-        .setDescription(`You are #${userRank}`)
-        .setFooter({
-            text: `Page ${page}/${totalPages}`,
-        })
+        .setTitle(`Top ${(page - 1) * 10 + players.length} Players`)
+        .setDescription(`Showing page ${page} of ${totalPages}`)
         .addFields(embedFields)
+        .setFooter({ text: `Page ${page}/${totalPages}` })
         .setColor("Random");
 
-    //const actionRow = createActionRow(page, totalPages, userPage);
-
-    const msg = await interaction.editReply({
+    await interaction.editReply({
         content: "",
         embeds: [embed],
-        components: [],
-    });
-
-    const collector = msg.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        time: 60000,
-    });
-
-    collector.on("collect", async (btnInteraction) => {
-        if (btnInteraction.user.id !== user.id) return;
-        if (!btnInteraction.isButton()) return;
-
-        const targetPage = btnInteraction.customId.split("_");
-        const newPage = parseInt(targetPage[2], 10);
-
-        await btnInteraction.deferUpdate();
-
-        await generateAndSendLeaderboard(
-            interaction,
-            playerList,
-            newPage,
-            type,
-            user,
-            totalPages
-        );
-    });
-
-    collector.on("end", () => {
-        interaction.editReply({ components: [] });
     });
 }
-
-function sortPlayers(playerList: Player[], type: string): Player[] {
-    if (type === "levels") {
-        return playerList.sort(
-            (a, b) =>
-                b.data.prestige - a.data.prestige ||
-                b.data.level - a.data.level ||
-                b.data.xp - a.data.xp
-        );
-    } else if (type === "balance") {
-        return playerList.sort((a, b) => b.data.balance - a.data.balance);
-    } else {
-        return calculateGeneralRanking(playerList);
-    }
-}
-
-/*function createActionRow(page: number, totalPages: number, userPage: number) {
-    return new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder()
-            .setCustomId(`leaderboard_prev_${Math.max(1, page - 1)}`)
-            .setLabel("Previous Page")
-            .setStyle(ButtonStyle.Primary)
-            .setDisabled(page === 1),
-        new ButtonBuilder()
-            .setCustomId(`leaderboard_next_${Math.min(totalPages, page + 1)}`)
-            .setLabel("Next Page")
-            .setStyle(ButtonStyle.Primary)
-            .setDisabled(page === totalPages),
-        new ButtonBuilder()
-            .setCustomId(`leaderboard_user_${userPage}`)
-            .setLabel(`Your Page`)
-            .setStyle(ButtonStyle.Secondary)
-            .setDisabled(userPage === page)
-    );
-}*/

@@ -1,6 +1,12 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { getPackageJSONData, Modules, randomEmbed } from "../../lib/library.js";
 import prettyMilliseconds from "pretty-ms";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default {
     devMode: false,
@@ -14,9 +20,12 @@ export default {
         const { client } = interaction;
         await interaction.deferReply();
         const { version } = getPackageJSONData();
+        const uptime = getStartJSON().time;
         const embed = randomEmbed()
             .setTitle(client.user.username)
-            .setDescription(`Online for ${prettyMilliseconds(client.uptime)}!`)
+            .setDescription(
+                `Online for ${prettyMilliseconds(new Date().getTime() - uptime, { verbose: true, secondsDecimalDigits: 0 })}!`
+            )
             .addFields([
                 {
                     name: "Shards",
@@ -42,3 +51,17 @@ export default {
         return interaction.editReply({ embeds: [embed] });
     },
 };
+
+function getStartJSON(): StartJson {
+    const packageJsonPath = join(__dirname, "../startDate.json");
+    try {
+        const data = readFileSync(packageJsonPath, "utf-8");
+        return JSON.parse(data);
+    } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+            return { time: Date.now(), rewrite: true };
+        } else {
+            throw error;
+        }
+    }
+}
