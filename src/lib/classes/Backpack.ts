@@ -1,4 +1,7 @@
+import type { BackpackItemType } from "../types/types.js";
 import { BackpackItem } from "./BackpackItem.js";
+import { DurableBackpackItem } from "./DurableBackpackItem.js";
+import { DurableItem } from "./DurableItem.js";
 import type { Item } from "./Item.js";
 
 /**
@@ -23,7 +26,7 @@ export class Backpack {
     /**
      * The items currently in the backpack.
      */
-    contents: BackpackItem[];
+    contents: BackpackItemType[];
 
     /**
      * Constructs a new instance of the Backpack class.
@@ -36,7 +39,7 @@ export class Backpack {
         name: string,
         size: number,
         slots: number,
-        contents: BackpackItem[]
+        contents: BackpackItemType[]
     ) {
         this.name = name;
         this.size = size;
@@ -48,7 +51,7 @@ export class Backpack {
      * Retrieves the contents of the backpack.
      * @returns The items currently in the backpack.
      */
-    getContents(): BackpackItem[] {
+    getContents(): BackpackItemType[] {
         return this.contents;
     }
 
@@ -76,19 +79,36 @@ export class Backpack {
     addItem(item: Item, amount: number): Backpack {
         const bItem = this.getContents().find((i) => i.name === item.name);
         if (!bItem) {
-            this.contents.push(
-                new BackpackItem(
-                    item.name,
-                    item.size,
-                    item.value,
-                    item.weight,
-                    item.buy,
-                    item.sell,
-                    item.canScavenge,
-                    item.inLootbox,
-                    amount
-                )
-            );
+            if (item instanceof DurableItem) {
+                this.contents.push(
+                    new DurableBackpackItem(
+                        item.name,
+                        item.size,
+                        item.value,
+                        item.weight,
+                        item.buy,
+                        item.sell,
+                        item.canScavenge,
+                        item.inLootbox,
+                        amount,
+                        item.durability
+                    )
+                );
+            } else {
+                this.contents.push(
+                    new BackpackItem(
+                        item.name,
+                        item.size,
+                        item.value,
+                        item.weight,
+                        item.buy,
+                        item.sell,
+                        item.canScavenge,
+                        item.inLootbox,
+                        amount
+                    )
+                );
+            }
         } else {
             bItem.amount += amount;
         }

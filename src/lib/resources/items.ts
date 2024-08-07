@@ -1,5 +1,7 @@
 import { BackpackEquipment } from "../classes/BackpackEquipment.js";
+import { CraftableHealingItem } from "../classes/CraftableHealingItem.js";
 import { CraftableItem } from "../classes/CraftableItem.js";
+import { DurableItem } from "../classes/DurableItem.js";
 import { Ingredient } from "../classes/Ingredient.js";
 import { Item } from "../classes/Item.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
@@ -14,6 +16,7 @@ const items: { [key: string]: Item } = {
     Ash: new Item("Ash", 1, 10, 9700000),
     Thorn: new Item("Thorn", 1, 20, 9600000),
     Acorn: new Item("Acorn", 1, 20, 9600000),
+    Peanuts: new Item("Peanuts", 1, 20, 9600000),
     FernLeaf: new Item("Fern Leaf", 1, 20, 9600000),
     Twig: new Item("Twig", 1, 20, 9500000),
     Fibers: new Item("Fibers", 1, 20, 9500000),
@@ -53,11 +56,14 @@ const items: { [key: string]: Item } = {
     Scales: new Item("Scales", 1, 40, 9175000),
     Leather: new Item("Leather", 1, 40, 9175000),
     Potatoes: new Item("Potatoes", 1, 40, 9170000),
+    Tomato: new Item("Tomato", 1, 40, 9170000),
     Carrot: new Item("Carrot", 1, 40, 9170000),
     Apple: new Item("Apple", 1, 40, 9150000),
+    Lemon: new Item("Lemon", 1, 40, 9150000),
     Herb: new Item("Herb", 1, 40, 9150000),
     Stone: new Item("Stone", 1, 50, 9100000),
     Bread: new Item("Bread", 1, 50, 9100000),
+    Cabbage: new Item("Cabbage", 2, 50, 9100000),
     BoneShard: new Item("Bone Shard", 1, 50, 9100000),
     LeafBundle: new Item("Leaf Bundle", 1, 50, 9100000),
     CrushedStone: new Item("Crushed Stone", 1, 50, 9100000),
@@ -141,6 +147,9 @@ const items: { [key: string]: Item } = {
 const recipes: { [key: string]: Recipe } = {
     StoneHatchet: new Recipe([items.Rock, items.Fibers, items.Stick]),
     LeatherStrap: new Recipe([new Ingredient(items.Leather, 2), items.Resin]),
+    Hamburger: new Recipe([new Ingredient(items.Bread, 2), items.Meat]),
+    FlintKnife: new Recipe([items.Flint, items.Stick]),
+    CabbageLeaves: new Recipe([items.Cabbage], 4),
 };
 
 items.StoneHatchetItem = new Weapon(
@@ -162,11 +171,43 @@ items.LeatherStrap = new CraftableItem(
     recipes.LeatherStrap
 );
 
+items.Hamburger = new CraftableHealingItem(
+    "Hamburger",
+    1,
+    25,
+    0,
+    recipes.Hamburger,
+    2
+);
+
+items.FlintKnife = new DurableItem(
+    "Flint Knife",
+    1,
+    20,
+    0,
+    recipes.FlintKnife,
+    10
+);
+
+items.CabbageLeaves = new CraftableItem(
+    "Cabbage Leaves",
+    1,
+    10,
+    0,
+    recipes.CabbageLeaves
+);
+
 recipes.Satchel = new Recipe([
     new Ingredient(items.LeatherStrap, 2),
     new Ingredient(items.Resin, 2),
     items.Leather,
 ]);
+
+recipes.CheeseBurger = new Recipe([items.Hamburger, items.Cheese]);
+
+recipes.TomatoSlices = new Recipe([items.Tomato, items.FlintKnife], 4);
+
+recipes.VegetableOil = new Recipe([items.Peanuts, items.FlintKnife]);
 
 items.Satchel = new BackpackEquipment(
     "Satchel",
@@ -177,13 +218,71 @@ items.Satchel = new BackpackEquipment(
     backpacks.Satchel
 );
 
+items.CheeseBurger = new CraftableHealingItem(
+    "Cheese Burger",
+    1,
+    50,
+    0,
+    recipes.CheeseBurger,
+    5
+);
+
+items.TomatoSlices = new CraftableItem(
+    "Tomato Slices",
+    1,
+    50,
+    0,
+    recipes.TomatoSlices
+);
+
+items.VegetableOil = new CraftableItem(
+    "Vegetable Oil",
+    1,
+    50,
+    0,
+    recipes.VegetableOil
+);
+
+recipes.Mayonnaise = new Recipe([
+    items.VegetableOil,
+    items.Lemon,
+    new Ingredient(items.Egg, 2),
+]);
+
+items.Mayonnaise = new CraftableItem(
+    "Mayonnaise",
+    2,
+    50,
+    0,
+    recipes.Mayonnaise
+);
+
+recipes.PrestigeBurger = new Recipe([
+    items.CheeseBurger,
+    items.Mayonnaise,
+    items.Egg,
+    new Ingredient(items.CabbageLeaves, 1),
+    new Ingredient(items.TomatoSlices, 2),
+]);
+
+items.PrestigeBurger = new CraftableHealingItem(
+    "Prestige Burger",
+    2,
+    50,
+    0,
+    recipes.PrestigeBurger,
+    25
+);
+
 for (const item of Object.values(items)) {
     if (item instanceof CraftableItem) {
         let price = 0;
         for (const ingredient of item.recipe.getIngredients()) {
-            price += ingredient.item.value * ingredient.amount;
+            if (ingredient.item instanceof DurableItem) {
+                price += ingredient.item.value / ingredient.item.durability;
+            } else price += ingredient.item.value * ingredient.amount;
         }
-        item.value = price;
+        item.value = Math.floor(price / item.recipe.amount);
     }
 }
 

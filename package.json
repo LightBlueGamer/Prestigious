@@ -1,14 +1,14 @@
 {
   "name": "prestigious",
-  "version": "1.3.0-1",
+  "version": "1.4.0",
   "main": "dist/index.js",
   "scripts": {
-    "start": "npm run build && node --es-module-specifier-resolution=node dist/index.js",
+    "start": "npm run build && npm run loc && npm run docs && node --es-module-specifier-resolution=node dist/index.js",
     "deploy": "npm run build && node --es-module-specifier-resolution=node dist/bot/deploy.js",
     "compile": "tsc --build --verbose",
     "prettier": "prettier src --write",
     "build": "npm run prettier && npm run compile",
-    "docs": "npm run build && npx typedoc --options typedoc.json && npx http-server --port 3334 docs/",
+    "docs": "npx typedoc --options typedoc.json",
     "loc": "python3 scripts/count-loc.py",
     "server": "npm run build && node --es-module-specifier-resolution=node dist/server/server.js"
   },

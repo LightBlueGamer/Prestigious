@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import {
     CraftableItem,
     findItem,
+    Ingredient,
     Modules,
     Player,
     randomEmbed,
@@ -37,15 +38,13 @@ export default {
             return interaction.editReply({
                 content: `${itemName} does not have a recipe.`,
             });
+
         const embed = randomEmbed()
             .setTitle(`${item.name}`)
             .setDescription(
                 `**Ingredients:**\`\`\`${recipe
                     .getIngredients()
-                    .map(
-                        (ingredient) =>
-                            `${ingredient.item.name} x ${ingredient.amount}`
-                    )
+                    .map((ingredient) => formatIngredient(ingredient))
                     .join("\n")}\`\`\`
                     ${
                         recipe.canCraft(player.backpackContent)
@@ -64,3 +63,18 @@ export default {
         return interaction.editReply({ embeds: [embed] });
     },
 };
+
+function formatIngredient(ingredient: Ingredient, level = 0) {
+    let indent = " ".repeat(level * 2);
+    let result = `${indent}${ingredient.item.name} x ${ingredient.amount}`;
+
+    if (ingredient.item instanceof CraftableItem) {
+        let subIngredients = ingredient.item.recipe
+            .getIngredients()
+            .map((subIngredient) => formatIngredient(subIngredient, level + 1))
+            .join("\n");
+
+        result += `:\n${subIngredients}`;
+    }
+    return result;
+}

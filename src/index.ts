@@ -16,6 +16,7 @@ export const client = new Client({
 });
 
 import "dotenv/config";
+import { setupGracefulShutdown } from "./lib/library.js";
 
 const eventFiles = readdirSync(`${__dirname}/bot/events`).filter((x) =>
     x.endsWith(".js")
@@ -29,6 +30,8 @@ export const commands = new Collection<Command.Data.Name, Command>();
 (async () => {
     await import("./db/index.js");
     await import("./server/server.js");
+
+    setupGracefulShutdown();
 
     for (const file of commandFiles) {
         const command = (await import(`./bot/commands/${file}`)).default;

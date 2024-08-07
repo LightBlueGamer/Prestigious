@@ -26,6 +26,7 @@ import { BackpackEquipment } from "../classes/BackpackEquipment.js";
 import { blueEmbed, randomEmbed } from "../resources/embeds.js";
 import type { PityItem } from "../interfaces/PityItem.js";
 import type { Backpack } from "../classes/Backpack.js";
+import { PlayerSaveManager } from "../classes/PlayerSaveManager.js";
 
 /**
  * A function to generate the default player data.
@@ -754,4 +755,30 @@ export function backpackEmbed(backpack: Backpack, page: number) {
         });
 
     return embed;
+}
+
+export function setupGracefulShutdown() {
+    const saveManager = PlayerSaveManager.getInstance();
+
+    async function handleShutdown(signal: string) {
+        console.log(`Received ${signal}, initiating shutdown...`);
+        try {
+            await saveManager.flushQueue();
+            console.log("Shutdown complete, exiting process.");
+            process.exit(0);
+        } catch (error) {
+            console.error("Error during shutdown:", error);
+            process.exit(1);
+        }
+    }
+
+    process.on("SIGINT", () => handleShutdown("SIGINT"));
+    process.on("SIGTERM", () => handleShutdown("SIGTERM"));
+    process.on("SIGQUIT", () => handleShutdown("SIGQUIT"));
+    process.on("unhandledRejection", (reason, promise) =>
+        handleShutdown(`unhandledRejection at: ${promise}, reason: ${reason}`)
+    );
+    process.on("uncaughtException", (error) =>
+        handleShutdown(`uncaughtException: ${error}`)
+    );
 }

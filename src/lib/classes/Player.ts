@@ -26,7 +26,7 @@ import { BackpackEquipment } from "./BackpackEquipment.js";
 import { BackpackItem } from "./BackpackItem.js";
 import { items } from "../resources/items.js";
 import type { PityItem } from "../interfaces/PityItem.js";
-import type { ArmorItem } from "../types/ArmorItem.js";
+import type { ArmorItemType, BackpackItemType } from "../types/types.js";
 import { PlayerSaveManager } from "./PlayerSaveManager.js";
 
 /**
@@ -391,7 +391,7 @@ export class Player {
     /**
      * Sets the contents of the player's backpack.
      */
-    private set backpackContent(newContent: BackpackItem[]) {
+    private set backpackContent(newContent: BackpackItemType[]) {
         this.data.backpack.contents = newContent;
     }
 
@@ -1054,7 +1054,10 @@ export class Player {
             Math.floor(
                 Array.from(this.equipment)
                     .filter((item) => item !== null)
-                    .reduce((acc, item) => acc + (item as ArmorItem).armor, 0) *
+                    .reduce(
+                        (acc, item) => acc + (item as ArmorItemType).armor,
+                        0
+                    ) *
                     (1 + this.dexterity / 10)
             ) || 0
         );

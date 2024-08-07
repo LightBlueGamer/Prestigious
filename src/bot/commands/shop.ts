@@ -41,19 +41,18 @@ export default {
             sbCmd
                 .setName("sell")
                 .setDescription("Sell an item to the shop")
-                .addNumberOption((option) =>
-                    option
-                        .setName("amount")
-                        .setDescription("The amount you want to buy")
-                        .setRequired(true)
-                        .setMinValue(1)
-                )
                 .addStringOption((option) =>
                     option
                         .setName("item")
                         .setDescription("The item you want to sell")
                         .setRequired(true)
                         .setAutocomplete(true)
+                )
+                .addNumberOption((option) =>
+                    option
+                        .setName("amount")
+                        .setDescription("The amount you want to sell")
+                        .setMinValue(1)
                 )
         )
         .toJSON(),
@@ -74,7 +73,7 @@ export default {
             });
         }
 
-        const amount = options.getNumber("amount") || 1;
+        const amount = options.getNumber("amount") || 0;
         const buyPrice = Math.ceil(item.value * 1.3 * amount);
 
         if (subCmd === "buy") {

@@ -9,19 +9,19 @@ export class PlayerSaveManager {
 
     private constructor() {}
 
+    public static getInstance(): PlayerSaveManager {
+        if (!PlayerSaveManager.instance) {
+            PlayerSaveManager.instance = new PlayerSaveManager();
+        }
+        return PlayerSaveManager.instance;
+    }
+
     public cachePlayer(player: Player) {
         this.playerCache.set(player.id, player);
     }
 
     public getPlayerFromCache(id: string): Player | undefined {
         return this.playerCache.get(id);
-    }
-
-    public static getInstance(): PlayerSaveManager {
-        if (!PlayerSaveManager.instance) {
-            PlayerSaveManager.instance = new PlayerSaveManager();
-        }
-        return PlayerSaveManager.instance;
     }
 
     public async save(player: Player) {
@@ -54,5 +54,13 @@ export class PlayerSaveManager {
             }
         }
         console.log(`All queue items finished processing...`);
+    }
+
+    public async flushQueue() {
+        console.log("Flushing save queue before shutdown...");
+        if (this.debounceTimer) {
+            clearTimeout(this.debounceTimer);
+        }
+        await this.processQueue();
     }
 }

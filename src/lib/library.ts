@@ -28,3 +28,4 @@ export { Cuirass } from "./classes/Cuirass.js";
 export { LegArmor } from "./classes/LegArmor.js";
 export { Equipment } from "./classes/Equipment.js";
 export { BackpackEquipment } from "./classes/BackpackEquipment.js";
+export type { MissingItem } from "./interfaces/MissingItem.js";

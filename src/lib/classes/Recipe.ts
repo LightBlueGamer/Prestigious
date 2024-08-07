@@ -1,4 +1,4 @@
-import type { BackpackItem } from "./BackpackItem.js";
+import type { BackpackItemType } from "../types/types.js";
 import { Ingredient } from "./Ingredient.js";
 import { Item } from "./Item.js";
 
@@ -47,11 +47,11 @@ export class Recipe {
     /**
      * Checks if the player has the necessary ingredients to craft the recipe.
      *
-     * @param {BackpackItem[]} backpackContents - The list of items currently in the player's backpack.
+     * @param {BackpackItemType[]} backpackContents - The list of items currently in the player's backpack.
      *
      * @returns {boolean} - True if the player has all the required ingredients to craft the recipe; otherwise, false.
      */
-    canCraft(backpackContents: BackpackItem[]): boolean {
+    canCraft(backpackContents: BackpackItemType[]): boolean {
         const requiredIngredients = this.getIngredients();
         for (const ingredient of requiredIngredients) {
             const itemInBackpack = backpackContents.find(
@@ -67,13 +67,13 @@ export class Recipe {
     /**
      * Determines the list of items that are missing from the player's backpack to craft the recipe.
      *
-     * @param {BackpackItem[]} backpackContents - The list of items currently in the player's backpack.
+     * @param {BackpackItemType[]} backpackContents - The list of items currently in the player's backpack.
      *
      * @returns {Ingredient[]} - An array of objects, each representing an item
      * missing from the backpack along with the amount of that item required to craft the recipe.
      * If no items are missing, an empty array is returned.
      */
-    missingItems(backpackContents: BackpackItem[]) {
+    missingItems(backpackContents: BackpackItemType[]) {
         const requiredIngredients = this.getIngredients();
         const missingItems: { item: Item; amountMissing: number }[] = [];
 
