@@ -35,3 +35,5 @@ for (const file of commandFiles) {
         console.log("Commands have been registered.");
     }
 })();
+
+process.exit(1);
