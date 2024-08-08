@@ -13,9 +13,7 @@ import { EmbedBuilder } from "discord.js";
  * ```
  */
 export function greenEmbed() {
-    return new EmbedBuilder()
-        .setColor("Green")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("Green");
 }
 
 /**
@@ -31,9 +29,7 @@ export function greenEmbed() {
  * ```
  */
 export function randomEmbed() {
-    return new EmbedBuilder()
-        .setColor("Random")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("Random");
 }
 
 /**
@@ -49,9 +45,7 @@ export function randomEmbed() {
  * ```
  */
 export function redEmbed() {
-    return new EmbedBuilder()
-        .setColor("Red")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("Red");
 }
 
 /**
@@ -67,9 +61,7 @@ export function redEmbed() {
  * ```
  */
 export function blueEmbed() {
-    return new EmbedBuilder()
-        .setColor("Blurple")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("Blurple");
 }
 
 /**
@@ -85,9 +77,7 @@ export function blueEmbed() {
  * ```
  */
 export function pinkEmbed() {
-    return new EmbedBuilder()
-        .setColor("LuminousVividPink")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("LuminousVividPink");
 }
 
 /**
@@ -103,9 +93,7 @@ export function pinkEmbed() {
  * ```
  */
 export function orangeEmbed() {
-    return new EmbedBuilder()
-        .setColor("Orange")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("Orange");
 }
 
 /**
@@ -121,9 +109,7 @@ export function orangeEmbed() {
  * ```
  */
 export function darkGreenEmbed() {
-    return new EmbedBuilder()
-        .setColor("DarkGreen")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("DarkGreen");
 }
 
 /**
@@ -143,7 +129,5 @@ export function darkGreenEmbed() {
  * ```
  */
 export function greyEmbed() {
-    return new EmbedBuilder()
-        .setColor("Grey")
-        .setFooter({ text: "Prestigious 4 Made By Inferno and Tim" }); // Default
+    return new EmbedBuilder().setColor("Grey");
 }

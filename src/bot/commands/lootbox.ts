@@ -5,6 +5,9 @@ import {
     Lootbox,
     redEmbed,
     greenEmbed,
+    summarizeItems,
+    lootboxes,
+    items
 } from "../../lib/library.js";
 
 export default {
@@ -27,13 +30,17 @@ export default {
         await interaction.deferReply();
         const lootboxName = options.getString("lootbox", true)!;
         const player = await Player.get(user.id, client);
-        const lootbox: Lootbox | undefined = player.lootboxes.find(
-            (box) => box.name === lootboxName
+        const lootbox: Lootbox | undefined = Object.values(lootboxes).find(
+            (box) =>
+                box.name ===
+                player.backpackContent.find((box) => box.name === lootboxName)
+                    ?.name
         );
+        const item = Object.values(items).find(i => i.name.toLowerCase() === lootbox?.name.toLowerCase())!
 
         if (!lootbox) {
             const embed = redEmbed().setTitle(
-                `You don't have a ${lootboxName} lootbox!`
+                `You don't have a ${lootboxName}!`
             );
 
             return interaction.editReply({
@@ -41,13 +48,42 @@ export default {
             });
         }
 
-        const { item } = player.openLootbox(lootbox);
+        if (
+            player.backpack.getFreeSpace() < 0 ||
+            player.excessItems.length > 0
+        ) {
+            const embed = redEmbed().setTitle(
+                `Your backpack is full, you cannot open the lootbox until you get more space!`
+            );
 
-        player.addStatistic("Lootboxes opened").save();
+            return interaction.editReply({
+                embeds: [embed],
+            });
+        }
+
+        const itms = lootbox.openMany();
+
+        for (const item of itms) {
+            if (player.backpack.getFreeSpace() < item.size) {
+                player.addExcessItem(item);
+            } else {
+                player.addItem(item);
+            }
+        }
+
+        player.removeItem(item).addStatistic("Lootboxes opened").save();
 
         const embed = greenEmbed()
             .setTitle(`You opened a ${lootbox.name} lootbox!`)
-            .setDescription(`You got a ${item.name}!`);
+            .setDescription(
+                itms.length <= 1
+                    ? `You got a ${items[0].name}!`
+                    : `You got:\n${summarizeItems(itms)
+                          .map(({ item, amount }) => `${amount}x ${item.name}`)
+                          .join(
+                              "\n"
+                          )}${player.excessItems.length > 0 ? `\nYour backpack is full please remove items to add the remaining ${player.excessItems.length} items to your backpack!` : ""}`
+            );
 
         return interaction.editReply({
             embeds: [embed],

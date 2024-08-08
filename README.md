@@ -30,6 +30,15 @@ Craft new items with resources gained from scavenging
 
 Trade with other players!
 
+## V-1.5.0
+
+-   You can now open lootboxes with a full inventory
+-   Added a system to store excessitems for when you obtain more items whilst having a nearly full backpack
+-   You can now buy lootboxes
+-   Lootboxes now gives a random amount of items when you open them
+-   Wiki now only shows necessary information about items
+-   /item command now only shows pity when relevant
+
 ## V-1.4.3
 
 -   Leaderboard now loads faster

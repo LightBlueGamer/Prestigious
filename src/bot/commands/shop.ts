@@ -119,7 +119,7 @@ export default {
                     .modifyBalance(item.value * amount)
                     .addStatistic("Items sold", amount);
                 embed = greenEmbed().setTitle(
-                    `You sold ${amount}x ${item.name} for $${item.value}!`
+                    `You sold ${amount}x ${item.name} for $${item.value * amount}!`
                 );
             }
         }

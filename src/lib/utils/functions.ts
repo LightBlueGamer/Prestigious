@@ -58,6 +58,7 @@ export function generateData(): Player.Data {
         equipment: new Equipment(),
         premium: false,
         pity: generatePityData(),
+        excessItems: [],
     };
 }
 
@@ -691,6 +692,7 @@ export function adjustQuantities(source: TradeItem[], target: TradeItem[]) {
 export function generatePityData() {
     const pity: PityItem[] = [];
     for (const item of Object.values(items)) {
+        if (item.weight <= 0) continue;
         pity.push({ item, pity: 0 });
     }
     return pity;
@@ -759,6 +761,20 @@ export function backpackEmbed(backpack: Backpack, page: number) {
     return embed;
 }
 
+/**
+ * Sets up a graceful shutdown for the Discord bot client.
+ * When the bot receives a SIGINT, SIGTERM, or SIGQUIT signal, it saves any pending data,
+ * logs a shutdown message, and exits the process.
+ * It also handles unhandled rejections and uncaught exceptions during shutdown.
+ *
+ * @param client - The Discord bot client for which to set up the graceful shutdown.
+ *
+ * @remarks
+ * This function creates an instance of the PlayerSaveManager and sets up event listeners
+ * for the SIGINT, SIGTERM, SIGQUIT, unhandledRejection, and uncaughtException signals.
+ * When a signal is received, the function logs a shutdown message, saves any pending data,
+ * and exits the process. If an error occurs during shutdown, it logs the error and exits with a non-zero status code.
+ */
 export function setupGracefulShutdown(client: Client) {
     const saveManager = PlayerSaveManager.getInstance();
 
@@ -792,4 +808,42 @@ export function setupGracefulShutdown(client: Client) {
     process.on("uncaughtException", (error) =>
         handleShutdown(`uncaughtException: ${error}`)
     );
+}
+
+/**
+ * Summarizes an array of items by counting the occurrences of each item and returning an array of unique items with their respective counts.
+ *
+ * @param arr - The array of items to summarize.
+ *
+ * @returns An array of objects, where each object represents a unique item from the input array and its count.
+ *
+ * @example
+ * ```typescript
+ * const items = [
+ *   { name: "Apple", quantity: 5 },
+ *   { name: "Banana", quantity: 3 },
+ *   { name: "Apple", quantity: 2 },
+ *   { name: "Banana", quantity: 1 },
+ * ];
+ *
+ * const summarizedItems = summarizeItems(items);
+ * console.log(summarizedItems);
+ * // Output: [
+ * //   { item: { name: "Apple", quantity: 5 }, amount: 3 },
+ * //   { item: { name: "Banana", quantity: 3 }, amount: 2 },
+ * // ]
+ * ```
+ */
+export function summarizeItems(arr: Item[]): { item: Item; amount: number }[] {
+    const itemMap = new Map<string, { item: Item; amount: number }>();
+
+    arr.forEach((item) => {
+        if (itemMap.has(item.name)) {
+            itemMap.get(item.name)!.amount += 1;
+        } else {
+            itemMap.set(item.name, { item, amount: 1 });
+        }
+    });
+
+    return Array.from(itemMap.values());
 }

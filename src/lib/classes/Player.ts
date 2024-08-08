@@ -10,11 +10,9 @@ import { emojis } from "../resources/emojis.js";
 import type { Backpack } from "./Backpack.js";
 import { Item } from "./Item.js";
 import type { Lootbox } from "./Lootbox.js";
-import { LootboxItem } from "./LootboxItem.js";
 import { Statistic } from "./Statistic.js";
 import type { Class } from "./Class.js";
 import type { Attribute } from "./Attribute.js";
-import { lootboxes } from "../resources/lootboxes.js";
 import type { PrestigeAttribute } from "./PrestigeAttribute.js";
 import type { Equipment } from "./Equipment.js";
 import { Weapon } from "./Weapon.js";
@@ -414,28 +412,21 @@ export class Player {
      */
     public addItem(item: Item, amount: number = 1) {
         const foundItem = this.findItem(item.name);
-        if (item instanceof LootboxItem) {
-            const lootbox = Object.values(lootboxes).find(
-                (l) => l.name.toLowerCase() === item.name.toLowerCase()
-            )!;
-            this.lootboxes.push(lootbox);
-        } else {
-            if (foundItem) foundItem.amount += amount;
-            else
-                this.backpackContent.push(
-                    new BackpackItem(
-                        item.name,
-                        item.size,
-                        item.value,
-                        item.weight,
-                        item.buy,
-                        item.sell,
-                        item.canScavenge,
-                        item.inLootbox,
-                        amount
-                    )
-                );
-        }
+        if (foundItem) foundItem.amount += amount;
+        else
+            this.backpackContent.push(
+                new BackpackItem(
+                    item.name,
+                    item.size,
+                    item.value,
+                    item.weight,
+                    item.buy,
+                    item.sell,
+                    item.canScavenge,
+                    item.inLootbox,
+                    amount
+                )
+            );
         return this;
     }
 
@@ -451,6 +442,12 @@ export class Player {
             itm.amount -= amount;
         } else {
             this.backpackContent.splice(this.backpackContent.indexOf(itm), 1);
+        }
+        for (const i of this.excessItems) {
+            console.log(this.backpack.getFreeSpace(), i.size);
+            if (this.backpack.getFreeSpace() < i.size) continue;
+            else this.addItem(i);
+            this.excessItems.splice(this.excessItems.indexOf(i), 1);
         }
         return this;
     }
@@ -1037,6 +1034,50 @@ export class Player {
     }
 
     /**
+     * Removes a pity item from the player's pity items list.
+     *
+     * @param name - The name of the item to remove.
+     * @returns The player instance for method chaining.
+     */
+    public removePity(name: string) {
+        const pity = this.pity.find(
+            (p) => p.item.name.toLowerCase() === name.toLowerCase()
+        );
+        if (!pity) return this;
+        this.pity.splice(this.pity.indexOf(pity), 1);
+        return this;
+    }
+
+    /**
+     * Retrieves the player's excess items.
+     *
+     * @returns {Item[]} The player's excess items.
+     */
+    public get excessItems(): Item[] {
+        return this.data.excessItems;
+    }
+
+    /**
+     * Sets the player's excess items.
+     *
+     * @param {Item[]} items - The new excess items to set.
+     */
+    private set excessItems(items: Item[]) {
+        this.data.excessItems = items;
+    }
+
+    /**
+     * Adds an excess item to the player's excess items list.
+     *
+     * @param item - The item to add to the excess items list.
+     * @returns The player instance for method chaining.
+     */
+    public addExcessItem(item: Item) {
+        this.excessItems.push(item);
+        return this;
+    }
+
+    /**
      * Gets the player's total damage.
      */
     public get damage() {
@@ -1184,5 +1225,6 @@ export namespace Player {
         equipment: Equipment;
         premium: boolean;
         pity: PityItem[];
+        excessItems: Item[];
     }
 }

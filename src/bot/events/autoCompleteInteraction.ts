@@ -2,6 +2,7 @@ import type { AutocompleteInteraction } from "discord.js";
 import { commands } from "../../index.js";
 import {
     CraftableItem,
+    LootboxItem,
     Player,
     itemIsEquipment,
     items,
@@ -14,7 +15,12 @@ export default {
         const { user, client } = interaction;
         if (user.bot) return;
         const player = await Player.get(user.id, client);
-        const boxes = player.lootboxes;
+        const boxes = player.backpackContent.filter((item) => {
+            const box = Object.values(items).find(
+                (itm) => itm.name === item.name
+            );
+            return box instanceof LootboxItem;
+        });
 
         const focusedValue = interaction.options.getFocused();
         let choices: { name: string; value: string }[] = [];

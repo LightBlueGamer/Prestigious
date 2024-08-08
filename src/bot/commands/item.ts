@@ -42,6 +42,11 @@ export default {
             return interaction.editReply({ embeds: [embed] });
         }
 
+        const pity =
+            calculateItemPityChance(item.name, player.pity)! <= 0
+                ? ` (${formatNumber(calculateItemChance(item.name)! + calculateItemPityChance(item.name, player.pity)!)}% pity)`
+                : "";
+
         const embed = greenEmbed()
             .setTitle(`${item.name}`)
             .setURL(
@@ -52,7 +57,7 @@ export default {
                 { name: "Value", value: `$${item.value}`, inline: true },
                 {
                     name: "Drop Chance",
-                    value: `${formatNumber(calculateItemChance(item.name)!)}% (${formatNumber(calculateItemChance(item.name)! + calculateItemPityChance(item.name, player.pity)!)}% pity)`,
+                    value: `${formatNumber(calculateItemChance(item.name)!)}%${pity}`,
                     inline: true,
                 },
             ]);

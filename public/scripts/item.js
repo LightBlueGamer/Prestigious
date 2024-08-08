@@ -27,29 +27,33 @@
 
         const ul = document.createElement("ul");
         const size = document.createElement("li");
-        size.innerHTML = `<strong>Size</strong>: ${data.size}`;
+        size.innerHTML = `<strong>Backpack Size</strong>: ${data.size} slot${data.size > 1 ? "s" : ""}`;
+
         const value = document.createElement("li");
-        value.innerHTML = `<strong>Value</strong>: ${data.value}`;
+        value.innerHTML = `<strong>${
+            data.buy && data.sell
+                ? `Buy/Sell Price</strong>: $${data.value * 1.3}, $${data.value}`
+                : data.buy
+                  ? `Buy Price</strong>: $${data.value * 1.3}`
+                  : `Sell Price</strong>: $${data.value}`
+        }`;
+
         const drop = document.createElement("li");
-        drop.innerHTML = `<strong>Drop Chance</strong>: ${data.weight} (${formatNumber(await calculateItemChance(data.weight))}%${(await calculateItemPityChance(data.name, user)).pity === 0 ? "" : `, ${formatNumber((await calculateItemChance(data.weight)) + (await calculateItemPityChance(data.name, user)).pity)}% pity`})`;
-        const buyable = document.createElement("li");
-        buyable.innerHTML = `<strong>Buyable</strong>: ${data.buy ? "Yes" : "No"}`;
-        const sellable = document.createElement("li");
-        sellable.innerHTML = `<strong>Sellable</strong>: ${data.sell ? "Yes" : "No"}`;
-        const scavenge = document.createElement("li");
-        scavenge.innerHTML = `<strong>Can Scavenge</strong>: ${data.canScavenge ? "Yes" : "No"}`;
+        const pity =
+            (await calculateItemPityChance(data.name, user)).pity > 0
+                ? ` (${formatNumber((await calculateItemChance(data.weight)) + (await calculateItemPityChance(data.name, user)).pity)}% pity)`
+                : "";
+        drop.innerHTML = `<strong>Drop Chance</strong>: ${formatNumber(await calculateItemChance(data.weight))}%${pity}`;
         const lootbox = document.createElement("li");
-        lootbox.innerHTML = `<strong>In Lootboxes</strong>: ${data.inLootbox ? "Yes" : "No"}`;
+        lootbox.innerHTML = `<strong>Lootbox chance</strong>: ${data.inLootbox ? `${formatNumber(await calculateItemChance(data.weight))}%` : "0%"}`;
 
         const frag = document.createDocumentFragment();
 
         frag.appendChild(size);
-        frag.appendChild(value);
-        frag.appendChild(drop);
-        frag.appendChild(buyable);
-        frag.appendChild(sellable);
-        frag.appendChild(scavenge);
-        frag.appendChild(lootbox);
+        if (data.buy || data.sell) frag.appendChild(value);
+        if ((await calculateItemChance(data.weight)) > 0)
+            frag.appendChild(drop);
+        if (data.inLootbox) frag.appendChild(lootbox);
 
         ul.appendChild(frag);
 

@@ -121,8 +121,10 @@ export default {
             ? `You have available statpoints you can use to improve your attributes! You can increase them with the /attributes command`
             : ``;
 
+        const backpack = backpackEmbed(player.backpack, 1);
+
         interaction.editReply({
-            embeds: [embed, equipment, backpackEmbed(player.backpack, 1)],
+            embeds: [embed, equipment, backpack],
             content,
         });
     },

@@ -1,4 +1,7 @@
-import { getRandomLootboxItemByWeight } from "../utils/functions.js";
+import {
+    getRandomLootboxItemByWeight,
+    randomNumber,
+} from "../utils/functions.js";
 import type { Item } from "./Item.js";
 
 export class Lootbox {
@@ -26,6 +29,22 @@ export class Lootbox {
     open(): Item {
         const item = getRandomLootboxItemByWeight(this.loot);
         return item;
+    }
+
+    /**
+     * Opens the lootbox multiple times and returns an array of random items based on the item weights.
+     * The number of items returned is randomly determined between 1 and 3.
+     *
+     * @returns {Item[]} - An array of randomly selected items from the lootbox.
+     */
+    openMany(): Item[] {
+        const amount = randomNumber(1, 3);
+        const items: Item[] = [];
+        for (let i = 0; i < amount; i++) {
+            items.push(this.open());
+        }
+
+        return items;
     }
 }
 

@@ -132,16 +132,7 @@ const items: { [key: string]: Item } = {
     ),
 
     // Lootboxes
-    CommonLootboxItem: new LootboxItem(
-        "Common Lootbox",
-        2,
-        3250,
-        1200,
-        false,
-        false,
-        true,
-        false
-    ),
+    CommonLootboxItem: new LootboxItem("Lootbox", 2, 1000, 1200),
 };
 
 const recipes: { [key: string]: Recipe } = {
