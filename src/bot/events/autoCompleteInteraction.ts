@@ -15,22 +15,18 @@ export default {
         const { user, client } = interaction;
         if (user.bot) return;
         const player = await Player.get(user.id, client);
-        const boxes = player.backpackContent.filter((item) => {
-            const box = Object.values(items).find(
-                (itm) => itm.name === item.name
-            );
-            return box instanceof LootboxItem;
-        });
 
         const focusedValue = interaction.options.getFocused();
         let choices: { name: string; value: string }[] = [];
         switch (interaction.commandName) {
             case "lootbox":
                 {
-                    choices = boxes.map((box) => ({
-                        name: `${box.name}`,
-                        value: box.name,
-                    }));
+                    choices = Object.values(items)
+                        .filter((i) => i instanceof LootboxItem)
+                        .map((box) => ({
+                            name: `${box.name}`,
+                            value: box.name,
+                        }));
                 }
 
                 break;

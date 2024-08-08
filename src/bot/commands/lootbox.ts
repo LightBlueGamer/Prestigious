@@ -7,7 +7,7 @@ import {
     greenEmbed,
     summarizeItems,
     lootboxes,
-    items
+    items,
 } from "../../lib/library.js";
 
 export default {
@@ -36,7 +36,6 @@ export default {
                 player.backpackContent.find((box) => box.name === lootboxName)
                     ?.name
         );
-        const item = Object.values(items).find(i => i.name.toLowerCase() === lootbox?.name.toLowerCase())!
 
         if (!lootbox) {
             const embed = redEmbed().setTitle(
@@ -47,6 +46,10 @@ export default {
                 embeds: [embed],
             });
         }
+
+        const item = Object.values(items).find(
+            (i) => i.name.toLowerCase() === lootbox.name.toLowerCase()
+        )!;
 
         if (
             player.backpack.getFreeSpace() < 0 ||

@@ -806,7 +806,7 @@ export function setupGracefulShutdown(client: Client) {
         handleShutdown(`unhandledRejection at: ${promise}, reason: ${reason}`)
     );
     process.on("uncaughtException", (error) =>
-        handleShutdown(`uncaughtException: ${error}`)
+        handleShutdown(`uncaughtException: ${error.stack}`)
     );
 }
 
