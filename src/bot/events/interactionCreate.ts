@@ -7,11 +7,13 @@ export default {
         const { user } = interaction;
         if (user.bot) return;
 
-        if (interaction.isChatInputCommand())
+        if (interaction.isChatInputCommand()) {
+            await interaction.deferReply();
             return interaction.client.emit(
                 "chatInputCommandInteraction",
                 interaction
             );
+        }
         if (interaction.isAutocomplete())
             return interaction.client.emit(
                 "autoCompleteInteraction",
