@@ -8,7 +8,6 @@ export default {
         if (user.bot) return;
 
         if (interaction.isChatInputCommand()) {
-            await interaction.deferReply();
             return interaction.client.emit(
                 "chatInputCommandInteraction",
                 interaction
