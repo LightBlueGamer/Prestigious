@@ -15,6 +15,7 @@ export default {
     once: true,
     async execute(client: Client) {
         if (!client.user) return console.error(`No client user was found.`);
+        await import("../../lib/resources/autoCompletes.js");
         const { version } = getPackageJSONData();
 
         if (getStartJSON().rewrite) {

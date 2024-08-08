@@ -5,8 +5,7 @@ import {
     equip,
     item,
     lootboxes,
-    recipes,
-    sell,
+    recipes
 } from "../../lib/resources/autoCompletes.js";
 
 export default {
@@ -26,8 +25,11 @@ export default {
             case "shop":
                 const subCmd = interaction.options.getSubcommand();
                 if (subCmd === "buy") choices = buy;
-                else if (subCmd === "sell")
-                    choices = sell(player.backpackContent);
+                else if (subCmd === "sell") 
+                    choices = player.backpackContent.map((item) => ({
+                        name: `${item.name} for $${item.value}/item`,
+                        value: `${item.name}`,
+                    }));
                 break;
 
             case "item":
@@ -55,11 +57,6 @@ export default {
                 choice.name.toLowerCase().includes(focusedValue.toLowerCase())
             )
             .slice(0, 25);
-        await interaction.respond(
-            filtered?.map((choice) => ({
-                name: choice.name,
-                value: choice.value,
-            }))
-        );
+        await interaction.respond(filtered);
     },
 };

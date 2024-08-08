@@ -1,6 +1,5 @@
 import { CraftableItem } from "../classes/CraftableItem.js";
 import { LootboxItem } from "../classes/LootboxItem.js";
-import type { BackpackItemType } from "../types/types.js";
 import { itemIsEquipment } from "../utils/functions.js";
 import { items } from "./items.js";
 
@@ -17,13 +16,6 @@ export const buy: Choice[] = Object.values(items)
         name: ` ${item.name} for $${Math.ceil(item.value * 1.3)}/item`,
         value: `${item.name}`,
     }));
-
-export const sell = (items: BackpackItemType[]): Choice[] => {
-    return items.map((item) => ({
-        name: `${item.name} for $${item.value}/item`,
-        value: `${item.name}`,
-    }));
-};
 
 export const item = Object.values(items).map((itm) => ({
     name: `${itm.name}`,
