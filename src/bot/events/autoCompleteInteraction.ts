@@ -1,12 +1,13 @@
 import type { AutocompleteInteraction } from "discord.js";
-import { commands } from "../../index.js";
+import { Player } from "../../lib/library.js";
 import {
-    CraftableItem,
-    LootboxItem,
-    Player,
-    itemIsEquipment,
-    items,
-} from "../../lib/library.js";
+    buy,
+    equip,
+    item,
+    lootboxes,
+    recipes,
+    sell,
+} from "../../lib/resources/autoCompletes.js";
 
 export default {
     name: "autoCompleteInteraction",
@@ -15,92 +16,34 @@ export default {
         const { user, client } = interaction;
         if (user.bot) return;
         const player = await Player.get(user.id, client);
-
         const focusedValue = interaction.options.getFocused();
         let choices: { name: string; value: string }[] = [];
         switch (interaction.commandName) {
             case "lootbox":
-                {
-                    choices = Object.values(items)
-                        .filter((i) => i instanceof LootboxItem)
-                        .map((box) => ({
-                            name: `${box.name}`,
-                            value: box.name,
-                        }));
-                }
-
+                choices = lootboxes;
                 break;
 
             case "shop":
-                {
-                    const subCmd = interaction.options.getSubcommand();
-                    let filteredItems;
-                    if (subCmd === "buy") {
-                        filteredItems = Object.values(items).filter(
-                            (item) =>
-                                item.buy &&
-                                Math.ceil(item.value * 1.3) <= player.balance
-                        );
-                        choices = filteredItems.map((item) => ({
-                            name: ` ${item.name} for $${Math.ceil(item.value * 1.3)}/item`,
-                            value: `${item.name}`,
-                        }));
-                    } else if (subCmd === "sell") {
-                        filteredItems = player.backpackContent;
-                        choices = filteredItems.map((item) => ({
-                            name: `${item.name} for $${item.value}/item`,
-                            value: `${item.name}`,
-                        }));
-                    }
-                }
-
+                const subCmd = interaction.options.getSubcommand();
+                if (subCmd === "buy") choices = buy;
+                else if (subCmd === "sell")
+                    choices = sell(player.backpackContent);
                 break;
 
             case "item":
-                {
-                    choices = Object.values(items).map((item) => ({
-                        name: `${item.name}`,
-                        value: `${item.name}`,
-                    }));
-                }
-
-                break;
-
-            case "toggle":
-                {
-                    choices = commands.map((cmd) => ({
-                        name: cmd.data.name,
-                        value: cmd.data.name,
-                    }));
-                }
-
+                choices = item;
                 break;
 
             case "recipe":
-                {
-                    choices = Object.values(items)
-                        .filter((item) => item instanceof CraftableItem)
-                        .map((item) => ({ name: item.name, value: item.name }));
-                }
-
+                choices = recipes;
                 break;
 
             case "craft":
-                {
-                    choices = Object.values(items)
-                        .filter((item) => item instanceof CraftableItem)
-                        .map((item) => ({ name: item.name, value: item.name }));
-                }
-
+                choices = recipes;
                 break;
 
             case "equip":
-                {
-                    choices = Object.values(items)
-                        .filter((item) => itemIsEquipment(item))
-                        .map((item) => ({ name: item.name, value: item.name }));
-                }
-
+                choices = equip;
                 break;
 
             default:
