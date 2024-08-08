@@ -802,9 +802,14 @@ export function setupGracefulShutdown(client: Client) {
     process.on("SIGINT", () => handleShutdown("SIGINT"));
     process.on("SIGTERM", () => handleShutdown("SIGTERM"));
     process.on("SIGQUIT", () => handleShutdown("SIGQUIT"));
-    process.on("unhandledRejection", (reason, promise) =>
-        handleShutdown(`unhandledRejection at: ${promise}, reason: ${reason}`)
-    );
+    process.on("unhandledRejection", (reason, promise) => {
+        if (reason instanceof Error) {
+            console.error(`Unhandled Rejection at: ${promise}, reason: ${reason.stack}`);
+        } else {
+            console.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
+        }
+        handleShutdown(`unhandledRejection at: ${promise}, reason: ${reason}`);
+    });
     process.on("uncaughtException", (error) =>
         handleShutdown(`uncaughtException: ${error.stack}`)
     );
