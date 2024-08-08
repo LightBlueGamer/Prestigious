@@ -802,10 +802,8 @@ export function setupGracefulShutdown(client: Client) {
     process.on("SIGINT", () => handleShutdown("SIGINT"));
     process.on("SIGTERM", () => handleShutdown("SIGTERM"));
     process.on("SIGQUIT", () => handleShutdown("SIGQUIT"));
-    process.on("unhandledRejection", async (reason, promise) =>
-        handleShutdown(
-            `unhandledRejection at: ${await promise}, reason: ${reason}`
-        )
+    process.on("unhandledRejection", (reason, promise) =>
+        handleShutdown(`unhandledRejection at: ${promise}, reason: ${reason}`)
     );
     process.on("uncaughtException", (error) =>
         handleShutdown(`uncaughtException: ${error.stack}`)

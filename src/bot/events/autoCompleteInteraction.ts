@@ -5,7 +5,7 @@ import {
     equip,
     item,
     lootboxes,
-    recipes
+    recipes,
 } from "../../lib/resources/autoCompletes.js";
 
 export default {
@@ -25,7 +25,7 @@ export default {
             case "shop":
                 const subCmd = interaction.options.getSubcommand();
                 if (subCmd === "buy") choices = buy;
-                else if (subCmd === "sell") 
+                else if (subCmd === "sell")
                     choices = player.backpackContent.map((item) => ({
                         name: `${item.name} for $${item.value}/item`,
                         value: `${item.name}`,
