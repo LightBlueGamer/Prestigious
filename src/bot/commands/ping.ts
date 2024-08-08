@@ -22,7 +22,7 @@ export default {
     async execute(interaction: ChatInputCommandInteraction) {
         const startTimestamp = Date.now();
 
-        await interaction.reply({
+        await interaction.editReply({
             content: `Pinging...`,
         });
 
