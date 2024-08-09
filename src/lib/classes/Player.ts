@@ -26,6 +26,7 @@ import { items } from "../resources/items.js";
 import type { PityItem } from "../interfaces/PityItem.js";
 import type { ArmorItemType, BackpackItemType } from "../types/types.js";
 import { PlayerSaveManager } from "./PlayerSaveManager.js";
+import type { PlayerConfig } from "./PlayerConfig.js";
 
 /**
  * Represents a player in the game.
@@ -65,6 +66,17 @@ export class Player {
      */
     public get balance() {
         return this.data.balance;
+    }
+
+    /**
+     * Calculates the total money boost factor for the player.
+     *
+     * @returns The total money boost factor, taking into account the player's prestige level and premium status.
+     *
+     * @remarks The money boost factor is calculated by multiplying the player's money boost attribute value by 1.2 if the player is premium, or by 1 otherwise.
+     */
+    public get totalMoneyBoost() {
+        return this.moneyBoost * (this.premium ? 2 : 1);
     }
 
     /**
@@ -203,6 +215,19 @@ export class Player {
     public get xpLeft() {
         const remainingXp = this.requiredXp - this.xp;
         return Math.max(0, remainingXp);
+    }
+
+    /**
+     * Calculates the total experience boost factor for the player.
+     *
+     * @returns {number} The total experience boost factor.
+     *
+     * The factor is calculated by adding the player's experience boost attribute value to 1,
+     * dividing it by 10, and then multiplying the result by 2 if the player is premium,
+     * or by 1 if the player is not premium.
+     */
+    public get totalXpBoost(): number {
+        return this.expBoost * (this.premium ? 2 : 1);
     }
 
     /**
@@ -440,7 +465,7 @@ export class Player {
      *
      * @returns {void}
      */
-    public addItemExcess(item: Item, amount: number = 1) {
+    public addItemExcess(item: Item, amount: number = 1): void {
         const items = Array(amount).fill(item);
         for (const item of items) {
             if (this.backpack.getFreeSpace() < item.size) {
@@ -1098,6 +1123,91 @@ export class Player {
         return this;
     }
 
+    public get config() {
+        return this.data.config;
+    }
+
+    private set config(newConfig: PlayerConfig) {
+        this.data.config = newConfig;
+    }
+
+    public setConfig(config: PlayerConfig) {
+        this.config = config;
+        return this;
+    }
+
+    /**
+     * Retrieves the background color of the player's configuration.
+     *
+     * @returns {string} The background color.
+     */
+    public get bgColor(): string {
+        return this.config.bgColor;
+    }
+
+    /**
+     * Sets the background color of the player's configuration.
+     *
+     * @param {string} value - The new background color.
+     */
+    private set bgColor(value: string) {
+        this.config.bgColor = value;
+    }
+
+    /**
+     * Retrieves the background color for experience points of the player's configuration.
+     *
+     * @returns {string} The background color for experience points.
+     */
+    public get bgXpColor(): string {
+        return this.config.bgXpColor;
+    }
+
+    /**
+     * Sets the background color for experience points of the player's configuration.
+     *
+     * @param {string} value - The new background color for experience points.
+     */
+    private set bgXpColor(value: string) {
+        this.config.bgXpColor = value;
+    }
+
+    /**
+     * Retrieves the text color of the player's configuration.
+     *
+     * @returns {string} The text color.
+     */
+    public get textColor(): string {
+        return this.config.textColor;
+    }
+
+    /**
+     * Sets the text color of the player's configuration.
+     *
+     * @param {string} value - The new text color.
+     */
+    private set textColor(value: string) {
+        this.config.textColor = value;
+    }
+
+    /**
+     * Retrieves the text color for experience points of the player's configuration.
+     *
+     * @returns {string} The text color for experience points.
+     */
+    public get xpColor(): string {
+        return this.config.xpColor;
+    }
+
+    /**
+     * Sets the text color for experience points of the player's configuration.
+     *
+     * @param {string} value - The new text color for experience points.
+     */
+    private set xpColor(value: string) {
+        this.config.xpColor = value;
+    }
+
     /**
      * Gets the player's total damage.
      */
@@ -1247,5 +1357,6 @@ export namespace Player {
         premium: boolean;
         pity: PityItem[];
         excessItems: Item[];
+        config: PlayerConfig;
     }
 }

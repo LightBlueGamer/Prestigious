@@ -30,6 +30,10 @@ Craft new items with resources gained from scavenging
 
 Trade with other players!
 
+## V-1.6.0
+
+-   /user command now shows stats in a nice image
+
 ## V-1.5.0
 
 -   You can now open lootboxes with a full inventory

@@ -29,6 +29,8 @@ import type { PityItem } from "../interfaces/PityItem.js";
 import type { Backpack } from "../classes/Backpack.js";
 import { PlayerSaveManager } from "../classes/PlayerSaveManager.js";
 import { writeFileSync } from "fs";
+import type { Canvas } from "@napi-rs/canvas";
+import { PlayerConfig } from "../classes/PlayerConfig.js";
 
 /**
  * A function to generate the default player data.
@@ -59,6 +61,7 @@ export function generateData(): Player.Data {
         premium: false,
         pity: generatePityData(),
         excessItems: [],
+        config: new PlayerConfig("", "", "", ""),
     };
 }
 
@@ -855,4 +858,91 @@ export function summarizeItems(arr: Item[]): { item: Item; amount: number }[] {
     });
 
     return Array.from(itemMap.values());
+}
+
+/**
+ * Inverts the color of a given HEX color or RGB value.
+ * If the `bw` parameter is set to `true`, the function will return the inverted color for black and white (grayscale) detection.
+ * If the `bw` parameter is set to `false` or not provided, the function will return the inverted color for color detection.
+ *
+ * @param hex - The HEX color or RGB value to invert. The color should be provided in the format '#RRGGBB' or 'rgb(R, G, B)'.
+ * @param bw - An optional boolean parameter to specify whether to detect black and white (grayscale) or color.
+ * @returns The inverted HEX color or RGB value as a string.
+ * @throws An error if the provided HEX color is invalid.
+ */
+export function invertColor(hex: string, bw: boolean = true) {
+    if (hex.startsWith("#")) {
+        if (hex.indexOf("#") === 0) {
+            hex = hex.slice(1);
+        }
+
+        if (hex.length === 3) {
+            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        }
+
+        if (hex.length !== 6) {
+            throw new Error("Invalid HEX color.");
+        }
+
+        let r: string | number = parseInt(hex.slice(0, 2), 16),
+            g: string | number = parseInt(hex.slice(2, 4), 16),
+            b: string | number = parseInt(hex.slice(4, 6), 16);
+
+        if (bw) {
+            return r * 0.299 + g * 0.587 + b * 0.114 > 186
+                ? "#000000"
+                : "#FFFFFF";
+        }
+
+        r = (255 - r).toString(16);
+        g = (255 - g).toString(16);
+        b = (255 - b).toString(16);
+
+        return "#" + r + g + b;
+    } else {
+        const rgb = hex
+            .replace(/rgba?/gim, "")
+            .replace(/\(\)/gim, "")
+            .split(", ");
+        let r: string | number = parseInt(rgb[0]),
+            g: string | number = parseInt(rgb[1]),
+            b: string | number = parseInt(rgb[2]);
+
+        if (bw) {
+            return r * 0.299 + g * 0.587 + b * 0.114 > 186
+                ? "#000000"
+                : "#FFFFFF";
+        }
+
+        r = (255 - r).toString(16);
+        g = (255 - g).toString(16);
+        b = (255 - b).toString(16);
+
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+    }
+}
+
+/**
+ * Applies text to a given canvas with a specified font size, adjusting the font size to fit the canvas width.
+ *
+ * @param canvas - The canvas to apply the text to.
+ * @param text - The text to apply to the canvas.
+ *
+ * @returns The font size used to apply the text to the canvas.
+ *
+ * @remarks
+ * The function initializes a 2D drawing context for the canvas and sets the initial font size to 55px.
+ * It then enters a loop that decreases the font size by 10px each iteration until the width of the text
+ * measured with the current font size is less than or equal to the canvas width minus 300 pixels.
+ * Once the font size is found that fits the canvas width, the function returns the font size used.
+ */
+export function applyText(canvas: Canvas, text: string) {
+    const context = canvas.getContext("2d");
+    let fontSize = 55;
+
+    do {
+        context.font = `bold ${(fontSize -= 10)}px Noto Sans CJK JP`;
+    } while (context.measureText(text).width > canvas.width - 300);
+
+    return context.font;
 }
