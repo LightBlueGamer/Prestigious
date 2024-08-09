@@ -51,10 +51,7 @@ export default {
             (i) => i.name.toLowerCase() === lootbox.name.toLowerCase()
         )!;
 
-        if (
-            player.backpack.getFreeSpace() < 0 ||
-            player.excessItems.length > 0
-        ) {
+        if (player.excessItems.length > 0) {
             const embed = redEmbed().setTitle(
                 `Your backpack is full, you cannot open the lootbox until you get more space!`
             );
