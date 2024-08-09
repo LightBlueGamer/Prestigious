@@ -431,6 +431,27 @@ export class Player {
     }
 
     /**
+     * Adds an excess item to the player's excess items list.
+     * If the backpack has enough free space, the item is added to the backpack.
+     * Otherwise, the item is added to the excess items list.
+     *
+     * @param item - The item to add.
+     * @param amount - The amount of the item to add. Default is 1.
+     *
+     * @returns {void}
+     */
+    public addItemExcess(item: Item, amount: number = 1) {
+        const items = Array(amount).fill(item);
+        for (const item of items) {
+            if (this.backpack.getFreeSpace() < item.size) {
+                this.addExcessItem(item);
+            } else {
+                this.addItem(item);
+            }
+        }
+    }
+
+    /**
      * Removes an item from the player's backpack.
      * @param item - The item to remove.
      * @param amount - The amount of the item to remove. Default is 1.

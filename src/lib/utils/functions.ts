@@ -804,9 +804,13 @@ export function setupGracefulShutdown(client: Client) {
     process.on("SIGQUIT", () => handleShutdown("SIGQUIT"));
     process.on("unhandledRejection", (reason, promise) => {
         if (reason instanceof Error) {
-            console.error(`Unhandled Rejection at: ${promise}, reason: ${reason.stack}`);
+            console.error(
+                `Unhandled Rejection at: ${promise}, reason: ${reason.stack}`
+            );
         } else {
-            console.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
+            console.error(
+                `Unhandled Rejection at: ${promise}, reason: ${reason}`
+            );
         }
         handleShutdown(`unhandledRejection at: ${promise}, reason: ${reason}`);
     });
